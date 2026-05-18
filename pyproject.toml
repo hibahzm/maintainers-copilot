@@ -24,12 +24,6 @@ dev = [
   "ruff>=0.9",
   "mypy>=1.14",
 ]
-ui = ["streamlit>=1.41"]
-ml = [
-  "transformers>=4.48",
-  "torch>=2.5",
-  "spacy>=3.8",
-]
 
 [tool.ruff]
 line-length = 100

@@ -36,3 +36,15 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - The backend API can continue using the root `pyproject.toml`; the model server and Streamlit UI now have local dependency manifests ready for later Dockerfiles.
 - Dataset work will begin from raw GitHub issues, with notebook compute allowed for training but reproducibility anchored in repository scripts and committed dataset formats.
+
+## 2026-05-18 — Dependency manifest clarification
+
+### Updated
+- removed the old `ui` and `ml` optional dependency groups from the root `pyproject.toml`
+
+### Design notes
+- Each Python container should install only from the manifest that belongs to that service:
+  - root `pyproject.toml` → API backend
+  - `model_server/pyproject.toml` → inference service
+  - `chatbot/pyproject.toml` → Streamlit UI
+- This keeps the API image from carrying large ML dependencies it does not need.
