@@ -20,6 +20,7 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-014 | Use the classifier target vocabulary `bug / feature / docs / question` | accepted | target: code, docs, data splits, and evals use one assignment-aligned label set |
 | D-015 | Use Langfuse as the tracing backend | accepted | target: one Friday demo trace tree includes request root, tool call, retrieval span, token counts, latency, and an error path |
 | D-016 | Start classifier fine-tuning with DistilBERT and freeze its lower 4 encoder blocks | proposed | compare macro-F1, latency, and training behavior before defending the final deployment choice |
+| D-017 | Use a newer temporal test holdout plus deterministic stratified validation | accepted | target: preserve future-like test evaluation while keeping all four labels measurable during model selection |
 
 ## Classifier target vocabulary
 
@@ -44,6 +45,10 @@ The chosen repository already exposes assignment-aligned issue labels, so the ma
 | `question` | `question` |
 
 Issues with none of those labels are excluded from classifier training. Issues with more than one target label are also excluded rather than forcing a misleading single-label target into the training data.
+
+## Split policy
+
+The assignment requires the **test** split to be strictly newer than train. We satisfy that with a temporal holdout. Validation is then sampled deterministically and stratified from the older train/validation pool so sparse labels remain present during model selection instead of making validation impossible when a class disappears from one recent time window.
 
 ## Tracing backend
 

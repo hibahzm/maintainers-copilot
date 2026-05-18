@@ -5,6 +5,7 @@ import json
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
+from random import Random
 from typing import Any
 
 from scripts.dataset.constants import LABEL_TO_TARGET, SOURCE_REPO, TARGET_LABELS
@@ -12,6 +13,7 @@ from scripts.dataset.io import read_jsonl, write_jsonl
 
 DEFAULT_TEST_RATIO = 0.15
 DEFAULT_VAL_RATIO = 0.15
+DEFAULT_SPLIT_SEED = 42
 
 
 def parse_args() -> argparse.Namespace:
@@ -37,11 +39,10 @@ def build_dataset(
         right_ratio=test_ratio,
         label="test",
     )
-    relative_val_ratio = val_ratio / (1 - test_ratio)
-    train, val = split_temporally(
+    train, val = split_stratified(
         train_val,
-        right_ratio=relative_val_ratio,
-        label="validation",
+        right_ratio=val_ratio / (1 - test_ratio),
+        seed=DEFAULT_SPLIT_SEED,
     )
 
     splits = {"train": train, "val": val, "test": test}
@@ -145,6 +146,38 @@ def split_temporally(
     return records[:cutoff], records[cutoff:]
 
 
+def split_stratified(
+    records: list[dict[str, Any]],
+    right_ratio: float,
+    seed: int,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Build a deterministic stratified split inside the older train/validation pool."""
+    if not 0 < right_ratio < 1:
+        raise ValueError("Split ratio must be between 0 and 1.")
+
+    grouped: dict[str, list[dict[str, Any]]] = {label: [] for label in TARGET_LABELS}
+    for record in records:
+        grouped[record["target"]].append(record)
+
+    if any(len(grouped[label]) < 2 for label in TARGET_LABELS):
+        raise ValueError("Every target label needs at least two examples for stratified validation.")
+
+    rng = Random(seed)
+    train: list[dict[str, Any]] = []
+    val: list[dict[str, Any]] = []
+
+    for label in TARGET_LABELS:
+        group = grouped[label][:]
+        rng.shuffle(group)
+        val_count = max(1, round(len(group) * right_ratio))
+        if val_count >= len(group):
+            val_count = len(group) - 1
+        val.extend(group[:val_count])
+        train.extend(group[val_count:])
+
+    return sorted(train, key=_created_at), sorted(val, key=_created_at)
+
+
 def build_report(
     splits: dict[str, list[dict[str, Any]]],
     dropped: Counter[str],
@@ -154,6 +187,11 @@ def build_report(
     return {
         "source_repo": SOURCE_REPO,
         "target_labels": list(TARGET_LABELS),
+        "split_policy": {
+            "test": "strictly newer temporal holdout",
+            "validation": "deterministic stratified split inside the older train/validation pool",
+            "seed": DEFAULT_SPLIT_SEED,
+        },
         "total_raw_records": total_raw,
         "total_normalized_records": sum(len(records) for records in splits.values()),
         "dropped_records": dict(sorted(dropped.items())),

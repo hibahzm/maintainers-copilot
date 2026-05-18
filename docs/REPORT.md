@@ -254,3 +254,15 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - Replaced page-number guessing with GitHub `Link`-header pagination so fetching stops when the API stops advertising a next page.
 - Expanded the GitHub error message to include the response body, making future API failures diagnosable from the notebook instead of collapsing into an opaque status code.
+
+## 2026-05-18 — Validation split policy corrected
+
+### Updated
+- `scripts/dataset/build_splits.py`
+- `notebooks/maintainers_copilot_week7_colab.ipynb`
+- `docs/DATASET_STRATEGY.md`
+- `docs/DECISIONS.md`
+
+### Design notes
+- Kept the test split as the required strictly newer temporal holdout, but changed validation to a deterministic stratified sample inside the older train/validation pool.
+- This preserves future-like testing while avoiding an impossible validation split when a sparse label is not represented in every chronological window.

@@ -62,8 +62,8 @@ The current mapping is intentionally one-to-one:
    }
    ```
 
-5. **Split by time, not random shuffle**  
-   Keep `test.jsonl` strictly newer than training data so evaluation better resembles future incoming issues. The split builder searches chronological cutoffs that preserve the overall class mix as closely as possible while keeping all four labels represented.
+5. **Keep the test set temporal; keep validation stratified**  
+   Keep `test.jsonl` strictly newer than training data so evaluation better resembles future incoming issues. Inside the older train/validation pool, use a deterministic stratified validation split so all four labels remain measurable even when one class is sparse in recent history.
 
 6. **Check class balance before training**  
    Count examples per target label. If one label dominates, document the imbalance and decide on sampling before training.
