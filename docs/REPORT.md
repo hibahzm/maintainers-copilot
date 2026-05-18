@@ -59,3 +59,19 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - The repo root is now orchestration-level only; each Python container has its own explicit service folder and colocated manifest.
 - This is more legible than treating the repository root as an implicit backend service.
+
+## 2026-05-18 — API contracts and dependency wiring
+
+### Added
+- `backend/app/api/schemas/` for Pydantic request/response models
+- `backend/app/api/dependencies.py` for FastAPI dependency providers
+- `backend/app/services/auth_service.py`
+- `backend/app/services/widget_service.py`
+
+### Updated
+- routers now accept typed Pydantic payloads and injected service dependencies
+- existing service placeholders are explicit classes, not loose module docstrings
+
+### Design notes
+- `api/schemas` are public HTTP contracts; `domain` models remain internal business concepts.
+- Routers should depend on services, never instantiate infrastructure or repositories directly.

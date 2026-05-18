@@ -1,1 +1,2 @@
-"""Orchestrate chat turns, tool calls, and model responses."""
+class ChatService:
+    """Orchestrate chat turns, tool calls, and model responses."""

@@ -46,6 +46,8 @@ Think of this as our project board. We will move one card at a time from scaffol
 **Create / edit**
 - `backend/app/main.py` — register routers, lifecycle, `/health`
 - `backend/app/core/config.py` — environment-backed settings
+- `backend/app/api/dependencies.py` — FastAPI dependency providers
+- `backend/app/api/schemas/**` — Pydantic transport contracts
 - `backend/tests/api/test_health.py` — first smoke test
 - `README.md` — local run commands
 
@@ -81,6 +83,8 @@ Think of this as our project board. We will move one card at a time from scaffol
 
 **Create / edit**
 - `backend/app/api/auth.py` — `/register`, `/login`
+- `backend/app/api/schemas/auth.py` — request/response contracts
+- `backend/app/services/auth_service.py` — auth workflows
 - `backend/app/repositories/user_repo.py` — user SQL
 - `backend/app/domain/` — request/response models as needed
 - `migrations/versions/` — users table migration
@@ -192,6 +196,8 @@ Think of this as our project board. We will move one card at a time from scaffol
 - `widget/src/postMessage.js`
 - `widget/vite.config.js`
 - `backend/app/api/widget.py`
+- `backend/app/api/schemas/widget.py`
+- `backend/app/services/widget_service.py`
 - `demo/host/index.html`, `demo/host/nginx.conf`
 
 **Done when**

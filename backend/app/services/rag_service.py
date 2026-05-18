@@ -1,1 +1,2 @@
-"""Rewrite queries, retrieve chunks, rerank, and generate answers."""
+class RagService:
+    """Rewrite queries, retrieve chunks, rerank, and generate answers."""
