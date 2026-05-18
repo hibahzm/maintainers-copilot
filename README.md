@@ -8,7 +8,7 @@ This repository is currently in **Milestone 0: scaffold**. The code is intention
 
 ## Planned services
 
-- `app/` — main FastAPI backend
+- `backend/` — main FastAPI backend
 - `model_server/` — separate inference API for classifier / NER / summarizer models
 - `chatbot/` — Streamlit maintainer UI
 - `widget/` — embeddable React widget
@@ -25,7 +25,7 @@ This repository is currently in **Milestone 0: scaffold**. The code is intention
 
 - Python dependency management is `uv`-first.
 - Every Python service gets a `pyproject.toml` beside its eventual `Dockerfile`:
-  - repo root → backend API
+  - `backend/` → backend API
   - `model_server/` → inference service
   - `chatbot/` → Streamlit UI
 - PostgreSQL schema changes go through Alembic migrations from the first real table onward.

@@ -8,7 +8,7 @@
 
 ## Redaction patterns
 
-Initial patterns live in `app/infra/redaction.py` and currently cover:
+Initial patterns live in `backend/app/infra/redaction.py` and currently cover:
 
 - obvious `api_key=...` / `api-key: ...` style values
 - bearer tokens

@@ -34,7 +34,7 @@ This is the running build journal. Every meaningful change should add a dated en
 - recorded Alembic as the only accepted path for PostgreSQL schema changes
 
 ### Design notes
-- The backend API can continue using the root `pyproject.toml`; the model server and Streamlit UI now have local dependency manifests ready for later Dockerfiles.
+- The backend API initially used the root `pyproject.toml`; the model server and Streamlit UI received local dependency manifests ready for later Dockerfiles.
 - Dataset work will begin from raw GitHub issues, with notebook compute allowed for training but reproducibility anchored in repository scripts and committed dataset formats.
 
 ## 2026-05-18 — Dependency manifest clarification
@@ -44,7 +44,18 @@ This is the running build journal. Every meaningful change should add a dated en
 
 ### Design notes
 - Each Python container should install only from the manifest that belongs to that service:
-  - root `pyproject.toml` → API backend
+  - `backend/pyproject.toml` → API backend
   - `model_server/pyproject.toml` → inference service
   - `chatbot/pyproject.toml` → Streamlit UI
 - This keeps the API image from carrying large ML dependencies it does not need.
+
+## 2026-05-18 — Backend service isolation
+
+### Moved
+- `app/` → `backend/app/`
+- `tests/` → `backend/tests/`
+- root `pyproject.toml` → `backend/pyproject.toml`
+
+### Design notes
+- The repo root is now orchestration-level only; each Python container has its own explicit service folder and colocated manifest.
+- This is more legible than treating the repository root as an implicit backend service.
