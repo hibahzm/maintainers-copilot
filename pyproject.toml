@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "maintainers-copilot"
+version = "0.1.0"
+description = "Multi-service maintainer support copilot scaffold"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.34",
+  "pydantic>=2.10",
+  "pydantic-settings>=2.7",
+  "httpx>=0.28",
+  "redis>=5.2",
+  "asyncpg>=0.30",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "pytest-asyncio>=0.25",
+  "ruff>=0.9",
+  "mypy>=1.14",
+]
+ui = ["streamlit>=1.41"]
+ml = [
+  "transformers>=4.48",
+  "torch>=2.5",
+  "spacy>=3.8",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
