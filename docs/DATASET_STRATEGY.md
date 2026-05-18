@@ -1,29 +1,44 @@
 # Dataset Strategy
 
-## Recommendation for v1
+## Week 7 dataset choice
 
-Start with **our own GitHub-issue dataset**, collected from a small set of public repositories whose issue labels roughly map to the categories we want the app to predict:
+Use **closed issues from one repository only**:
+
+- source repository: `fastapi/fastapi`
+- issue state: `closed`
+- rule: keep using this same repository for the whole project
+
+This follows the Week 7 brief directly: pick one repo once, then live with that choice.
+
+## Target labels
+
+FastAPI is a good fit because its issue labels already map cleanly to the categories we want the app to predict:
 
 - `bug`
 - `feature`
 - `question`
 - `documentation`
 
-Why this shape:
+## Why this repo
 
 1. It matches the product we are building better than a generic text-classification dataset.
-2. It lets us preserve the original issue fields we may later need for RAG, audits, and error analysis.
-3. It keeps the labeling story explainable: the first weak labels come from repository labels, then we hand-clean the eval set.
+2. It is large, mature, Python-based, and close to the domain of our own app.
+3. Its labels are unusually convenient for the classifier we plan to build.
+4. It lets us preserve the original issue fields we may later need for RAG, audits, and error analysis.
+5. It keeps the labeling story explainable: the first weak labels come from repository labels, then we hand-clean the eval set.
 
 ## Suggested process
 
-1. **Define the label map first**  
-   Example: `enhancement -> feature`, `docs -> documentation`, `type: bug -> bug`.
+1. **Fix the source before writing code**  
+   All Week 7 dataset scripts should default to `fastapi/fastapi` and `state=closed`.
 
-2. **Fetch raw issues from GitHub**  
+2. **Confirm the label map**  
+   Start from FastAPI labels and map only the labels we intentionally support.
+
+3. **Fetch raw closed issues from GitHub**  
    Save the untouched API payload-derived records in `data/raw_issues.jsonl`.
 
-3. **Normalize and clean locally in repo scripts**  
+4. **Normalize and clean locally in repo scripts**  
    Produce model-ready records with stable fields such as:
 
    ```json
@@ -38,13 +53,16 @@ Why this shape:
    }
    ```
 
-4. **Split by time, not random shuffle**  
+5. **Split by time, not random shuffle**  
    Keep `test.jsonl` strictly newer than training data so evaluation better resembles future incoming issues.
 
-5. **Hand-curate the gold sets**  
+6. **Check class balance before training**  
+   Count examples per target label. If one label dominates, document the imbalance and decide on sampling before training.
+
+7. **Hand-curate the gold sets**  
    `evals/golden_classification.json` should stay small, clean, and human-reviewed even if training data is larger and weakly labeled.
 
-6. **Use Colab only for heavy experiments**  
+8. **Use Colab only for heavy experiments**  
    Training/fine-tuning can happen in Colab, but the source-of-truth scripts, schemas, and output format should live in this repository so the work is reproducible outside one notebook.
 
 ## Why JSONL instead of CSV?

@@ -108,8 +108,10 @@ Think of this as our project board. We will move one card at a time from scaffol
 - `backend/app/services/classifier_service.py` — HTTP client wrapper
 - `backend/app/api/classifier.py` — public proxy route
 - `data/*.jsonl`, `evals/golden_classification.json`, `evals/run_classification_eval.py`
+- dataset source is fixed to closed issues from `fastapi/fastapi`
 
 **Done when**
+- raw closed FastAPI issues are fetched and class counts are documented
 - the model server returns labels
 - the main API can proxy a classification request
 - baseline metrics are recorded in the model card

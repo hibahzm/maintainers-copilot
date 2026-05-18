@@ -75,3 +75,16 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - `api/schemas` are public HTTP contracts; `domain` models remain internal business concepts.
 - Routers should depend on services, never instantiate infrastructure or repositories directly.
+
+## 2026-05-18 — Week 7 dataset locked
+
+### Updated
+- `docs/DATASET_STRATEGY.md`
+- `docs/BUILD_PLAN.md`
+- `docs/DECISIONS.md`
+- `data/README.md`
+
+### Design notes
+- Week 7 uses **closed issues from `fastapi/fastapi` only**.
+- Dataset scripts should default to that repository so later work does not drift back into a multi-repo strategy.
+- Before training, we should inspect class balance across the target labels and document any sampling choice.

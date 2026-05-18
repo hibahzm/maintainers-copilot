@@ -13,3 +13,4 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-007 | Manage PostgreSQL schema changes only through Alembic revisions | accepted | target: 0 manual schema drift between environments |
 | D-008 | Separate Pydantic API schemas from framework-agnostic domain models | accepted | target: transport changes do not leak into core workflows |
 | D-009 | Inject services into routers with FastAPI `Depends` | accepted | target: routers stay thin and test doubles can be swapped cleanly |
+| D-010 | Use closed issues from `fastapi/fastapi` as the Week 7 dataset source | accepted | target: one stable repo source across the whole project |
