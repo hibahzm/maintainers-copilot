@@ -118,3 +118,20 @@ This is the running build journal. Every meaningful change should add a dated en
 - Python service images use `uv` and keep the manifest beside their Dockerfile.
 - `migrate` is present now as a one-shot service scaffold; the next foundation pass will replace the placeholder behavior with the actual Alembic baseline.
 - The compose dependency graph now makes the intended boot order explicit: infra first, migrations before API, API before user-facing surfaces.
+
+## 2026-05-18 — Alembic baseline added
+
+### Added
+- root `alembic.ini`
+- `migrations/env.py`
+- `migrations/script.py.mako`
+- first revision: `migrations/versions/20260518_0001_foundation_tables.py`
+
+### Updated
+- the `migrate` image now copies `alembic.ini`
+- the migrate entrypoint now always runs `alembic upgrade head`
+
+### Design notes
+- The first revision creates the foundation tables required by the brief: `users`, `widgets`, `audit_log`, and `memory`.
+- From here forward, PostgreSQL shape changes have a real migration lineage rather than only a reserved folder.
+- `memory.embedding` uses pgvector's unconstrained `VECTOR` type for now; we will pin dimensions later once the embedding model is chosen with retrieval evidence.

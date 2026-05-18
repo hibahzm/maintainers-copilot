@@ -12,6 +12,7 @@ COPY migrate/pyproject.toml ./pyproject.toml
 RUN uv sync --no-dev --no-install-project
 
 COPY migrate/entrypoint.sh ./entrypoint.sh
+COPY alembic.ini ./alembic.ini
 COPY migrations ./migrations
 
 RUN chmod +x ./entrypoint.sh

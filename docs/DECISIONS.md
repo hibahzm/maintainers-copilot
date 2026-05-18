@@ -16,3 +16,4 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-010 | Use closed issues from `fastapi/fastapi` as the Week 7 dataset source | accepted | target: one stable repo source across the whole project |
 | D-011 | Introduce the Alembic baseline during foundation work, before feature tables evolve | accepted | target: every PostgreSQL schema object enters through migrations |
 | D-012 | Use Colab only as an execution surface for heavy experiments, not as the source of truth | accepted | target: training can be reproduced from repository code and committed configs |
+| D-013 | Keep `memory.embedding` dimension-unconstrained until the embedding model is chosen | accepted | target: vector dimension follows measured model choice, not a guess |

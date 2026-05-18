@@ -92,8 +92,8 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 ### 1.4 Establish the database baseline
 
 **Add / complete**
-- Alembic config
-- `migrations/versions/` first revision
+- Alembic config ✅
+- `migrations/versions/` first revision ✅
 - initial tables: `users`, `widgets`, `audit_log`, `memory`
 
 **Done when**
