@@ -202,3 +202,18 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - Locked the raw source to closed issues from `fastapi/fastapi` and encoded the assignment vocabulary as a one-to-one mapping from FastAPI labels into `bug / feature / docs / question`.
 - The splitter preserves chronological order, searches for low-drift temporal cutoffs, rejects splits missing any target label, and writes a machine-readable split report so later training is anchored to evidence rather than a manual shuffle.
+
+## 2026-05-18 — First fine-tuning scaffold added
+
+### Added
+- reproducible training settings in `model_server/classifier/training_config.py`
+- real training entrypoint in `model_server/classifier/train.py`
+- optional `train` dependencies for the model server
+
+### Updated
+- `model_server/classifier/model_card.md`
+- `docs/DECISIONS.md`
+
+### Design notes
+- The first run is defined as DistilBERT sequence classification over the assignment's four labels, with the lower four encoder blocks frozen for the initial experiment.
+- The training command fingerprints the exact train/validation splits, writes a run manifest before training, logs the run to Weights & Biases, and saves final metrics beside the model artifact so the future model card can be reconstructed from evidence rather than memory.

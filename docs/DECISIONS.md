@@ -19,6 +19,7 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-013 | Keep `memory.embedding` dimension-unconstrained until the embedding model is chosen | accepted | target: vector dimension follows measured model choice, not a guess |
 | D-014 | Use the classifier target vocabulary `bug / feature / docs / question` | accepted | target: code, docs, data splits, and evals use one assignment-aligned label set |
 | D-015 | Use Langfuse as the tracing backend | accepted | target: one Friday demo trace tree includes request root, tool call, retrieval span, token counts, latency, and an error path |
+| D-016 | Start classifier fine-tuning with DistilBERT and freeze its lower 4 encoder blocks | proposed | compare macro-F1, latency, and training behavior before defending the final deployment choice |
 
 ## Classifier target vocabulary
 
@@ -55,3 +56,14 @@ Why it fits this assignment:
 - it gives us a concrete Friday demo surface for one full conversation, including retrieval and failure branches.
 
 The application still keeps request IDs and trace IDs in its own infra layer so logs, user-facing errors, and future Langfuse spans can join on the same identifiers instead of coupling the whole codebase to one provider.
+
+## First fine-tuning experiment
+
+The first encoder run is intentionally modest:
+
+- base model: `distilbert-base-uncased`
+- task: four-way issue classification
+- freeze policy: lower 4 encoder blocks frozen; top 2 blocks plus classifier head trainable
+- logger: Weights & Biases
+
+This is marked **proposed**, not accepted, until we have the first metrics. The freeze policy is a hypothesis: preserve lower-level language features, reduce trainable parameters, and test whether that is enough for the issue domain before paying for full fine-tuning.
