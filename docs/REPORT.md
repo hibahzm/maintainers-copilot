@@ -172,3 +172,19 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - The API now has a real code path for refusing to boot when Vault is unreachable or required secrets are missing.
 - Runtime secrets are modeled explicitly so later auth, storage, LLM, and tracing work can consume one validated secret bundle instead of reading ad hoc environment variables.
+
+## 2026-05-18 — Request tracing spine added
+
+### Added
+- request/trace context helpers in `backend/app/infra/tracing.py`
+- middleware that binds and echoes `X-Request-ID` plus `X-Trace-ID`
+
+### Updated
+- API app wiring in `backend/app/main.py`
+- trace settings in `backend/app/core/config.py`
+- tracing decision in `docs/DECISIONS.md`
+- `docs/RUNBOOK.md`
+
+### Design notes
+- Chose Langfuse as the eventual trace UI because this project needs conversation trees with LLM/tool/retrieval detail more than a generic HTTP dashboard.
+- Kept provider-independent request/trace IDs in our own infra layer so later structured logs, errors, and Langfuse spans can join cleanly without leaking vendor concerns through the app.

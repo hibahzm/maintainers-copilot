@@ -2,7 +2,7 @@
 
 ## Current stage
 
-Foundation work has started. Docker Compose now names the full required stack, Alembic has a baseline migration, and the API code now treats Vault as a startup dependency. The next coding pass should add request/trace plumbing before dataset work begins.
+Foundation work has started. Docker Compose now names the full required stack, Alembic has a baseline migration, the API treats Vault as a startup dependency, and every request now gets a request ID plus trace ID. The next coding pass should build the dataset pipeline.
 
 ## Vault startup contract
 
@@ -29,6 +29,15 @@ At startup the API:
 2. loads the bundle,
 3. validates that every required key exists,
 4. refuses to boot if any of those steps fail.
+
+## Request tracing contract
+
+The API owns two request-level identifiers from the first user-facing hop:
+
+- `X-Request-ID` — the ID shown back to users when something fails
+- `X-Trace-ID` — the ID shared by structured logs and future tracing spans
+
+If a caller does not provide them, the API creates both and returns them in the response headers. Later LLM, tool, and retrieval spans attach beneath the same trace ID.
 
 ## Future sections
 

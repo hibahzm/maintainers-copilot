@@ -18,6 +18,7 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-012 | Use online Google Colab later as the execution surface for heavy experiments, not as the source of truth | accepted | target: training can be reproduced from repository code and committed configs |
 | D-013 | Keep `memory.embedding` dimension-unconstrained until the embedding model is chosen | accepted | target: vector dimension follows measured model choice, not a guess |
 | D-014 | Use the classifier target vocabulary `bug / feature / docs / question` | accepted | target: code, docs, data splits, and evals use one assignment-aligned label set |
+| D-015 | Use Langfuse as the tracing backend | accepted | target: one Friday demo trace tree includes request root, tool call, retrieval span, token counts, latency, and an error path |
 
 ## Classifier target vocabulary
 
@@ -29,3 +30,15 @@ The Week 7 classifier predicts exactly four target labels:
 - `question`
 
 Use `docs`, not `documentation`, in code, datasets, prompts, metrics, and reports so the repository matches the project brief and downstream evals only have one canonical label name.
+
+## Tracing backend
+
+Use **Langfuse** for the project trace UI.
+
+Why it fits this assignment:
+
+- it is built for LLM conversations, tool calls, token accounting, and trace trees rather than only generic HTTP spans;
+- it keeps the required Compose stack lean instead of adding another local observability service;
+- it gives us a concrete Friday demo surface for one full conversation, including retrieval and failure branches.
+
+The application still keeps request IDs and trace IDs in its own infra layer so logs, user-facing errors, and future Langfuse spans can join on the same identifiers instead of coupling the whole codebase to one provider.

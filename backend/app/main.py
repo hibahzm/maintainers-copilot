@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from app.api import auth, chat, classifier, memory, rag, widget
 from app.core.config import settings
+from app.infra.tracing import RequestTracingMiddleware
 from app.infra.vault import VaultClient
 
 
@@ -19,6 +20,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Maintainers Copilot API", lifespan=lifespan)
+app.add_middleware(RequestTracingMiddleware)
 
 app.include_router(auth.router)
 app.include_router(chat.router)
