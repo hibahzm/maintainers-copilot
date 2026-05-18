@@ -63,7 +63,7 @@ The current mapping is:
    ```
 
 5. **Keep the test set temporal; keep validation stratified**  
-   Keep `test.jsonl` strictly newer than training data so evaluation better resembles future incoming issues. Inside the older train/validation pool, use a deterministic stratified validation split so all four labels remain measurable even when one class is sparse in recent history.
+   Keep `test.jsonl` strictly newer than training data so evaluation better resembles future incoming issues. Choose the temporal cutoff by hitting the target test size first, then use label-distribution drift only as a tie-breaker so the holdout cannot collapse into a tiny but cosmetically well-balanced slice. Inside the older train/validation pool, use a deterministic stratified validation split so all four labels remain measurable even when one class is sparse in recent history.
 
 6. **Check class balance before training**  
    Count examples per target label. If one label dominates, document the imbalance and decide on sampling before training.

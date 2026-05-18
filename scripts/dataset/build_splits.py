@@ -112,7 +112,7 @@ def split_temporally(
     overall_distribution = distribution(records)
     left_counts: Counter[str] = Counter()
     right_counts = counts(records)
-    best: tuple[float, int] | None = None
+    best: tuple[float, float, int] | None = None
 
     for index, record in enumerate(records[:-1], start=1):
         target = record["target"]
@@ -132,9 +132,9 @@ def split_temporally(
             distribution_from_counts(right_counts, right_size),
             overall_distribution,
         )
-        score = size_error + drift
-        if best is None or score < best[0]:
-            best = (score, index)
+        score = (size_error, drift, index)
+        if best is None or score < best:
+            best = score
 
     if best is None:
         raise ValueError(
@@ -142,7 +142,7 @@ def split_temporally(
             "Fetch more issues or inspect label balance first."
         )
 
-    _, cutoff = best
+    _, _, cutoff = best
     return records[:cutoff], records[cutoff:]
 
 
@@ -191,6 +191,7 @@ def build_report(
             "test": "strictly newer temporal holdout",
             "validation": "deterministic stratified split inside the older train/validation pool",
             "seed": DEFAULT_SPLIT_SEED,
+            "temporal_holdout_priority": "closest target size first, distribution drift second",
         },
         "total_raw_records": total_raw,
         "total_normalized_records": sum(len(records) for records in splits.values()),

@@ -48,7 +48,7 @@ Issues with none of those labels are excluded from classifier training. Issues w
 
 ## Split policy
 
-The assignment requires the **test** split to be strictly newer than train. We satisfy that with a temporal holdout. Validation is then sampled deterministically and stratified from the older train/validation pool so sparse labels remain present during model selection instead of making validation impossible when a class disappears from one recent time window.
+The assignment requires the **test** split to be strictly newer than train. We satisfy that with a temporal holdout that prioritizes the requested holdout size first and uses class-distribution drift only as a tie-breaker, so the test set stays large enough to evaluate meaningfully. Validation is then sampled deterministically and stratified from the older train/validation pool so sparse labels remain present during model selection instead of making validation impossible when a class disappears from one recent time window.
 
 ## Tracing backend
 

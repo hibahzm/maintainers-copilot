@@ -281,3 +281,15 @@ This is the running build journal. Every meaningful change should add a dated en
 - Restored the assignment-required split policy after the notebook temporarily drifted into fully random splits.
 - Removed a hardcoded GitHub token from the notebook template and documented that notebook credentials must come from runtime secrets, not saved cells.
 - Ignored local `artifacts/` outputs so large training weights do not accidentally enter Git before the later MinIO handoff exists.
+
+## 2026-05-18 — Temporal holdout sizing corrected
+
+### Updated
+- `scripts/dataset/build_splits.py`
+- `notebooks/maintainers_copilot_week7_colab.ipynb`
+- `docs/DATASET_STRATEGY.md`
+- `docs/DECISIONS.md`
+
+### Design notes
+- The first corrected four-class split exposed a pathological 20-row test set because the old search optimized size error and label-distribution drift with equal weight.
+- The temporal splitter now prioritizes the requested holdout size first and uses distribution drift only as a tie-breaker, preserving a meaningful future-like test set instead of rewarding a tiny balanced slice.
