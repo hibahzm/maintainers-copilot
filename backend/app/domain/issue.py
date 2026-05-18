@@ -6,8 +6,8 @@ from pydantic import BaseModel
 class ClassificationLabel(StrEnum):
     bug = "bug"
     feature = "feature"
+    docs = "docs"
     question = "question"
-    documentation = "documentation"
 
 
 class IssueEntity(BaseModel):

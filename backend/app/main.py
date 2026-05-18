@@ -3,12 +3,19 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.api import auth, chat, classifier, memory, rag, widget
+from app.core.config import settings
+from app.infra.vault import VaultClient
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI):
-    # Milestone 2: replace this placeholder with a real Vault health check.
-    yield
+async def lifespan(app: FastAPI):
+    vault = VaultClient(settings)
+    try:
+        await vault.assert_reachable()
+        app.state.runtime_secrets = await vault.load_runtime_secrets()
+        yield
+    finally:
+        await vault.aclose()
 
 
 app = FastAPI(title="Maintainers Copilot API", lifespan=lifespan)

@@ -146,3 +146,29 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - When the training step arrives, the user will run the notebook online in Google Colab.
 - We will prepare the Colab-ready code at that point, after the dataset pipeline is defined, instead of creating notebooks prematurely.
+
+## 2026-05-18 — Label vocabulary normalized
+
+### Updated
+- `backend/app/domain/issue.py`
+- `docs/DATASET_STRATEGY.md`
+- `docs/DECISIONS.md`
+
+### Design notes
+- Standardized the classifier target vocabulary to the assignment wording: `bug / feature / docs / question`.
+- Removed the parallel `documentation` target so code, docs, future splits, and evals converge on one canonical label name.
+
+## 2026-05-18 — Vault startup boundary added
+
+### Added
+- startup-time Vault client logic in `backend/app/infra/vault.py`
+- explicit runtime secret schema in `backend/app/core/config.py`
+
+### Updated
+- API lifespan startup in `backend/app/main.py`
+- `docs/SECURITY.md`
+- `docs/RUNBOOK.md`
+
+### Design notes
+- The API now has a real code path for refusing to boot when Vault is unreachable or required secrets are missing.
+- Runtime secrets are modeled explicitly so later auth, storage, LLM, and tracing work can consume one validated secret bundle instead of reading ad hoc environment variables.

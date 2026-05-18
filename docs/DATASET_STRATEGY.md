@@ -16,8 +16,8 @@ FastAPI is a good fit because its issue labels already map cleanly to the catego
 
 - `bug`
 - `feature`
+- `docs`
 - `question`
-- `documentation`
 
 ## Why this repo
 
