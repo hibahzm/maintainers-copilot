@@ -244,3 +244,13 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - The notebook embeds the same fetch, normalization, split, and first-training logic so the user can upload one `.ipynb` file directly to Colab without cloning the repository there.
 - This is a convenience surface, not a new architecture: future changes to the canonical repo pipeline should be reflected in the notebook to prevent drift.
+
+## 2026-05-18 — GitHub pagination hardened
+
+### Updated
+- `scripts/dataset/fetch_issues.py`
+- `notebooks/maintainers_copilot_week7_colab.ipynb`
+
+### Design notes
+- Replaced page-number guessing with GitHub `Link`-header pagination so fetching stops when the API stops advertising a next page.
+- Expanded the GitHub error message to include the response body, making future API failures diagnosable from the notebook instead of collapsing into an opaque status code.

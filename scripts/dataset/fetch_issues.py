@@ -50,22 +50,21 @@ def iter_issue_pages(
     state: str,
     max_pages: int | None,
 ) -> Iterator[dict[str, Any]]:
-    """Yield issue payloads page by page from GitHub's REST API."""
-    page = 1
-    while max_pages is None or page <= max_pages:
-        query = urlencode(
-            {
-                "state": state,
-                "per_page": 100,
-                "page": page,
-                "sort": "created",
-                "direction": "asc",
-            }
-        )
-        url = f"{GITHUB_API_BASE}/repos/{repo}/issues?{query}"
-        payload = _request_json(url)
-        if not payload:
-            break
+    """Yield issue payloads by following GitHub's Link-header pagination."""
+    query = urlencode(
+        {
+            "state": state,
+            "per_page": 100,
+            "sort": "created",
+            "direction": "asc",
+        }
+    )
+    url: str | None = f"{GITHUB_API_BASE}/repos/{repo}/issues?{query}"
+    pages_seen = 0
+
+    while url is not None and (max_pages is None or pages_seen < max_pages):
+        payload, headers = _request_json(url)
+        pages_seen += 1
 
         if not isinstance(payload, list):
             raise RuntimeError("GitHub returned an unexpected non-list issue response.")
@@ -75,10 +74,10 @@ def iter_issue_pages(
                 raise RuntimeError("GitHub returned an unexpected issue payload.")
             yield issue
 
-        page += 1
+        url = _next_link(headers.get("Link"))
 
 
-def _request_json(url: str) -> Any:
+def _request_json(url: str) -> tuple[Any, dict[str, str]]:
     headers = {
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
@@ -91,9 +90,23 @@ def _request_json(url: str) -> Any:
     request = Request(url, headers=headers)
     try:
         with urlopen(request) as response:
-            return json.load(response)
+            return json.load(response), dict(response.headers.items())
     except HTTPError as exc:
-        raise RuntimeError(f"GitHub request failed with HTTP {exc.code}.") from exc
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"GitHub request failed with HTTP {exc.code}: {detail}") from exc
+
+
+def _next_link(link_header: str | None) -> str | None:
+    """Return the URL marked rel=next from a GitHub Link header."""
+    if not link_header:
+        return None
+
+    for part in link_header.split(","):
+        url_part, *params = part.split(";")
+        if any(param.strip() == 'rel="next"' for param in params):
+            return url_part.strip()[1:-1]
+
+    return None
 
 
 def main() -> None:
