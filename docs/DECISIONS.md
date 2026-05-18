@@ -31,6 +31,19 @@ The Week 7 classifier predicts exactly four target labels:
 
 Use `docs`, not `documentation`, in code, datasets, prompts, metrics, and reports so the repository matches the project brief and downstream evals only have one canonical label name.
 
+## Week 7 label mapping
+
+The chosen repository already exposes assignment-aligned issue labels, so the mapping stays deliberately simple:
+
+| Source label in `fastapi/fastapi` | Classifier target |
+| --- | --- |
+| `bug` | `bug` |
+| `feature` | `feature` |
+| `docs` | `docs` |
+| `question` | `question` |
+
+Issues with none of those labels are excluded from classifier training. Issues with more than one target label are also excluded rather than forcing a misleading single-label target into the training data.
+
 ## Tracing backend
 
 Use **Langfuse** for the project trace UI.

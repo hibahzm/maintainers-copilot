@@ -19,6 +19,15 @@ FastAPI is a good fit because its issue labels already map cleanly to the catego
 - `docs`
 - `question`
 
+The current mapping is intentionally one-to-one:
+
+| FastAPI label | Target |
+| --- | --- |
+| `bug` | `bug` |
+| `feature` | `feature` |
+| `docs` | `docs` |
+| `question` | `question` |
+
 ## Why this repo
 
 1. It matches the product we are building better than a generic text-classification dataset.
@@ -54,7 +63,7 @@ FastAPI is a good fit because its issue labels already map cleanly to the catego
    ```
 
 5. **Split by time, not random shuffle**  
-   Keep `test.jsonl` strictly newer than training data so evaluation better resembles future incoming issues.
+   Keep `test.jsonl` strictly newer than training data so evaluation better resembles future incoming issues. The split builder searches chronological cutoffs that preserve the overall class mix as closely as possible while keeping all four labels represented.
 
 6. **Check class balance before training**  
    Count examples per target label. If one label dominates, document the imbalance and decide on sampling before training.

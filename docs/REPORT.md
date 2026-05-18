@@ -188,3 +188,17 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - Chose Langfuse as the eventual trace UI because this project needs conversation trees with LLM/tool/retrieval detail more than a generic HTTP dashboard.
 - Kept provider-independent request/trace IDs in our own infra layer so later structured logs, errors, and Langfuse spans can join cleanly without leaking vendor concerns through the app.
+
+## 2026-05-18 — Dataset pipeline coded
+
+### Added
+- `scripts/dataset/` package with source constants, JSONL helpers, GitHub issue fetching, and split building
+
+### Updated
+- `data/README.md`
+- `docs/DATASET_STRATEGY.md`
+- `docs/DECISIONS.md`
+
+### Design notes
+- Locked the raw source to closed issues from `fastapi/fastapi` and encoded the assignment vocabulary as a one-to-one mapping from FastAPI labels into `bug / feature / docs / question`.
+- The splitter preserves chronological order, searches for low-drift temporal cutoffs, rejects splits missing any target label, and writes a machine-readable split report so later training is anchored to evidence rather than a manual shuffle.
