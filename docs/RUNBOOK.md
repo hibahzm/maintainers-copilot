@@ -2,7 +2,7 @@
 
 ## Current stage
 
-Foundation work has started. Docker Compose now names the full required stack, Alembic has a baseline migration, the API treats Vault as a startup dependency, and every request now gets a request ID plus trace ID. The next coding pass should build the dataset pipeline.
+Foundation work has started. Docker Compose now names the full required stack, Alembic has a baseline migration, the API treats Vault as a startup dependency, every request now gets a request ID plus trace ID, and the first fine-tuning path has a written Colab handoff. The next execution pass should fetch and inspect the dataset before any training run begins.
 
 ## Vault startup contract
 
@@ -47,3 +47,7 @@ If a caller does not provide them, the API creates both and returns them in the 
 - health checks
 - backup / restore
 - common failure modes
+
+## First fine-tuning handoff
+
+Use `docs/COLAB_TRAINING.md` for the first GPU experiment. The important rule is simple: repository code owns the pipeline; Colab only supplies compute.

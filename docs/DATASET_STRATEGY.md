@@ -82,7 +82,7 @@ Use Colab for:
 - later retraining experiments if local hardware is too slow
 - optional embedding-model experiments if GPU acceleration helps
 
-When we get to that step, create the Colab-ready code then. Do not pre-build notebooks before the dataset pipeline is defined and inspected.
+The concrete first-run handoff now lives in `docs/COLAB_TRAINING.md`. Use it only after the fetched dataset, generated splits, and split report exist.
 
 Do **not** make Colab the home of:
 

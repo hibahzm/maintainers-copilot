@@ -217,3 +217,17 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - The first run is defined as DistilBERT sequence classification over the assignment's four labels, with the lower four encoder blocks frozen for the initial experiment.
 - The training command fingerprints the exact train/validation splits, writes a run manifest before training, logs the run to Weights & Biases, and saves final metrics beside the model artifact so the future model card can be reconstructed from evidence rather than memory.
+
+## 2026-05-18 — Colab handoff documented
+
+### Added
+- `docs/COLAB_TRAINING.md`
+
+### Updated
+- `README.md`
+- `docs/DATASET_STRATEGY.md`
+- `docs/RUNBOOK.md`
+
+### Design notes
+- The Colab instructions intentionally call the repository's actual training module instead of duplicating pipeline logic in notebook cells.
+- The handoff is gated on real generated dataset files and a reviewed split report, so GPU execution starts only after the data foundation exists.

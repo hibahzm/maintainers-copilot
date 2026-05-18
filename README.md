@@ -21,6 +21,7 @@ This repository is currently in **Step 1: build the foundation**. The structure 
 1. Read `docs/ARCH.md` for boundaries.
 2. Read `docs/BUILD_PLAN.md` for the card-by-card build path.
 3. Read `docs/REPORT.md` for the running change log.
+4. Read `docs/COLAB_TRAINING.md` before the first GPU fine-tuning run.
 
 ## Engineering conventions
 
