@@ -2,7 +2,7 @@
 
 ## Current stage
 
-Foundation work has started. Docker Compose now names the full required stack, Alembic has a baseline migration, the API treats Vault as a startup dependency, every request now gets a request ID plus trace ID, and the first fine-tuning path has a written Colab handoff. The next execution pass should fetch and inspect the dataset before any training run begins.
+Foundation work has started. Docker Compose now names the full required stack, Alembic has a baseline migration, the API treats Vault as a startup dependency, every request now gets a request ID plus trace ID, and the first fine-tuning path has a written Colab notebook workflow. The next execution pass can happen entirely in Colab: fetch, split, inspect, then train.
 
 ## Vault startup contract
 
@@ -50,4 +50,4 @@ If a caller does not provide them, the API creates both and returns them in the 
 
 ## First fine-tuning handoff
 
-Use `docs/COLAB_TRAINING.md` for the first GPU experiment. The important rule is simple: repository code owns the pipeline; Colab only supplies compute.
+Use `docs/COLAB_TRAINING.md` for the first notebook run. If local disk is limited, Colab may host both the generated dataset and the model artifacts; the important rule is still that repository code owns the pipeline.

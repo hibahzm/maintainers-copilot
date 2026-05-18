@@ -71,25 +71,26 @@ The current mapping is intentionally one-to-one:
 7. **Hand-curate the gold sets**  
    `evals/golden_classification.json` should stay small, clean, and human-reviewed even if training data is larger and weakly labeled.
 
-8. **Use online Google Colab only where GPU time helps**  
-   When we reach training, the user will run the notebook online in Google Colab. We will prepare the code at that step. Colab is most useful for transformer fine-tuning and possibly large embedding experiments; fetching, cleaning, splitting, schemas, eval scripts, prompts, and final artifacts still stay defined in this repository so the work remains reproducible outside one notebook.
+8. **Use online Google Colab as the notebook execution surface when local space is tight**  
+   The user may run fetching, splitting, inspection, and GPU training from one Colab notebook so the raw data and artifacts do not need to live on the laptop. The important boundary is that the repository still defines the scripts, schemas, evals, prompts, and training configuration; Colab executes them rather than replacing them.
 
 ## Where Colab belongs
 
 Use Colab for:
 
+- running the repo's fetch and split scripts when local disk is constrained
 - the first encoder fine-tuning run
 - later retraining experiments if local hardware is too slow
 - optional embedding-model experiments if GPU acceleration helps
 
-The concrete first-run handoff now lives in `docs/COLAB_TRAINING.md`. Use it only after the fetched dataset, generated splits, and split report exist.
+The concrete notebook flow now lives in `docs/COLAB_TRAINING.md`.
 
 Do **not** make Colab the home of:
 
-- GitHub fetching
-- data cleaning
-- label mapping
-- train/val/test split logic
+- custom GitHub-fetch logic
+- custom data-cleaning logic
+- hand-edited label mapping
+- notebook-only train/val/test split logic
 - golden-set definitions
 - model-card source text
 
