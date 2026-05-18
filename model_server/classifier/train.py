@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import os
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -140,6 +141,7 @@ def train(config: TrainingConfig, run_dir: Path, manifest: dict[str, Any]) -> di
             "macro_f1": float(f1_score(labels, predictions, average="macro")),
         }
 
+    os.environ.setdefault("WANDB_PROJECT", config.wandb_project)
     training_args = TrainingArguments(
         output_dir=str(run_dir / "checkpoints"),
         learning_rate=config.learning_rate,

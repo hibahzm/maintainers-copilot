@@ -2,10 +2,20 @@
 
 Use this when you want the **whole data-prep + first-training sequence to run inside Google Colab** so your local machine does not need to store the raw dataset or model artifacts.
 
+If you do **not** want to clone the repo inside Colab, use the ready-made notebook:
+
+```text
+notebooks/maintainers_copilot_week7_colab.ipynb
+```
+
+That notebook contains the same fetch, split, inspect, and training logic inline so you can upload it directly to Colab and run it cell by cell.
+
 The design stays the same:
 
 - the **repository** owns the scripts, configs, and decisions;
 - **Colab** runs those scripts in a notebook session and supplies GPU compute when training begins.
+
+The standalone notebook mirrors the repository code for convenience. If we later change the canonical pipeline, we should update both together rather than letting them drift.
 
 ## Do we need the data on the laptop?
 

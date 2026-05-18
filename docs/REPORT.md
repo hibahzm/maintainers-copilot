@@ -231,3 +231,16 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - The Colab instructions intentionally call the repository's actual fetch, split, and training modules instead of duplicating pipeline logic in notebook cells.
 - This allows the user to avoid storing raw data and artifacts locally while preserving the architecture boundary: Colab is the execution surface, the repository remains the source of truth.
+
+## 2026-05-18 — Standalone Colab notebook added
+
+### Added
+- `notebooks/maintainers_copilot_week7_colab.ipynb`
+
+### Updated
+- `README.md`
+- `docs/COLAB_TRAINING.md`
+
+### Design notes
+- The notebook embeds the same fetch, normalization, split, and first-training logic so the user can upload one `.ipynb` file directly to Colab without cloning the repository there.
+- This is a convenience surface, not a new architecture: future changes to the canonical repo pipeline should be reflected in the notebook to prevent drift.
