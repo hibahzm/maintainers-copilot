@@ -62,8 +62,27 @@ FastAPI is a good fit because its issue labels already map cleanly to the catego
 7. **Hand-curate the gold sets**  
    `evals/golden_classification.json` should stay small, clean, and human-reviewed even if training data is larger and weakly labeled.
 
-8. **Use Colab only for heavy experiments**  
-   Training/fine-tuning can happen in Colab, but the source-of-truth scripts, schemas, and output format should live in this repository so the work is reproducible outside one notebook.
+8. **Use Colab only where GPU time helps**  
+   Colab is most useful for transformer fine-tuning and possibly large embedding experiments. Keep fetching, cleaning, splitting, schemas, eval scripts, prompts, and final artifacts defined in this repository so the work remains reproducible outside one notebook.
+
+## Where Colab belongs
+
+Use Colab for:
+
+- the first encoder fine-tuning run
+- later retraining experiments if local hardware is too slow
+- optional embedding-model experiments if GPU acceleration helps
+
+Do **not** make Colab the home of:
+
+- GitHub fetching
+- data cleaning
+- label mapping
+- train/val/test split logic
+- golden-set definitions
+- model-card source text
+
+Those belong in the repository. Colab should execute our pipeline, not replace it.
 
 ## Why JSONL instead of CSV?
 

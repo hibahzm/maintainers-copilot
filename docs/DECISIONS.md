@@ -14,3 +14,5 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-008 | Separate Pydantic API schemas from framework-agnostic domain models | accepted | target: transport changes do not leak into core workflows |
 | D-009 | Inject services into routers with FastAPI `Depends` | accepted | target: routers stay thin and test doubles can be swapped cleanly |
 | D-010 | Use closed issues from `fastapi/fastapi` as the Week 7 dataset source | accepted | target: one stable repo source across the whole project |
+| D-011 | Introduce the Alembic baseline during foundation work, before feature tables evolve | accepted | target: every PostgreSQL schema object enters through migrations |
+| D-012 | Use Colab only as an execution surface for heavy experiments, not as the source of truth | accepted | target: training can be reproduced from repository code and committed configs |

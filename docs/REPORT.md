@@ -88,3 +88,15 @@ This is the running build journal. Every meaningful change should add a dated en
 - Week 7 uses **closed issues from `fastapi/fastapi` only**.
 - Dataset scripts should default to that repository so later work does not drift back into a multi-repo strategy.
 - Before training, we should inspect class balance across the target labels and document any sampling choice.
+
+## 2026-05-18 — Plan aligned to the project brief
+
+### Updated
+- rewrote `docs/BUILD_PLAN.md` around five dependency-ordered milestones from the brief
+- expanded `docs/ARCH.md` with the full compose stack and delivery order
+- clarified Colab usage in `docs/DATASET_STRATEGY.md`
+- moved Alembic baseline work into the foundation milestone
+
+### Design notes
+- The brief expects foundations before feature work: full stack shape, Vault, tracing, Alembic baseline, dataset fetch/splits, then the first training run.
+- Colab is appropriate for GPU-heavy experiments, especially classifier fine-tuning, but repository code remains the durable source of truth.

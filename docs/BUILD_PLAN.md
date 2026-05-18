@@ -1,244 +1,364 @@
 # Build Plan
 
-Think of this as our project board. We will move one card at a time from scaffold to a working Docker image.
+This is the dependency order for the project. It follows the Week 7 brief, but is written as milestones rather than weekdays so we can work step by step without losing the architecture.
 
-## Board
+## Milestone board
 
-| Card | Status | Outcome |
+| Step | Status | Outcome |
 | --- | --- | --- |
-| 0. Scaffold the repo | done | everyone can see the system shape |
-| 1. Boot the backend | next | local API starts and tests pass |
-| 2. Wire infrastructure + secrets | backlog | app can reach Vault, Postgres, Redis, MinIO |
-| 3. Build auth + users | backlog | maintainers can register and log in |
-| 4. Build classifier baseline | backlog | issues can be labeled through the model server |
-| 5. Build RAG pipeline | backlog | questions retrieve grounded answers |
-| 6. Build memory layer | backlog | useful long-term facts persist safely |
-| 7. Build chat orchestration | backlog | chat can call tools and stream responses |
-| 8. Build maintainer UI | backlog | Streamlit exposes the main workflows |
-| 9. Build embeddable widget | backlog | external sites can host the chat widget |
-| 10. Add evals, tracing, and security checks | backlog | quality is measurable and observable |
-| 11. Dockerize the full stack | backlog | one command builds and runs the system |
+| 0. Shape the repository | done | the system has clear homes and rules |
+| 1. Build the foundation | next | the stack boots, secrets resolve, schema exists, dataset exists |
+| 2. Build the NLP comparison track | backlog | three classifiers plus NER/summarization are measurable |
+| 3. Build advanced RAG | backlog | retrieval beats the naive baseline with numbers |
+| 4. Build the chatbot, memory, and widget surfaces | backlog | a real maintainer workflow exists end to end |
+| 5. Harden, package, and ship | backlog | a fresh clone can boot, CI is green, and the demo is ready |
 
 ---
 
-## Card 0 — Scaffold the repo ✅
+## Step 0 — Shape the repository ✅
 
 **Goal**: make the architecture visible before implementation begins.
 
-**Files created**
-- root bootstrap: `README.md`, `.gitignore`, `.env.example`, `docker-compose.yml`
-- backend service: `backend/pyproject.toml`, `backend/app/**`, `backend/tests/**`
-- inference server: `model_server/**`
-- UIs: `chatbot/**`, `widget/**`, `demo/host/**`
-- support files: `prompts/**`, `evals/**`, `data/**`, `migrations/**`, `docs/**`
+**Already established**
+- root orchestration: `README.md`, `.gitignore`, `.env.example`, `docker-compose.yml`
+- Python services with local manifests: `backend/`, `model_server/`, `chatbot/`
+- frontend surfaces: `widget/`, `demo/host/`
+- supporting areas: `prompts/`, `evals/`, `data/`, `migrations/`, `docs/`
+- backend boundaries: Pydantic API schemas, thin routers, services, repositories, domain, infra
+- fixed Week 7 dataset source: closed issues from `fastapi/fastapi`
 
 **Done when**
 - every future subsystem has a home
 - the code boundaries are written down
-- we have a report log and a path forward
+- the project history and decision log exist
 
 ---
 
-## Card 1 — Boot the backend
+## Step 1 — Build the foundation
 
-**Goal**: run the first real FastAPI process locally.
+**Goal**: make the architecture real enough that all later work can stand on it.
 
-**Create / edit**
-- `backend/app/main.py` — register routers, lifecycle, `/health`
-- `backend/app/core/config.py` — environment-backed settings
-- `backend/app/api/dependencies.py` — FastAPI dependency providers
-- `backend/app/api/schemas/**` — Pydantic transport contracts
-- `backend/tests/api/test_health.py` — first smoke test
-- `README.md` — local run commands
+### 1.1 Compose the full stack
+
+**Add / complete**
+- `docker-compose.yml`
+- Python-service Dockerfiles beside their local `pyproject.toml`
+- static containers for `widget` and `host`
+
+**Required services**
+- `api`
+- `chatbot`
+- `widget`
+- `model_server`
+- `host`
+- `migrate`
+- `db`
+- `redis`
+- `minio`
+- `vault`
 
 **Done when**
-- `cd backend && uv run uvicorn app.main:app --reload` starts
-- `GET /health` returns `200`
-- first automated test passes
+- the compose file declares the whole production-shaped stack, not just infra
+- `migrate` runs before `api`
+- the service names match the architecture and runbook
+
+### 1.2 Wire secrets and startup checks
+
+**Add / complete**
+- `backend/app/infra/vault.py`
+- `backend/app/main.py`
+- `backend/app/core/config.py`
+- `docs/SECURITY.md`
+- `docs/RUNBOOK.md`
+
+**Done when**
+- every real secret is expected from Vault
+- `.env` is only for the Vault root token and ports
+- the API refuses to boot if Vault is unreachable
+
+### 1.3 Wire tracing from the beginning
+
+**Add / complete**
+- `backend/app/infra/tracing.py`
+- trace settings in Vault-backed config
+- first request-level trace / request ID plumbing
+- tracing choice recorded in `docs/DECISIONS.md`
+
+**Done when**
+- later LLM, tool, and retrieval spans have a place to attach
+- logs and traces can share a trace ID from the start
+
+### 1.4 Establish the database baseline
+
+**Add / complete**
+- Alembic config
+- `migrations/versions/` first revision
+- initial tables: `users`, `widgets`, `audit_log`, `memory`
+
+**Done when**
+- schema exists through migrations, not manual SQL
+- the `migrate` container can run `alembic upgrade head`
+- future schema work has a clean lineage
+
+### 1.5 Build the dataset pipeline
+
+**Add / complete**
+- fetch script for closed `fastapi/fastapi` issues
+- label mapping in `docs/DECISIONS.md`
+- `data/raw_issues.jsonl`
+- normalized `train.jsonl`, `val.jsonl`, `test.jsonl`
+- split/count report
+
+**Rules**
+- labels map to `bug / feature / docs / question`
+- splits are stratified
+- test examples are strictly newer in time than training examples
+
+**Done when**
+- the raw dataset is fetched
+- the mapping is documented
+- train/val/test exist and class counts are known
+
+### 1.6 Start the first fine-tuning run
+
+**Add / complete**
+- `model_server/classifier/train.py`
+- run logging
+- first encoder fine-tuning experiment
+
+**Colab usage**
+- use Colab here if local hardware is weak or unavailable
+- keep the real training script, config, schema, and outputs defined in this repository
+- Colab is the compute surface, not the source of truth
+
+**Done when**
+- the first training run has started
+- the exact dataset version and run configuration are recoverable
 
 ---
 
-## Card 2 — Wire infrastructure + secrets
+## Step 2 — Build the NLP comparison track
 
-**Goal**: connect the backend to its outside world without leaking secrets into app code.
+**Goal**: produce the three-model comparison the brief requires, then expose the NLP tools over HTTP.
 
-**Create / edit**
-- `backend/app/infra/vault.py` — Vault client and startup health check
-- `backend/app/infra/redis_client.py` — Redis pool and TTL helpers
-- `backend/app/infra/minio.py` — blob adapter
-- `migrations/` — Alembic bootstrap; every PostgreSQL schema change after this point lands as a revision
-- `docker-compose.yml` — verify infra services and persistent volumes
-- `docs/RUNBOOK.md`, `docs/SECURITY.md` — startup and secret rules
+### 2.1 Finish the fine-tuned classifier
+
+**Add / complete**
+- saved model artifact
+- artifact upload / manifest in MinIO
+- `model_server/classifier/model_card.md`
+
+**Model card must include**
+- architecture
+- hyperparameters
+- training data hash
+- freeze policy
+- final metrics
+
+### 2.2 Build the two baselines on the same splits
+
+**Add / complete**
+- classical ML baseline: TF-IDF + logistic regression
+- LLM baseline using the same test split
+- shared evaluation outputs
 
 **Done when**
-- app refuses to boot if Vault is unavailable
-- infra containers start with one command
-- health checks prove every dependency is reachable
+- all three models are evaluated on the same split
+- accuracy, macro-F1, per-class F1, latency, and cost are available
+
+### 2.3 Defend the deployment choice
+
+**Add / complete**
+- three-way comparison table in `docs/DECISIONS.md`
+- one chosen production model with a numeric defense
+
+### 2.4 Expose NLP tools through the model server
+
+**Add / complete**
+- `/classify`
+- `/ner`
+- `/summarize`
+
+**Done when**
+- all three are FastAPI endpoints
+- the chatbot will later be able to call them over HTTP
+
+### 2.5 Build the classification golden set
+
+**Add / complete**
+- `evals/golden_classification.json`
+- 25 hand-curated examples
+- classifier eval script and metrics outputs
+
+**Done when**
+- golden classification examples are separate from the train/test split
+- the same golden set can evaluate all three models
 
 ---
 
-## Card 3 — Build auth + users
+## Step 3 — Build advanced RAG
 
-**Goal**: support real maintainer identities.
+**Goal**: build retrieval that beats the naive baseline and prove each improvement with a number.
 
-**Create / edit**
-- `backend/app/api/auth.py` — `/register`, `/login`
-- `backend/app/api/schemas/auth.py` — request/response contracts
-- `backend/app/services/auth_service.py` — auth workflows
-- `backend/app/repositories/user_repo.py` — user SQL
-- `backend/app/domain/` — request/response models as needed
-- `migrations/versions/` — users table migration
-- `backend/tests/api/`, `backend/tests/repositories/` — auth coverage
+### 3.1 Build the corpus
+
+**Corpus must contain**
+- project docs
+- a held-out slice of resolved issues with maintainer answers
+
+**Rule**
+- held-out RAG issues do not appear in classifier training
+
+### 3.2 Choose the embedding model with evidence
+
+**Add / complete**
+- at least two embedding candidates
+- retrieval-quality comparison on the RAG golden set
+- chosen model documented in `docs/DECISIONS.md`
+
+### 3.3 Improve retrieval beyond the naive baseline
+
+**Add / complete**
+- non-naive chunking
+- sparse retrieval such as BM25
+- dense retrieval in pgvector
+- tuned hybrid weighting
+- cross-encoder reranking
+- one query transformation technique
+- metadata filtering
 
 **Done when**
-- users can register
-- password verification works
-- JWT-protected routes reject invalid callers
+- every move beyond fixed-size dense retrieval is justified by a metric
+
+### 3.4 Build the RAG golden set
+
+**Add / complete**
+- `evals/golden_rag.json`
+- 25 question / ideal-answer / ground-truth-chunk triples
+- retrieval and generation metrics
+- five hand-labeled examples for judge-agreement reporting
+
+### 3.5 Add safe logging and exception hardening
+
+**Add / complete**
+- `backend/app/infra/redaction.py`
+- explicit redaction tests
+- domain exception handling mapped at the API boundary
+
+**Done when**
+- a fake API key never appears unredacted in logs, traces, or memory
+- users receive structured errors, not stack traces
 
 ---
 
-## Card 4 — Build classifier baseline
+## Step 4 — Build the chatbot, memory, and widget surfaces
 
-**Goal**: classify repository issues through a separate inference service.
+**Goal**: turn the models and retrieval stack into a maintainer-facing product.
 
-**Create / edit**
-- `model_server/classifier/train.py` — baseline training pipeline
-- `model_server/classifier/inference.py` — `/classify`
-- `model_server/classifier/model_card.md` — architecture, data hash, metrics
-- `backend/app/services/classifier_service.py` — HTTP client wrapper
-- `backend/app/api/classifier.py` — public proxy route
-- `data/*.jsonl`, `evals/golden_classification.json`, `evals/run_classification_eval.py`
-- dataset source is fixed to closed issues from `fastapi/fastapi`
+### 4.1 Add authentication and roles
+
+**Add / complete**
+- auth with `fastapi-users`
+- JWT signing key from Vault
+- `user` and `admin` roles
+- admin invite flow
+
+### 4.2 Build the single tool-calling chatbot
+
+**Tools**
+- classify
+- NER
+- summarize
+- RAG search
+- explicit `write_memory`
+
+**Rule**
+- one tool-calling LLM, not a workflow and not a multi-agent system
+- no automatic long-term memory writes
+
+### 4.3 Add memory
+
+**Short-term**
+- Redis conversation state
+- explicit TTL with justification
+
+**Long-term**
+- pgvector-backed memory
+- choose one of episodic / semantic / procedural
+- every write creates an audit-log row
+
+### 4.4 Build the maintainer UI
+
+**Streamlit pages**
+- login
+- chat
+- memory inspector
+- widget config admin
+
+### 4.5 Build the embeddable widget
+
+**Add / complete**
+- Vite React widget bundle
+- collapsed bubble → expanded chat panel
+- streamed messages
+- runtime theme from widget config
+- `/widget.js` loader
+- host page under `demo/host/`
+- iframe `postMessage` resize channel
+
+### 4.6 Enforce embed security
+
+**Add / complete**
+- widget table fields: `widget_id`, `allowed_origins`, `theme`, `greeting`, `enabled_tools`
+- CORS allowlist from database config
+- `Content-Security-Policy` with `frame-ancestors`
+
+### 4.7 Put both eval suites in CI
 
 **Done when**
-- raw closed FastAPI issues are fetched and class counts are documented
-- the model server returns labels
-- the main API can proxy a classification request
-- baseline metrics are recorded in the model card
+- classification and RAG evals both run on push
+- thresholds come from `evals/eval_thresholds.yaml`
+- regressions fail the build
 
 ---
 
-## Card 5 — Build the RAG pipeline
+## Step 5 — Harden, package, and ship
 
-**Goal**: answer questions from retrieved repository knowledge.
+**Goal**: make the system explainable, reproducible, and demo-ready.
 
-**Create / edit**
-- `backend/app/services/rag_service.py` — rewrite → retrieve → rerank → generate
-- `backend/app/api/rag.py` — query endpoint
-- `backend/app/infra/minio.py` — document storage support
-- repositories / migrations for chunks and embeddings
-- `prompts/rag_system.txt`
-- `evals/golden_rag.json`, `evals/run_rag_eval.py`
+### 5.1 Prove fresh-clone startup
 
 **Done when**
-- a seeded document can be retrieved
-- answers cite supporting chunks
-- RAG evals produce measurable scores
+- `cp .env.example .env`
+- `docker compose up`
+- the whole stack starts from a clean clone
 
----
+### 5.2 Run security and correctness checks
 
-## Card 6 — Build the memory layer
+**Required**
+- `grep -ri 'sk-'`
+- `grep -ri 'password'`
+- no secrets outside Vault-reading code
+- redaction test passes
+- lint / type-check / image builds / smoke tests pass
 
-**Goal**: persist useful long-term facts safely and reviewably.
+### 5.3 Finish release materials
 
-**Create / edit**
-- `backend/app/services/memory_service.py` — TTL cache + vector writes + audits
-- `backend/app/repositories/memory_repo.py`, `audit_repo.py`
-- `backend/app/api/memory.py`
-- `prompts/memory_write.txt`
-- migrations for memories and audit events
+**Add / complete**
+- `README.md`
+- `docs/ARCH.md`
+- `docs/DECISIONS.md`
+- `docs/RUNBOOK.md`
+- `docs/EVALS.md`
+- `docs/SECURITY.md`
+- Git tag `v0.1.0-week7`
 
-**Done when**
-- approved facts can be written, listed, and deleted
-- every write leaves an audit record
-- Redis and pgvector responsibilities remain separate
+### 5.4 Rehearse the Friday proof
 
----
-
-## Card 7 — Build chat orchestration
-
-**Goal**: let one conversation coordinate classifier, RAG, and memory tools.
-
-**Create / edit**
-- `backend/app/services/chat_service.py`
-- `backend/app/api/chat.py`
-- `backend/app/domain/chat.py`
-- `backend/app/infra/llm.py`, `tracing.py`, `redaction.py`
-
-**Done when**
-- `/chat` streams tokens
-- tool calls are visible in traces
-- sensitive data is redacted before logging
-
----
-
-## Card 8 — Build the maintainer UI
-
-**Goal**: expose core workflows to a human maintainer.
-
-**Create / edit**
-- `chatbot/app.py`
-- `chatbot/pages/login.py`
-- `chatbot/pages/chat.py`
-- `chatbot/pages/memory_inspector.py`
-- `chatbot/pages/widget_config.py`
-
-**Done when**
-- a maintainer can log in, chat, inspect memory, and create widget config from the browser
-
----
-
-## Card 9 — Build the embeddable widget
-
-**Goal**: let another site host the copilot with one script tag.
-
-**Create / edit**
-- `widget/src/App.jsx`
-- `widget/src/useWidgetConfig.js`
-- `widget/src/postMessage.js`
-- `widget/vite.config.js`
-- `backend/app/api/widget.py`
-- `backend/app/api/schemas/widget.py`
-- `backend/app/services/widget_service.py`
-- `demo/host/index.html`, `demo/host/nginx.conf`
-
-**Done when**
-- one copied embed snippet loads the widget
-- config is fetched at runtime
-- iframe resizing works in the demo host
-
----
-
-## Card 10 — Add evals, tracing, and security checks
-
-**Goal**: make system quality visible before packaging it.
-
-**Create / edit**
-- `evals/**`
-- `docs/EVALS.md`, `docs/SECURITY.md`, `docs/DECISIONS.md`
-- `backend/app/infra/tracing.py`, `redaction.py`
-- CI config later, once the commands settle
-
-**Done when**
-- CI fails below committed thresholds
-- traces show the request tree
-- redaction tests cover known leak paths
-
----
-
-## Card 11 — Dockerize the full stack
-
-**Goal**: build and run the complete system from a clean machine.
-
-**Create / edit**
-- `Dockerfile` files for API, model server, chatbot, demo host
-- `pyproject.toml` beside each Python-service Dockerfile so each image can build with `uv` from its own service context
-- `docker-compose.yml` — add app services and dependencies
-- `.dockerignore`
-- `docs/RUNBOOK.md` — exact boot and smoke-test commands
-
-**Done when**
-- `docker compose up --build` starts the stack
-- Python images install dependencies with `uv`
-- smoke tests pass against containerized services
-- the runbook can be followed without tribal knowledge
+**Must be demoable**
+- classifier comparison
+- trace UI walkthrough, including an error path
+- cross-conversation memory recall
+- widget on allowed origin
+- widget blocked on disallowed origin
+- clean CI

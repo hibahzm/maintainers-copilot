@@ -2,7 +2,7 @@
 
 ## Current stage
 
-Scaffold only. Infra services can be started with Docker Compose once Docker is available; application containers are added in a later milestone.
+Scaffold only. The next foundation milestone expands Docker Compose into the full required stack and adds Vault, tracing, migrations, and startup checks before feature work proceeds.
 
 ## Future sections
 
