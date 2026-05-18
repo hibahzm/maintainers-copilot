@@ -24,6 +24,12 @@ That bundle must contain:
 
 If Vault is unreachable, the bundle is missing, or the payload is malformed, the API refuses to boot.
 
+## Notebook secret hygiene
+
+- Do not paste GitHub, Hugging Face, or Weights & Biases tokens directly into notebook cells.
+- In Colab, provide credentials through the secrets UI or environment variables at runtime.
+- If a token appears in a saved notebook, treat it as exposed and revoke it before continuing.
+
 ## Redaction patterns
 
 Initial patterns live in `backend/app/infra/redaction.py` and currently cover:

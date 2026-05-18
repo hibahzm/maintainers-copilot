@@ -4,7 +4,7 @@
 
 Use **closed issues from one repository only**:
 
-- source repository: `fastapi/fastapi`
+- source repository: `pandas-dev/pandas`
 - issue state: `closed`
 - rule: keep using this same repository for the whole project
 
@@ -12,21 +12,21 @@ This follows the Week 7 brief directly: pick one repo once, then live with that 
 
 ## Target labels
 
-FastAPI is a good fit because its issue labels already map cleanly to the categories we want the app to predict:
+Pandas is a good fit because its issue labels map cleanly to the categories we want the app to predict:
 
 - `bug`
 - `feature`
 - `docs`
 - `question`
 
-The current mapping is intentionally one-to-one:
+The current mapping is:
 
-| FastAPI label | Target |
+| Pandas label | Target |
 | --- | --- |
 | `bug` | `bug` |
-| `feature` | `feature` |
+| `enhancement` | `feature` |
 | `docs` | `docs` |
-| `question` | `question` |
+| `usage question` | `question` |
 
 ## Why this repo
 
@@ -39,10 +39,10 @@ The current mapping is intentionally one-to-one:
 ## Suggested process
 
 1. **Fix the source before writing code**  
-   All Week 7 dataset scripts should default to `fastapi/fastapi` and `state=closed`.
+   All Week 7 dataset scripts should default to `pandas-dev/pandas` and `state=closed`.
 
 2. **Confirm the label map**  
-   Start from FastAPI labels and map only the labels we intentionally support.
+   Start from pandas labels and map only the labels we intentionally support.
 
 3. **Fetch raw closed issues from GitHub**  
    Save the untouched API payload-derived records in `data/raw_issues.jsonl`.

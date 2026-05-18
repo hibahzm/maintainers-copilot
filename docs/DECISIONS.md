@@ -13,7 +13,7 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-007 | Manage PostgreSQL schema changes only through Alembic revisions | accepted | target: 0 manual schema drift between environments |
 | D-008 | Separate Pydantic API schemas from framework-agnostic domain models | accepted | target: transport changes do not leak into core workflows |
 | D-009 | Inject services into routers with FastAPI `Depends` | accepted | target: routers stay thin and test doubles can be swapped cleanly |
-| D-010 | Use closed issues from `fastapi/fastapi` as the Week 7 dataset source | accepted | target: one stable repo source across the whole project |
+| D-010 | Use closed issues from `pandas-dev/pandas` as the Week 7 dataset source | accepted | target: one stable repo source across the whole project |
 | D-011 | Introduce the Alembic baseline during foundation work, before feature tables evolve | accepted | target: every PostgreSQL schema object enters through migrations |
 | D-012 | Use online Google Colab later as the execution surface for heavy experiments, not as the source of truth | accepted | target: training can be reproduced from repository code and committed configs |
 | D-013 | Keep `memory.embedding` dimension-unconstrained until the embedding model is chosen | accepted | target: vector dimension follows measured model choice, not a guess |
@@ -35,14 +35,14 @@ Use `docs`, not `documentation`, in code, datasets, prompts, metrics, and report
 
 ## Week 7 label mapping
 
-The chosen repository already exposes assignment-aligned issue labels, so the mapping stays deliberately simple:
+The chosen repository has a clean near-match for the assignment vocabulary:
 
-| Source label in `fastapi/fastapi` | Classifier target |
+| Source label in `pandas-dev/pandas` | Classifier target |
 | --- | --- |
 | `bug` | `bug` |
-| `feature` | `feature` |
+| `enhancement` | `feature` |
 | `docs` | `docs` |
-| `question` | `question` |
+| `usage question` | `question` |
 
 Issues with none of those labels are excluded from classifier training. Issues with more than one target label are also excluded rather than forcing a misleading single-label target into the training data.
 

@@ -85,7 +85,7 @@ This is the running build journal. Every meaningful change should add a dated en
 - `data/README.md`
 
 ### Design notes
-- Week 7 uses **closed issues from `fastapi/fastapi` only**.
+- Week 7 uses **closed issues from `pandas-dev/pandas` only**.
 - Dataset scripts should default to that repository so later work does not drift back into a multi-repo strategy.
 - Before training, we should inspect class balance across the target labels and document any sampling choice.
 
@@ -200,7 +200,7 @@ This is the running build journal. Every meaningful change should add a dated en
 - `docs/DECISIONS.md`
 
 ### Design notes
-- Locked the raw source to closed issues from `fastapi/fastapi` and encoded the assignment vocabulary as a one-to-one mapping from FastAPI labels into `bug / feature / docs / question`.
+- Locked the raw source to closed issues from `pandas-dev/pandas` and mapped pandas labels into the assignment vocabulary `bug / feature / docs / question`.
 - The splitter preserves chronological order, searches for low-drift temporal cutoffs, rejects splits missing any target label, and writes a machine-readable split report so later training is anchored to evidence rather than a manual shuffle.
 
 ## 2026-05-18 — First fine-tuning scaffold added
@@ -266,3 +266,18 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - Kept the test split as the required strictly newer temporal holdout, but changed validation to a deterministic stratified sample inside the older train/validation pool.
 - This preserves future-like testing while avoiding an impossible validation split when a sparse label is not represented in every chronological window.
+
+## 2026-05-18 — Colab run reconciled back into the repo
+
+### Updated
+- dataset source from `fastapi/fastapi` to `pandas-dev/pandas`
+- pandas-specific label mapping in the dataset constants and docs
+- standalone Colab notebook template
+- `.gitignore`
+- `docs/SECURITY.md`
+
+### Design notes
+- Adopted the useful notebook discovery that `pandas-dev/pandas` is the better dataset source, but corrected the label map to `bug → bug`, `enhancement → feature`, `docs → docs`, and `usage question → question`.
+- Restored the assignment-required split policy after the notebook temporarily drifted into fully random splits.
+- Removed a hardcoded GitHub token from the notebook template and documented that notebook credentials must come from runtime secrets, not saved cells.
+- Ignored local `artifacts/` outputs so large training weights do not accidentally enter Git before the later MinIO handoff exists.

@@ -1,6 +1,6 @@
 # Data Layout
 
-- Week 7 source repository: `fastapi/fastapi`
+- Week 7 source repository: `pandas-dev/pandas`
 - Issue state: `closed`
 
 - `raw_issues.jsonl` — source issues fetched from GitHub
@@ -18,4 +18,4 @@ python -m scripts.dataset.fetch_issues
 python -m scripts.dataset.build_splits
 ```
 
-The fetcher is fixed to closed issues from `fastapi/fastapi` by default. The splitter keeps chronological order, searches for cutoffs that preserve the overall label mix as closely as possible, and rejects any split that cannot contain all four target labels.
+The fetcher is fixed to closed issues from `pandas-dev/pandas` by default. The splitter keeps the test split chronological, then builds deterministic stratified train/validation splits inside the older pool.

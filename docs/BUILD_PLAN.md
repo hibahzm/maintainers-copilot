@@ -26,7 +26,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - frontend surfaces: `widget/`, `demo/host/`
 - supporting areas: `prompts/`, `evals/`, `data/`, `migrations/`, `docs/`
 - backend boundaries: Pydantic API schemas, thin routers, services, repositories, domain, infra
-- fixed Week 7 dataset source: closed issues from `fastapi/fastapi`
+- fixed Week 7 dataset source: closed issues from `pandas-dev/pandas`
 
 **Done when**
 - every future subsystem has a home
@@ -104,7 +104,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 ### 1.5 Build the dataset pipeline
 
 **Add / complete**
-- fetch script for closed `fastapi/fastapi` issues
+- fetch script for closed `pandas-dev/pandas` issues
 - label mapping in `docs/DECISIONS.md`
 - `data/raw_issues.jsonl`
 - normalized `train.jsonl`, `val.jsonl`, `test.jsonl`

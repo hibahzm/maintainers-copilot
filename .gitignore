@@ -20,6 +20,7 @@ widget/dist/*
 data/*.parquet
 data/*.csv
 data/*.db
+artifacts/
 *.log
 
 # OS / editor

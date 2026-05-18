@@ -88,7 +88,7 @@ If you prefer the simplest first run, skip Drive and keep everything in the Cola
 This fetches closed issues from the fixed source repository:
 
 ```text
-fastapi/fastapi
+pandas-dev/pandas
 ```
 
 and writes:
@@ -188,6 +188,16 @@ If Drive is mounted:
 ```bash
 !cp -r artifacts/classifier/first-distilbert-freeze4 /content/drive/MyDrive/maintainers-copilot/artifacts/
 ```
+
+## After a successful corrected run
+
+Bring back only the durable project inputs and small evidence files:
+
+- copy `raw_issues.jsonl`, `train.jsonl`, `val.jsonl`, `test.jsonl`, and `split_report.json` into the repo's `data/` folder;
+- use `run_manifest.json` and `metrics.json` to update the classifier model card and decisions;
+- keep the large `model/` and `checkpoints/` directories out of Git.
+
+Until MinIO is wired in Step 2, Google Drive is an acceptable temporary holding area for the large model artifacts. The final architecture should store the chosen artifact or manifest in MinIO rather than in the repository.
 
 ## What not to do in the notebook
 

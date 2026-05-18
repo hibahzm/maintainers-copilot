@@ -1,14 +1,13 @@
 """Shared dataset constants for the Week 7 issue-classification pipeline."""
 
-SOURCE_REPO = "fastapi/fastapi"
+SOURCE_REPO = "pandas-dev/pandas"
 ISSUE_STATE = "closed"
 
 TARGET_LABELS = ("bug", "feature", "docs", "question")
 
-# FastAPI already uses the four assignment-aligned labels directly.
 LABEL_TO_TARGET = {
     "bug": "bug",
-    "feature": "feature",
+    "enhancement": "feature",
     "docs": "docs",
-    "question": "question",
+    "usage question": "question",
 }
