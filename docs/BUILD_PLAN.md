@@ -7,7 +7,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 | Step | Status | Outcome |
 | --- | --- | --- |
 | 0. Shape the repository | done | the system has clear homes and rules |
-| 1. Build the foundation | next | the stack boots, secrets resolve, schema exists, dataset exists |
+| 1. Build the foundation | in progress | the stack boots, secrets resolve, schema exists, dataset exists |
 | 2. Build the NLP comparison track | backlog | three classifiers plus NER/summarization are measurable |
 | 3. Build advanced RAG | backlog | retrieval beats the naive baseline with numbers |
 | 4. Build the chatbot, memory, and widget surfaces | backlog | a real maintainer workflow exists end to end |
@@ -22,6 +22,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 **Already established**
 - root orchestration: `README.md`, `.gitignore`, `.env.example`, `docker-compose.yml`
 - Python services with local manifests: `backend/`, `model_server/`, `chatbot/`
+- migration runner with its own local manifest: `migrate/`
 - frontend surfaces: `widget/`, `demo/host/`
 - supporting areas: `prompts/`, `evals/`, `data/`, `migrations/`, `docs/`
 - backend boundaries: Pydantic API schemas, thin routers, services, repositories, domain, infra
@@ -49,7 +50,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - `api`
 - `chatbot`
 - `widget`
-- `model_server`
+- `model-server`
 - `host`
 - `migrate`
 - `db`

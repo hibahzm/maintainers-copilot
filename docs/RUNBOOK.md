@@ -2,7 +2,7 @@
 
 ## Current stage
 
-Scaffold only. The next foundation milestone expands Docker Compose into the full required stack and adds Vault, tracing, migrations, and startup checks before feature work proceeds.
+Foundation work has started. Docker Compose now names the full required stack; the next pass wires real Vault startup checks, tracing, and Alembic execution into those containers before feature work proceeds.
 
 ## Future sections
 

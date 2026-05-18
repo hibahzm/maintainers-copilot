@@ -100,3 +100,21 @@ This is the running build journal. Every meaningful change should add a dated en
 ### Design notes
 - The brief expects foundations before feature work: full stack shape, Vault, tracing, Alembic baseline, dataset fetch/splits, then the first training run.
 - Colab is appropriate for GPU-heavy experiments, especially classifier fine-tuning, but repository code remains the durable source of truth.
+
+## 2026-05-18 — Foundation stack started
+
+### Added
+- Dockerfiles for `backend/`, `model_server/`, `chatbot/`, `widget/`, `demo/host/`, and the new `migrate/` service
+- `migrate/pyproject.toml`, `migrate/entrypoint.sh`, and `migrate/README.md`
+- root `.dockerignore`
+- widget Nginx config
+
+### Updated
+- expanded `docker-compose.yml` to the full ten-service stack from the brief
+- added service health checks and dependency ordering
+- added `WIDGET_PORT` to `.env.example`
+
+### Design notes
+- Python service images use `uv` and keep the manifest beside their Dockerfile.
+- `migrate` is present now as a one-shot service scaffold; the next foundation pass will replace the placeholder behavior with the actual Alembic baseline.
+- The compose dependency graph now makes the intended boot order explicit: infra first, migrations before API, API before user-facing surfaces.

@@ -2,15 +2,16 @@
 
 Maintainers Copilot is a multi-service application for repository support workflows: issue classification, retrieval-augmented answers, long-term memory, a maintainer-facing chat interface, and an embeddable support widget.
 
-## Scaffold status
+## Current status
 
-This repository is currently in **Milestone 0: scaffold**. The code is intentionally thin; the goal is to make responsibilities visible before we begin implementing behavior.
+This repository is currently in **Step 1: build the foundation**. The structure is in place, and we are now turning it into a bootable stack with Compose, Vault, tracing, migrations, and the dataset pipeline.
 
 ## Planned services
 
 - `backend/` — main FastAPI backend
 - `model_server/` — separate inference API for classifier / NER / summarizer models
 - `chatbot/` — Streamlit maintainer UI
+- `migrate/` — one-shot Alembic migration runner
 - `widget/` — embeddable React widget
 - `demo/host/` — tiny host page for widget demos
 - infrastructure via Docker Compose — PostgreSQL + pgvector, Redis, MinIO, Vault
@@ -28,4 +29,5 @@ This repository is currently in **Milestone 0: scaffold**. The code is intention
   - `backend/` → backend API
   - `model_server/` → inference service
   - `chatbot/` → Streamlit UI
+  - `migrate/` → Alembic migration runner
 - PostgreSQL schema changes go through Alembic migrations from the first real table onward.

@@ -29,16 +29,16 @@ backend/app/services/   -> business workflows
 ## Full compose stack
 
 ```text
-api          backend FastAPI service
-chatbot      Streamlit internal UI
-widget       built React widget bundle + loader surface
-model_server classifier / NER / summarizer inference API
-host         demo host page for embedding
-migrate      Alembic one-shot migration job
-db           PostgreSQL 16 + pgvector
-redis        short-term memory and cache
-minio        blob/artifact storage
-vault        secret source of truth
+api           backend FastAPI service
+chatbot       Streamlit internal UI
+widget        built React widget bundle + loader surface
+model-server  classifier / NER / summarizer inference API
+host          demo host page for embedding
+migrate       Alembic one-shot migration job
+db            PostgreSQL 16 + pgvector
+redis         short-term memory and cache
+minio         blob/artifact storage
+vault         secret source of truth
 ```
 
 ## Layer rules
