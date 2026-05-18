@@ -128,9 +128,10 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - first encoder fine-tuning experiment
 
 **Colab usage**
-- use Colab here if local hardware is weak or unavailable
+- when we reach this step, the user will run the training notebook in **online Google Colab**
+- we will prepare the repo-backed training code / notebook cells at that time, not before
 - keep the real training script, config, schema, and outputs defined in this repository
-- Colab is the compute surface, not the source of truth
+- Colab is the execution surface, not the source of truth
 
 **Done when**
 - the first training run has started

@@ -135,3 +135,14 @@ This is the running build journal. Every meaningful change should add a dated en
 - The first revision creates the foundation tables required by the brief: `users`, `widgets`, `audit_log`, and `memory`.
 - From here forward, PostgreSQL shape changes have a real migration lineage rather than only a reserved folder.
 - `memory.embedding` uses pgvector's unconstrained `VECTOR` type for now; we will pin dimensions later once the embedding model is chosen with retrieval evidence.
+
+## 2026-05-18 — Colab handoff clarified
+
+### Updated
+- `docs/BUILD_PLAN.md`
+- `docs/DATASET_STRATEGY.md`
+- `docs/DECISIONS.md`
+
+### Design notes
+- When the training step arrives, the user will run the notebook online in Google Colab.
+- We will prepare the Colab-ready code at that point, after the dataset pipeline is defined, instead of creating notebooks prematurely.
