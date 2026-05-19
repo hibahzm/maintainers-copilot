@@ -2,6 +2,17 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — Model-server dependencies trimmed
+
+### Updated
+- `model_server/pyproject.toml`
+
+### Design notes
+- Removed `spacy` from runtime dependencies because `/ner` is still a stub and no model-server code imports spaCy yet.
+- Kept `transformers` and `torch` in runtime because `/classify` loads the selected DistilBERT model.
+- Pinned `torch` to the PyTorch CPU wheel index for the model server, so Docker/runtime does not pull GPU/CUDA packages.
+- Removed the optional `train` dependency group from the model server because training/comparison now lives in Colab notebooks, not the deployed app runtime.
+
 ## 2026-05-19 — Classification golden set added
 
 ### Added
