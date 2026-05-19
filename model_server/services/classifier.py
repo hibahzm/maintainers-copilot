@@ -1,38 +1,17 @@
-"""Runtime issue-classification endpoint backed by the selected DistilBERT model."""
+"""Runtime issue-classification service backed by the selected DistilBERT model."""
 
 import os
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, status
-from pydantic import BaseModel, Field
-
+from model_server.schemas.classifier import ClassifyIssueResponse
 from model_server.classifier.text import compose_issue_text
 from model_server.classifier.training_config import LABEL_TO_ID
 
 DEFAULT_CLASSIFIER_MODEL_DIR = Path("artifacts/classifier/first-distilbert-freeze4/model")
 MAX_LENGTH = 384
 LABELS = tuple(LABEL_TO_ID.keys())
-
-router = APIRouter(tags=["classifier"])
-
-
-class ClassifyIssueRequest(BaseModel):
-    """Minimal issue fields needed for single-label maintainer triage."""
-
-    title: str = Field(min_length=1, max_length=300)
-    body: str = ""
-
-
-class ClassifyIssueResponse(BaseModel):
-    """Classifier output with calibrated-ish softmax confidence and all label scores."""
-
-    label: str = Field(description="One of: bug, feature, docs, question.")
-    confidence: float = Field(ge=0.0, le=1.0)
-    scores: dict[str, float]
-    model_name: str
-    model_dir: str
 
 
 class DistilBERTIssueClassifier:
@@ -130,20 +109,3 @@ def classifier_model_dir() -> Path:
 @lru_cache(maxsize=1)
 def get_classifier() -> DistilBERTIssueClassifier:
     return DistilBERTIssueClassifier(model_dir=classifier_model_dir())
-
-
-@router.post("/classify", response_model=ClassifyIssueResponse)
-async def classify(payload: ClassifyIssueRequest) -> ClassifyIssueResponse:
-    """Classify a GitHub issue title/body into the project label set."""
-    try:
-        return get_classifier().predict(title=payload.title, body=payload.body)
-    except FileNotFoundError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=str(exc),
-        ) from exc
-    except Exception as exc:  # noqa: BLE001 - keep model internals behind a 500 boundary
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Classifier inference failed.",
-        ) from exc

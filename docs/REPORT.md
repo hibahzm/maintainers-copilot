@@ -2,6 +2,29 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — Model-server runtime split by layer
+
+### Added
+- `model_server/routers/`
+- `model_server/schemas/`
+- `model_server/services/`
+
+### Updated
+- `model_server/main.py`
+- `model_server/tests/test_classifier_router.py`
+
+### Removed
+- `model_server/classifier/inference.py`
+- placeholder `model_server/ner/inference.py`
+- placeholder `model_server/summarizer/inference.py`
+
+### Design notes
+- Routers now own only HTTP concerns.
+- Schemas now own only Pydantic request/response contracts.
+- Services now own model/business logic.
+- The classifier service still imports classifier-specific text/training constants from `model_server/classifier/`, which remains the home for classifier training/eval helpers and the model card.
+- NER and summarization now have the same router/schema/service shape even while their services are still placeholders.
+
 ## 2026-05-19 — NER runtime dependency stabilized
 
 ### Updated

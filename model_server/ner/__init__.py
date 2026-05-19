@@ -1,1 +1,0 @@
-"""Named-entity extraction package."""

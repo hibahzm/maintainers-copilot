@@ -1,12 +1,13 @@
 from fastapi.testclient import TestClient
 
-from model_server.classifier import inference
+from model_server.routers import classifier as classifier_router
+from model_server.schemas.classifier import ClassifyIssueResponse
 from model_server.main import app
 
 
 class FakeClassifier:
     def predict(self, *, title: str, body: str):
-        return inference.ClassifyIssueResponse(
+        return ClassifyIssueResponse(
             label="bug",
             confidence=0.91,
             scores={"bug": 0.91, "feature": 0.03, "docs": 0.02, "question": 0.04},
@@ -16,7 +17,7 @@ class FakeClassifier:
 
 
 def test_classify_endpoint_returns_model_prediction(monkeypatch):
-    monkeypatch.setattr(inference, "get_classifier", lambda: FakeClassifier())
+    monkeypatch.setattr(classifier_router, "get_classifier", lambda: FakeClassifier())
 
     client = TestClient(app)
     response = client.post(
@@ -39,7 +40,7 @@ def test_classify_endpoint_reports_missing_model(monkeypatch):
         def predict(self, *, title: str, body: str):
             raise FileNotFoundError("missing model")
 
-    monkeypatch.setattr(inference, "get_classifier", lambda: MissingModel())
+    monkeypatch.setattr(classifier_router, "get_classifier", lambda: MissingModel())
 
     client = TestClient(app)
     response = client.post("/classify", json={"title": "Question", "body": "How do I use this?"})
