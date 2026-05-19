@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from model_server.schemas.classifier import ClassifyIssueResponse
+from model_server.services.artifacts import fingerprint_directory
 from model_server.classifier.text import compose_issue_text
 from model_server.classifier.training_config import LABEL_TO_ID
 
@@ -30,6 +31,7 @@ class DistilBERTIssueClassifier:
         self._torch: Any | None = None
         self._device: Any | None = None
         self._id_to_label: dict[int, str] | None = None
+        self._model_artifact_sha256: str | None = None
 
     @property
     def model_name(self) -> str:
@@ -68,6 +70,7 @@ class DistilBERTIssueClassifier:
             scores=scores,
             model_name=self.model_name,
             model_dir=str(self.model_dir),
+            model_artifact_sha256=self._model_artifact_sha256,
         )
 
     def _ensure_loaded(self) -> None:
@@ -100,6 +103,7 @@ class DistilBERTIssueClassifier:
         self._torch = torch
         self._device = device
         self._id_to_label = id_to_label
+        self._model_artifact_sha256 = fingerprint_directory(self.model_dir).sha256
 
 
 def classifier_model_dir() -> Path:

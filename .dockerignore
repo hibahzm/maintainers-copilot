@@ -8,7 +8,7 @@
 .mypy_cache/
 .venv/
 node_modules/
-artifacts/
+/artifacts/
 data/
 notebooks/
 docs/*.pdf

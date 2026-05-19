@@ -2,6 +2,24 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — Classifier model artifact fingerprint added
+
+### Added
+- `model_server/services/artifacts.py`
+- `scripts/artifacts/fingerprint_model.py`
+- `model_server/tests/test_artifacts.py`
+
+### Updated
+- `model_server/schemas/classifier.py`
+- `model_server/services/classifier.py`
+- `backend/app/api/schemas/classifier.py`
+- `docs/RUNBOOK.md`
+
+### Design notes
+- The model-server classifier response now includes `model_artifact_sha256` so eval results can identify the exact local model artifact used.
+- The artifact fingerprint is computed from file paths, file sizes, and per-file SHA-256 values; the model weights remain outside Git.
+- Added a small script to print the same fingerprint for Drive/MinIO/local artifact manifests without starting the server.
+
 ## 2026-05-19 — Dataset rows removed from Git and Docker context
 
 ### Updated

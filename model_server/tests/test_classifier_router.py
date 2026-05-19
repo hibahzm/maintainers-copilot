@@ -13,6 +13,7 @@ class FakeClassifier:
             scores={"bug": 0.91, "feature": 0.03, "docs": 0.02, "question": 0.04},
             model_name="fake-distilbert",
             model_dir="/tmp/fake-model",
+            model_artifact_sha256="abc123",
         )
 
 
@@ -32,6 +33,7 @@ def test_classify_endpoint_returns_model_prediction(monkeypatch):
         "scores": {"bug": 0.91, "feature": 0.03, "docs": 0.02, "question": 0.04},
         "model_name": "fake-distilbert",
         "model_dir": "/tmp/fake-model",
+        "model_artifact_sha256": "abc123",
     }
 
 

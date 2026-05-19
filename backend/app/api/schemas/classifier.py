@@ -15,3 +15,4 @@ class ClassifyIssueResponse(APIModel):
     scores: dict[ClassificationLabel, float] = Field(default_factory=dict)
     model_name: str | None = None
     model_dir: str | None = None
+    model_artifact_sha256: str | None = None

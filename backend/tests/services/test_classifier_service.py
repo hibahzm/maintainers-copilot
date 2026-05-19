@@ -31,6 +31,7 @@ async def test_classifier_service_normalizes_model_server_response(monkeypatch):
                     "scores": {"bug": 0.01, "feature": 0.05, "docs": 0.87, "question": 0.07},
                     "model_name": "first-distilbert-freeze4",
                     "model_dir": "/models/classifier",
+                    "model_artifact_sha256": "abc123",
                 },
             )
 
@@ -42,6 +43,7 @@ async def test_classifier_service_normalizes_model_server_response(monkeypatch):
     assert isinstance(result, ClassifyIssueResponse)
     assert result.label == "docs"
     assert result.confidence == 0.87
+    assert result.model_artifact_sha256 == "abc123"
     assert requests == [
         (
             "http://model-server:8001/classify",

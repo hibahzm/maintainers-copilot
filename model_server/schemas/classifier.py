@@ -18,3 +18,4 @@ class ClassifyIssueResponse(BaseModel):
     scores: dict[str, float]
     model_name: str
     model_dir: str
+    model_artifact_sha256: str | None = None

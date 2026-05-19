@@ -1,0 +1,31 @@
+{
+  "files": [
+    {
+      "bytes": 843,
+      "path": "config.json",
+      "sha256": "e9b96b8578062ad229829a25893a241b4f7941bf81ddd61708b7e25a2e38e1ba"
+    },
+    {
+      "bytes": 267838720,
+      "path": "model.safetensors",
+      "sha256": "8091e7031f77d895e3cb556f932d2e8e0f1babfb6893fa32fa4d4967146d2ec1"
+    },
+    {
+      "bytes": 711494,
+      "path": "tokenizer.json",
+      "sha256": "c571f1b1973291370192db62060efdfb564c9a11865c568693ac7420e857cf55"
+    },
+    {
+      "bytes": 322,
+      "path": "tokenizer_config.json",
+      "sha256": "797ed9ba72b500001971b827b0040b8743def8ec38f9cd4cda4c4945734d3596"
+    },
+    {
+      "bytes": 5265,
+      "path": "training_args.bin",
+      "sha256": "4cc4c0f5d00804eb59439f955f46f7149f70e8a070c6e9589d8312c9dd538d8e"
+    }
+  ],
+  "path": "artifacts/classifier/first-distilbert-freeze4/model",
+  "sha256": "45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a"
+}

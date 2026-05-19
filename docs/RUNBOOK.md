@@ -69,6 +69,14 @@ CLASSIFIER_MODEL_DIR=artifacts/classifier/first-distilbert-freeze4/model
 
 That directory must contain the saved Hugging Face tokenizer/model files from Colab or the future MinIO artifact flow. Do not commit the model weights to Git.
 
+Record the model artifact fingerprint before or after evaluation:
+
+```bash
+python -m scripts.artifacts.fingerprint_model artifacts/classifier/first-distilbert-freeze4/model
+```
+
+The top-level `sha256` identifies the full model directory for eval evidence and future MinIO manifests.
+
 For Docker Compose, the host `./artifacts` directory is mounted read-only into the model-server container at `/app/artifacts`, so the container uses:
 
 ```text

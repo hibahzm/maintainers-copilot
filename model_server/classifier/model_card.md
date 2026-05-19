@@ -11,6 +11,7 @@ The deployment choice is based on the full temporal test evidence plus the fair 
 - Labels: `bug / feature / docs / question`
 - Freeze policy: lower 4 DistilBERT encoder blocks frozen; top 2 blocks and classifier head trainable
 - Run name: `first-distilbert-freeze4`
+- Saved model directory SHA-256: `45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a`
 
 ## Dataset
 - Source repository: `pandas-dev/pandas`
@@ -41,7 +42,7 @@ The deployment choice is based on the full temporal test evidence plus the fair 
 | `data/test_200_balanced.jsonl` | `a14faed71a97718cd421fbd84f2ed4d584c3b13f275971fd2b1945429be88f2a` |
 | `data/split_report.json` | `abbf85e030b9a8aa88ac565a34e2fab77d217a2c017dabaf189031f37a3f0645` |
 
-The raw issue snapshot is not checked into this repo handoff because of local disk constraints. The corrected train/validation/test files and split report are committed here; the raw source snapshot should remain in Drive or later MinIO for full reproducibility.
+The raw issue snapshot and row-level JSONL splits are not tracked in Git because public issue bodies can contain user-pasted secret-like examples. Keep the corrected train/validation/test files in Drive or later MinIO for full reproducibility; commit only small reports, hashes, and eval evidence.
 
 ## Hyperparameters
 - Max length: `384`
