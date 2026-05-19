@@ -2,6 +2,21 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — Classification golden set added
+
+### Added
+- `evals/golden_classification.json`
+- `evals/run_classification_eval.py`
+
+### Evidence shape
+- 25 synthetic, hand-curated issue examples
+- label mix: 7 `bug`, 6 `feature`, 6 `docs`, 6 `question`
+- no overlap with `data/test_200_balanced.jsonl`
+
+### Design notes
+- The golden set is intentionally separate from train/test data so it can act as a compact human-reviewed regression suite.
+- The eval runner calls any classifier-compatible endpoint and computes accuracy, macro-F1, and per-label precision/recall/F1.
+
 ## 2026-05-19 — DistilBERT classifier serving endpoint added
 
 ### Added

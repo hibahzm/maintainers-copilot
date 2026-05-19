@@ -1,1 +1,177 @@
-[]
+[
+  {
+    "body": "Calling read_csv on an empty file raises an unexpected IndexError instead of returning a clear EmptyDataError. This worked in the previous release.",
+    "expected_label": "bug",
+    "id": "golden-classification-001",
+    "rationale": "Reports broken existing behavior and an unexpected exception.",
+    "title": "BUG: crash when opening an empty CSV file"
+  },
+  {
+    "body": "tz_convert shifts timestamps by one hour around the daylight saving boundary. The output is inconsistent with dateutil for the same timezone.",
+    "expected_label": "bug",
+    "id": "golden-classification-002",
+    "rationale": "Incorrect result for existing timezone behavior.",
+    "title": "BUG: timezone conversion returns the wrong hour after DST"
+  },
+  {
+    "body": "A DataFrame with Int64 columns returns zeros after groupby().sum() when some rows contain NA. Expected the non-null values to be summed.",
+    "expected_label": "bug",
+    "id": "golden-classification-003",
+    "rationale": "Existing aggregation returns incorrect values.",
+    "title": "BUG: groupby sum ignores nullable integer column"
+  },
+  {
+    "body": "Serializing a DataFrame with a timezone-aware DatetimeIndex fails with TypeError. The same frame serializes correctly after resetting the index.",
+    "expected_label": "bug",
+    "id": "golden-classification-004",
+    "rationale": "Valid existing API path raises an error.",
+    "title": "BUG: DataFrame.to_json raises TypeError for valid datetime index"
+  },
+  {
+    "body": "rolling(3).mean() returns NaN for a window with three numeric values when the Series uses Float64 dtype. Expected a numeric mean.",
+    "expected_label": "bug",
+    "id": "golden-classification-005",
+    "rationale": "Incorrect numerical output for existing rolling operation.",
+    "title": "BUG: rolling mean produces NaN for complete window"
+  },
+  {
+    "body": "Merging two frames on an ordered categorical column produces duplicate rows that are not present when the key is converted to object dtype.",
+    "expected_label": "bug",
+    "id": "golden-classification-006",
+    "rationale": "Existing merge behavior appears wrong for a supported dtype.",
+    "title": "BUG: merge duplicates rows with categorical key"
+  },
+  {
+    "body": "A parquet file written by the library cannot be read back if one column contains a slash in the name. Round-tripping should preserve valid column names.",
+    "expected_label": "bug",
+    "id": "golden-classification-007",
+    "rationale": "Round-trip failure in existing IO behavior.",
+    "title": "BUG: read_parquet fails on column name containing slash"
+  },
+  {
+    "body": "It would be useful to call df.to_schema_json() and get column names, dtypes, nullability, and index metadata for downstream validation tools.",
+    "expected_label": "feature",
+    "id": "golden-classification-008",
+    "rationale": "Requests a new capability.",
+    "title": "ENH: add option to export DataFrame schema as JSON"
+  },
+  {
+    "body": "Users currently need to pass regex flags for case-insensitive matching. A boolean ignore_case parameter would make this common operation easier.",
+    "expected_label": "feature",
+    "id": "golden-classification-009",
+    "rationale": "Asks for API improvement rather than reporting broken behavior.",
+    "title": "ENH: support ignore_case parameter in Series.str.contains"
+  },
+  {
+    "body": "For low-memory services it would help if read_csv could yield each chunk as a list of dictionaries without constructing an intermediate DataFrame.",
+    "expected_label": "feature",
+    "id": "golden-classification-010",
+    "rationale": "Proposes new streaming behavior.",
+    "title": "ENH: allow read_csv to stream chunks as dictionaries"
+  },
+  {
+    "body": "Several libraries call private dtype inference helpers. Could pandas expose a supported infer_dtype_schema function for extension authors?",
+    "expected_label": "feature",
+    "id": "golden-classification-011",
+    "rationale": "Requests new supported public API.",
+    "title": "ENH: expose stable public API for dtype inference"
+  },
+  {
+    "body": "Concatenating thousands of tiny DataFrames is a bottleneck in ETL jobs. A faster path for homogeneous columns would be valuable.",
+    "expected_label": "feature",
+    "id": "golden-classification-012",
+    "rationale": "Requests performance enhancement, not a correctness bug.",
+    "title": "ENH: improve performance of concat for many small frames"
+  },
+  {
+    "body": "Many finance workflows use fiscal quarters that start in February or April. A dedicated offset type would simplify current custom workarounds.",
+    "expected_label": "feature",
+    "id": "golden-classification-013",
+    "rationale": "Adds new domain functionality.",
+    "title": "ENH: add native support for fiscal quarter offsets"
+  },
+  {
+    "body": "The merge documentation says 'rigth_index' in one example. It should be 'right_index'.",
+    "expected_label": "docs",
+    "id": "golden-classification-014",
+    "rationale": "Documentation typo only.",
+    "title": "DOC: fix typo in DataFrame.merge examples"
+  },
+  {
+    "body": "The read_csv page mentions dtype briefly, but the examples do not show passing a mapping from column name to dtype. Adding one would help new users.",
+    "expected_label": "docs",
+    "id": "golden-classification-015",
+    "rationale": "Requests clearer documentation/examples.",
+    "title": "DOC: clarify that read_csv dtype can accept a dict"
+  },
+  {
+    "body": "The contributing guide links to an old Python installation page that now redirects. Please update it to the current Python downloads URL.",
+    "expected_label": "docs",
+    "id": "golden-classification-016",
+    "rationale": "Documentation link maintenance.",
+    "title": "DOC: outdated link in contributing guide"
+  },
+  {
+    "body": "The resample documentation covers calendar days but not business-day frequency. An example with B frequency would make the behavior easier to understand.",
+    "expected_label": "docs",
+    "id": "golden-classification-017",
+    "rationale": "Requests a docs example.",
+    "title": "DOC: add example for resampling with business days"
+  },
+  {
+    "body": "Several users are confused that loc includes both slice endpoints while iloc follows Python slicing. The indexing guide should call this out more visibly.",
+    "expected_label": "docs",
+    "id": "golden-classification-018",
+    "rationale": "Improves explanatory documentation.",
+    "title": "DOC: explain difference between loc and iloc for slices"
+  },
+  {
+    "body": "The beginner tutorial still shows display.max_colwidth = -1, but that value is deprecated. The example should use None instead.",
+    "expected_label": "docs",
+    "id": "golden-classification-019",
+    "rationale": "Documentation uses deprecated option.",
+    "title": "DOC: remove deprecated option from tutorial"
+  },
+  {
+    "body": "I have account IDs like 00123 in a CSV. read_csv turns them into integers. What argument should I use to keep them as strings?",
+    "expected_label": "question",
+    "id": "golden-classification-020",
+    "rationale": "User asks for usage help.",
+    "title": "QST: how do I keep leading zeros when reading CSV?"
+  },
+  {
+    "body": "After groupby I get a MultiIndex. Is there a recommended way to turn those index levels back into normal DataFrame columns?",
+    "expected_label": "question",
+    "id": "golden-classification-021",
+    "rationale": "How-to question about using existing API.",
+    "title": "QST: can I convert a MultiIndex back into columns?"
+  },
+  {
+    "body": "I called df.fillna(0) but the original DataFrame still has missing values. Do I need to assign the result or use another option?",
+    "expected_label": "question",
+    "id": "golden-classification-022",
+    "rationale": "Troubleshooting expected API usage.",
+    "title": "QST: why does fillna not modify my DataFrame?"
+  },
+  {
+    "body": "For tests I need to compare two DataFrames where floating point values can differ slightly. Is there a built-in helper for this?",
+    "expected_label": "question",
+    "id": "golden-classification-023",
+    "rationale": "Asks for recommended existing tool.",
+    "title": "QST: best way to compare two DataFrames with tolerance"
+  },
+  {
+    "body": "My CSV has dates like 2024-01-02 and 01/03/2024 in the same column. Can to_datetime handle this, or should I preprocess first?",
+    "expected_label": "question",
+    "id": "golden-classification-024",
+    "rationale": "Usage clarification question.",
+    "title": "QST: how to parse mixed date formats in one column?"
+  },
+  {
+    "body": "A column has millions of rows but only a few hundred distinct string values. Would category reduce memory, and are there tradeoffs?",
+    "expected_label": "question",
+    "id": "golden-classification-025",
+    "rationale": "Asks for guidance on using an existing dtype.",
+    "title": "QST: should I use category dtype for repeated strings?"
+  }
+]

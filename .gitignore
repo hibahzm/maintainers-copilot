@@ -27,3 +27,6 @@ artifacts/
 .DS_Store
 .idea/
 .vscode/
+
+# Generated evaluation outputs
+evals/*_results.json

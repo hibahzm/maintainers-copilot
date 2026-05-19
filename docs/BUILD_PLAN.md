@@ -220,13 +220,14 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 ### 2.5 Build the classification golden set
 
 **Add / complete**
-- `evals/golden_classification.json`
-- 25 hand-curated examples
-- classifier eval script and metrics outputs
+- `evals/golden_classification.json` ✅
+- 25 hand-curated examples ✅
+- classifier eval script ✅
+- metrics outputs ⏳ after local model smoke test
 
 **Done when**
-- golden classification examples are separate from the train/test split and from `test_200_balanced.jsonl`
-- the same golden set can evaluate all three models
+- golden classification examples are separate from the train/test split and from `test_200_balanced.jsonl` ✅
+- the same golden set can evaluate all three models ✅
 
 ---
 
