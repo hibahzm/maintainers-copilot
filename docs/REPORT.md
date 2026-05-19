@@ -2,6 +2,17 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — NER runtime dependency stabilized
+
+### Updated
+- `model_server/pyproject.toml`
+
+### Design notes
+- Added `spacy` back to the model-server runtime dependencies because the project brief includes NER as part of the NLP pipeline work.
+- This prepares the `/ner` endpoint without adding a separate downloaded spaCy model artifact yet.
+- The intended first NER implementation can use lightweight spaCy tokenization/rules for maintainer entities such as package names, versions, file paths, functions, errors, and operating systems.
+- Torch remains pinned to the PyTorch CPU wheel index for classifier inference.
+
 ## 2026-05-19 — Local classifier artifact mounted for model server
 
 ### Updated

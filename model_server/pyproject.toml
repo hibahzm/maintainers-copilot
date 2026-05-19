@@ -13,6 +13,7 @@ dependencies = [
   "pydantic>=2.10",
   "transformers>=4.48",
   "torch>=2.5",
+  "spacy>=3.8",
 ]
 
 [tool.uv.sources]
