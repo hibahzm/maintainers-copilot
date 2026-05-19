@@ -19,3 +19,17 @@ python -m scripts.dataset.build_splits
 ```
 
 The fetcher is fixed to closed issues from `pandas-dev/pandas` by default. The splitter keeps the test split chronological, then builds deterministic stratified train/validation splits inside the older pool.
+
+## Bringing corrected Colab files back
+
+The checked-in JSONL files may start as empty placeholders. After the corrected Colab dataset run, replace them with the real files from Drive:
+
+```text
+/content/drive/MyDrive/maintainers-copilot/data/raw_issues.jsonl -> data/raw_issues.jsonl
+/content/drive/MyDrive/maintainers-copilot/data/train.jsonl      -> data/train.jsonl
+/content/drive/MyDrive/maintainers-copilot/data/val.jsonl        -> data/val.jsonl
+/content/drive/MyDrive/maintainers-copilot/data/test.jsonl       -> data/test.jsonl
+/content/drive/MyDrive/maintainers-copilot/data/split_report.json -> data/split_report.json
+```
+
+Keep large model folders out of `data/`; only dataset inputs and split reports belong here.

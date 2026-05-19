@@ -191,11 +191,23 @@ If Drive is mounted:
 
 ## After a successful corrected run
 
-Bring back only the durable project inputs and small evidence files:
+Bring back the corrected dataset files and the small run evidence. Use this exact placement:
 
-- copy `raw_issues.jsonl`, `train.jsonl`, `val.jsonl`, `test.jsonl`, and `split_report.json` into the repo's `data/` folder;
-- use `run_manifest.json` and `metrics.json` to update the classifier model card and decisions;
-- keep the large `model/` and `checkpoints/` directories out of Git.
+| Colab / Drive source | Repo destination | Commit? |
+| --- | --- | --- |
+| `/content/drive/MyDrive/maintainers-copilot/data/raw_issues.jsonl` | `data/raw_issues.jsonl` | yes, if size is acceptable |
+| `/content/drive/MyDrive/maintainers-copilot/data/train.jsonl` | `data/train.jsonl` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/data/val.jsonl` | `data/val.jsonl` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/data/test.jsonl` | `data/test.jsonl` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/data/split_report.json` | `data/split_report.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/run_manifest.json` | `model_server/classifier/runs/first-distilbert-freeze4/run_manifest.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/metrics.json` | `model_server/classifier/runs/first-distilbert-freeze4/metrics.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/model/` | keep in Drive | no |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/checkpoints/` | keep in Drive | no |
+
+If local disk is tight, prioritize `train.jsonl`, `val.jsonl`, `test.jsonl`, `split_report.json`, `run_manifest.json`, and `metrics.json`. The raw issue snapshot is still useful for reproducibility, but the model weights and checkpoints must stay out of Git.
+
+After those files are copied in, update the classifier model card and decisions from the committed evidence files, not from memory.
 
 Until MinIO is wired in Step 2, Google Drive is an acceptable temporary holding area for the large model artifacts. The final architecture should store the chosen artifact or manifest in MinIO rather than in the repository.
 

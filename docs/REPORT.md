@@ -2,6 +2,21 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+
+## 2026-05-19 — Classifier run evidence landing zone added
+
+### Added
+- `model_server/classifier/runs/README.md`
+- `model_server/classifier/runs/first-distilbert-freeze4/README.md`
+
+### Updated
+- `docs/COLAB_TRAINING.md`
+- `data/README.md`
+
+### Design notes
+- Corrected Colab dataset files should land in `data/`; the small run evidence files should land beside the classifier code under `model_server/classifier/runs/`.
+- Large model outputs remain outside Git: Drive is the temporary holding area until the project’s MinIO artifact path exists.
+
 ## 2026-05-18 — Milestone 0: Initial scaffold
 
 ### Added
