@@ -2,6 +2,16 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — Model-server Docker build avoids GHCR uv image
+
+### Updated
+- `model_server/Dockerfile`
+
+### Design notes
+- Replaced the `COPY --from=ghcr.io/astral-sh/uv:0.11.11` build stage with `pip install uv==0.11.11`.
+- This avoids Docker credential-helper failures when WSL/Docker cannot read GHCR metadata.
+- The runtime dependency install still uses `uv sync`; only the way `uv` enters the image changed.
+
 ## 2026-05-19 — NER and LLM summarizer tools added
 
 ### Added
