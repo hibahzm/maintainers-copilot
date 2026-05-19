@@ -93,3 +93,19 @@ Example request:
 ```
 
 The backend API proxies this through `POST /classifier`, using `MODEL_SERVER_URL` to locate the model server.
+
+Docker smoke command:
+
+```bash
+curl -X POST http://localhost:8001/classify \
+  -H "Content-Type: application/json" \
+  -d '{"title":"BUG: read_csv crashes on empty file","body":"read_csv raises an unexpected exception when the CSV has no rows."}'
+```
+
+Observed smoke result on 2026-05-19:
+
+```text
+label=bug
+confidence=0.9649578332901001
+model_artifact_sha256=45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a
+```

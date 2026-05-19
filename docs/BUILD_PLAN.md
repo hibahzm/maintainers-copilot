@@ -205,7 +205,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 ### 2.4 Expose NLP tools through the model server
 
 **Add / complete**
-- `/classify` ✅ DistilBERT-backed endpoint added to the model server
+- `/classify` ✅ DistilBERT-backed endpoint added to the model server and Docker-smoke-tested
 - backend `/classifier` proxy ✅ calls model server `/classify`
 - `/ner`
 - `/summarize`
@@ -216,6 +216,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 
 **Serving note**
 - `CLASSIFIER_MODEL_DIR` points at the saved Hugging Face model directory; model weights remain outside Git.
+- Docker smoke result: `POST /classify` returned `bug` with confidence `0.9650` and model artifact SHA-256 `45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a`.
 
 ### 2.5 Build the classification golden set
 

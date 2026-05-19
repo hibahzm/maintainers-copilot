@@ -2,6 +2,22 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — Classifier Docker smoke test passed
+
+### Verified
+- `docker compose up --build model-server`
+- `POST /classify`
+
+### Evidence
+- input title: `BUG: read_csv crashes on empty file`
+- predicted label: `bug`
+- confidence: `0.9649578332901001`
+- model artifact SHA-256: `45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a`
+
+### Design notes
+- The model-server container successfully loaded the mounted DistilBERT artifact from `/app/artifacts/classifier/first-distilbert-freeze4/model`.
+- This completes the real runtime smoke test for the selected classifier endpoint.
+
 ## 2026-05-19 — Classifier model artifact fingerprint added
 
 ### Added
