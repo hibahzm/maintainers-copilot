@@ -2,6 +2,19 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — Dataset rows removed from Git and Docker context
+
+### Updated
+- `.gitignore`
+- `.dockerignore`
+- `data/README.md`
+
+### Design notes
+- Added `data/*.jsonl` to `.gitignore` because public issue bodies can still contain user-pasted secrets or secret-like examples.
+- Removed tracked JSONL dataset rows from Git while keeping them available locally/externally in Drive or future MinIO.
+- Added dataset, notebook, PDF, classifier training/eval, and classifier run artifacts to `.dockerignore` so Docker builds contain only runtime code and not experiment data.
+- Kept dataset reports and model metrics tracked as small reproducibility evidence.
+
 ## 2026-05-19 — Model-server runtime split by layer
 
 ### Added

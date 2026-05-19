@@ -9,6 +9,8 @@
 - `test.jsonl` — strictly newer examples than the training split
 - `split_report.json` — generated counts, label mix, and date ranges for the current split set
 
+JSONL row files are intentionally **not tracked in Git**. GitHub issues are public, but issue bodies may contain user-pasted credentials, tokens, passwords, or other secret-like examples. Keep the actual JSONL files in Drive or MinIO and copy them into `data/` only for local/Colab work.
+
 ## Dataset scripts
 
 Run from the repository root:
@@ -22,7 +24,7 @@ The fetcher is fixed to closed issues from `pandas-dev/pandas` by default. The s
 
 ## Bringing corrected Colab files back
 
-The checked-in JSONL files may start as empty placeholders. After the corrected Colab dataset run, replace them with the real files from Drive:
+After the corrected Colab dataset run, copy the real JSONL files from Drive when you need to run local experiments:
 
 ```text
 /content/drive/MyDrive/maintainers-copilot/data/raw_issues.jsonl -> data/raw_issues.jsonl
@@ -32,12 +34,12 @@ The checked-in JSONL files may start as empty placeholders. After the corrected 
 /content/drive/MyDrive/maintainers-copilot/data/split_report.json -> data/split_report.json
 ```
 
-Keep large model folders out of `data/`; only dataset inputs and split reports belong here.
+Keep large model folders out of `data/`; only local dataset inputs and tracked split reports belong here.
 
 
 ## Current corrected split snapshot
 
-The corrected Colab split files currently committed here contain:
+The corrected Colab split files stored in Drive/local `data/` contain:
 
 | Split | Rows | Label counts |
 | --- | ---: | --- |
@@ -45,12 +47,12 @@ The corrected Colab split files currently committed here contain:
 | `val.jsonl` | 2,145 | bug 1,123; feature 433; docs 321; question 268 |
 | `test.jsonl` | 2,145 | bug 1,344; feature 330; docs 393; question 78 |
 
-`raw_issues.jsonl` may remain a zero-byte placeholder in low-space checkouts. Preserve the raw source snapshot in Drive or MinIO, but do not block local model-card and comparison work on copying it into the repo.
+Preserve the raw source snapshot in Drive or MinIO, but do not block local model-card and comparison work on copying it into the repo.
 
 
 ## 200-row balanced comparison subset
 
-`test_200_balanced.jsonl` is a deterministic, balanced slice sampled from the full temporal `test.jsonl` split. It contains 200 examples total: 50 `bug`, 50 `feature`, 50 `docs`, and 50 `question`.
+`test_200_balanced.jsonl` is a deterministic, balanced slice sampled from the full temporal `test.jsonl` split. It contains 200 examples total: 50 `bug`, 50 `feature`, 50 `docs`, and 50 `question`. Store it in Drive/MinIO or local ignored `data/`, not Git.
 
 This file does **not** replace `test.jsonl`. It exists so DistilBERT, TF-IDF, and OpenAI `gpt-4o-mini` can be compared on the exact same examples without paying to send all 2,145 test rows to the LLM.
 

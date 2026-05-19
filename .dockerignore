@@ -9,3 +9,10 @@
 .venv/
 node_modules/
 artifacts/
+data/
+notebooks/
+docs/*.pdf
+model_server/classifier/evaluate_*.py
+model_server/classifier/train_*.py
+model_server/classifier/model_card.md
+model_server/classifier/runs/
