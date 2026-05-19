@@ -1,0 +1,78 @@
+{
+  "config": {
+    "batch_size": 20,
+    "input_price_per_mtok": 0.15,
+    "limit": null,
+    "max_body_chars": 2000,
+    "model": "gpt-4o-mini",
+    "output_price_per_mtok": 0.6,
+    "provider": "openai",
+    "run_name": "openai-gpt-4o-mini-test-200"
+  },
+  "dataset": {
+    "evaluation": {
+      "examples": 200,
+      "path": "/content/drive/MyDrive/maintainers-copilot/data/test_200_balanced.jsonl",
+      "sha256": "a14faed71a97718cd421fbd84f2ed4d584c3b13f275971fd2b1945429be88f2a"
+    }
+  },
+  "docs": {
+    "models": "https://developers.openai.com/api/docs/models",
+    "responses_api": "https://developers.openai.com/api/docs/guides/text",
+    "structured_outputs": "https://developers.openai.com/api/docs/guides/structured-outputs"
+  },
+  "evaluation_split": "test_200_balanced",
+  "experiment": "openai_llm_baseline",
+  "labels": {
+    "bug": 0,
+    "docs": 2,
+    "feature": 1,
+    "question": 3
+  },
+  "prompt": {
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "predictions": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "type": "number"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "label": {
+                "enum": [
+                  "bug",
+                  "feature",
+                  "docs",
+                  "question"
+                ],
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "confidence",
+              "rationale"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "predictions"
+      ],
+      "type": "object"
+    },
+    "system": "You are a maintainer triage classifier for GitHub issues.\n\nTask:\nChoose exactly one primary label for the issue using only the title and body.\nDo not use repository labels, comments, metadata, author identity, or outside knowledge.\n\nAllowed labels:\n- bug: a defect, regression, crash, incorrect result, failing test, broken existing behavior, or compatibility problem.\n- feature: a request for a new capability, enhancement, API addition/change, performance improvement, or behavior improvement that is not primarily a defect.\n- docs: documentation, examples, tutorials, website/reference text, docstrings, wording, typo, or explanation improvements.\n- question: usage help, troubleshooting, clarification, installation/environment help, or \u201chow do I?\u201d requests.\n\nTie-breaking rules:\n1. If the issue reports current behavior that appears wrong or broken, choose bug even if the fix may require code changes.\n2. If the issue asks to add or change behavior but does not show existing behavior is broken, choose feature.\n3. If the requested change is mainly to docs/examples/wording, choose docs.\n4. If the author mostly asks for help understanding or using the project, choose question.\n5. If multiple labels seem plausible, choose the label a maintainer would most likely use as the primary triage label.\n\nReturn only the structured JSON object requested by the caller. The label value must be exactly one of: bug, feature, docs, question.",
+    "text_policy": "batched issue IDs plus title and truncated body; no repository labels shown to model"
+  }
+}

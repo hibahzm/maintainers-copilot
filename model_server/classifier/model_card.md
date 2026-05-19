@@ -88,9 +88,9 @@ Test per-class F1:
 
 | Track | Implementation | Evidence status |
 | --- | --- | --- |
-| Fine-tuned transformer | `distilbert-base-uncased`, freeze lower 4 layers | validation macro-F1 `0.7422`, test macro-F1 `0.9000` |
-| Classical ML baseline | TF-IDF word n-grams + Logistic Regression | validation macro-F1 `0.7414`, test macro-F1 `0.8847` |
-| LLM baseline | OpenAI `gpt-4o-mini` + Structured Outputs | code/notebook added; metrics pending |
+| Fine-tuned transformer | `distilbert-base-uncased`, freeze lower 4 layers | full-test macro-F1 `0.9000`; 200-row macro-F1 `0.8647` |
+| Classical ML baseline | TF-IDF word n-grams + Logistic Regression | full-test macro-F1 `0.8847`; 200-row macro-F1 `0.8465` |
+| LLM baseline | OpenAI `gpt-4o-mini` + Structured Outputs | 200-row macro-F1 `0.8671`; estimated cost `$0.0179` |
 
 The classical baseline evidence files are committed under `model_server/classifier/runs/classical-tfidf-logreg/`.
 
@@ -114,6 +114,19 @@ Test per-class F1:
 
 Note: both DistilBERT and the classical baseline already have full temporal-test metrics. The fair three-way comparison now uses `data/test_200_balanced.jsonl` so the OpenAI baseline can be measured without sending all 2,145 test rows.
 
+
+## Balanced 200-row comparison metrics
+
+All tracks below were evaluated on `data/test_200_balanced.jsonl` (`200` examples, `50` per class). This is the fair comparison surface for the OpenAI baseline.
+
+| Track | Accuracy | Macro F1 | Weighted F1 | Bug F1 | Feature F1 | Docs F1 | Question F1 | Speed / cost |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| DistilBERT freeze-4 | `0.8650` | `0.8647` | `0.8647` | `0.8167` | `0.9320` | `0.9149` | `0.7952` | `1.61` examples/sec on CPU |
+| TF-IDF + Logistic Regression | `0.8450` | `0.8465` | `0.8465` | `0.8033` | `0.8776` | `0.8958` | `0.8095` | `2577.4` examples/sec |
+| OpenAI `gpt-4o-mini` | `0.8650` | `0.8671` | `0.8671` | `0.8130` | `0.9307` | `0.9011` | `0.8235` | `0.80` examples/sec; `$0.0179` estimated |
+
+OpenAI is the narrow macro-F1 winner on this slice. DistilBERT ties OpenAI on accuracy and is only `0.0024` macro-F1 behind. TF-IDF is lower quality but dramatically faster and easiest to operate.
+
 ## Artifact policy
 
 Committed evidence:
@@ -125,6 +138,14 @@ Committed evidence:
 - `model_server/classifier/runs/classical-tfidf-logreg/run_manifest.json`
 - `model_server/classifier/runs/classical-tfidf-logreg/metrics.json`
 - `model_server/classifier/runs/classical-tfidf-logreg/classification_report.json`
+- `model_server/classifier/runs/first-distilbert-freeze4-test-200/test_metrics.json`
+- `model_server/classifier/runs/first-distilbert-freeze4-test-200/classification_report.json`
+- `model_server/classifier/runs/classical-tfidf-logreg-test-200/run_manifest.json`
+- `model_server/classifier/runs/classical-tfidf-logreg-test-200/metrics.json`
+- `model_server/classifier/runs/classical-tfidf-logreg-test-200/classification_report.json`
+- `model_server/classifier/runs/openai-gpt-4o-mini-test-200/run_manifest.json`
+- `model_server/classifier/runs/openai-gpt-4o-mini-test-200/metrics.json`
+- `model_server/classifier/runs/openai-gpt-4o-mini-test-200/classification_report.json`
 
 Not committed:
 

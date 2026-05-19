@@ -1,0 +1,54 @@
+{
+  "accuracy": 0.865,
+  "confusion_matrix": [
+    [
+      49,
+      0,
+      1,
+      0
+    ],
+    [
+      2,
+      48,
+      0,
+      0
+    ],
+    [
+      6,
+      1,
+      43,
+      0
+    ],
+    [
+      13,
+      4,
+      0,
+      33
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "bug",
+    "feature",
+    "docs",
+    "question"
+  ],
+  "dataset": {
+    "examples": 200,
+    "path": "/content/drive/MyDrive/maintainers-copilot/data/test_200_balanced.jsonl",
+    "sha256": "a14faed71a97718cd421fbd84f2ed4d584c3b13f275971fd2b1945429be88f2a"
+  },
+  "device": "cpu",
+  "examples": 200,
+  "examples_per_second": 1.6090318180446657,
+  "macro_f1": 0.8646949603827415,
+  "model_dir": "/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/model",
+  "per_class_f1": {
+    "bug": 0.8166666666666667,
+    "docs": 0.9148936170212766,
+    "feature": 0.9320388349514563,
+    "question": 0.7951807228915663
+  },
+  "predict_seconds": 124.29834994999965,
+  "split": "test_200_balanced",
+  "weighted_f1": 0.8646949603827414
+}

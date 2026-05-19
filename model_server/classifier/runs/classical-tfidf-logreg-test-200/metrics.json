@@ -1,0 +1,110 @@
+{
+  "model_size": {
+    "labels": [
+      "bug",
+      "feature",
+      "docs",
+      "question"
+    ],
+    "vocabulary_size": 50000
+  },
+  "test_200_balanced": {
+    "accuracy": 0.845,
+    "confusion_matrix": [
+      [
+        49,
+        0,
+        1,
+        0
+      ],
+      [
+        7,
+        43,
+        0,
+        0
+      ],
+      [
+        6,
+        1,
+        43,
+        0
+      ],
+      [
+        10,
+        4,
+        2,
+        34
+      ]
+    ],
+    "confusion_matrix_labels": [
+      "bug",
+      "feature",
+      "docs",
+      "question"
+    ],
+    "examples": 200,
+    "examples_per_second": 2577.3953484499343,
+    "macro_f1": 0.8465467129474742,
+    "per_class_f1": {
+      "bug": 0.8032786885245902,
+      "docs": 0.8958333333333334,
+      "feature": 0.8775510204081632,
+      "question": 0.8095238095238095
+    },
+    "predict_seconds": 0.07759771899964107,
+    "split": "test_200_balanced",
+    "weighted_f1": 0.846546712947474
+  },
+  "timing": {
+    "fit_seconds": 21.866821585999787,
+    "test_200_balanced_predict_seconds": 0.07759771899964107,
+    "validation_predict_seconds": 0.672321023999757
+  },
+  "validation": {
+    "accuracy": 0.7911421911421911,
+    "confusion_matrix": [
+      [
+        969,
+        61,
+        19,
+        74
+      ],
+      [
+        57,
+        342,
+        16,
+        18
+      ],
+      [
+        31,
+        24,
+        256,
+        10
+      ],
+      [
+        107,
+        18,
+        13,
+        130
+      ]
+    ],
+    "confusion_matrix_labels": [
+      "bug",
+      "feature",
+      "docs",
+      "question"
+    ],
+    "examples": 2145,
+    "examples_per_second": 3190.440166870009,
+    "macro_f1": 0.7414104046542157,
+    "per_class_f1": {
+      "bug": 0.8473983384346305,
+      "docs": 0.8192,
+      "feature": 0.7790432801822323,
+      "question": 0.52
+    },
+    "predict_seconds": 0.672321023999757,
+    "split": "validation",
+    "weighted_f1": 0.7884742537906746
+  }
+}

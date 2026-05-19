@@ -2,6 +2,28 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — 200-row classifier comparison results added
+
+### Added
+- `model_server/classifier/runs/first-distilbert-freeze4-test-200/test_metrics.json`
+- `model_server/classifier/runs/first-distilbert-freeze4-test-200/classification_report.json`
+- `model_server/classifier/runs/classical-tfidf-logreg-test-200/run_manifest.json`
+- `model_server/classifier/runs/classical-tfidf-logreg-test-200/metrics.json`
+- `model_server/classifier/runs/classical-tfidf-logreg-test-200/classification_report.json`
+- `model_server/classifier/runs/openai-gpt-4o-mini-test-200/run_manifest.json`
+- `model_server/classifier/runs/openai-gpt-4o-mini-test-200/metrics.json`
+- `model_server/classifier/runs/openai-gpt-4o-mini-test-200/classification_report.json`
+
+### Evidence
+- DistilBERT 200-row macro-F1: `0.8647`
+- TF-IDF Logistic Regression 200-row macro-F1: `0.8465`
+- OpenAI `gpt-4o-mini` 200-row macro-F1: `0.8671`
+- OpenAI estimated cost for the 200-row run: `$0.0179`
+
+### Design notes
+- Step 2.2 now has fair three-way classifier evidence on the same sampled test examples.
+- OpenAI is narrowly best on macro-F1, but the difference from DistilBERT is very small; the deployment decision should consider latency, cost, operational simplicity, and whether the model server should depend on an external API.
+
 ## 2026-05-19 — Balanced 200-row classifier comparison path added
 
 ### Added

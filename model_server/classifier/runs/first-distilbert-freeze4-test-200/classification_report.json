@@ -1,0 +1,41 @@
+{
+  "test_200_balanced": {
+    "accuracy": 0.865,
+    "bug": {
+      "f1-score": 0.8166666666666667,
+      "precision": 0.7,
+      "recall": 0.98,
+      "support": 50.0
+    },
+    "docs": {
+      "f1-score": 0.9148936170212766,
+      "precision": 0.9772727272727273,
+      "recall": 0.86,
+      "support": 50.0
+    },
+    "feature": {
+      "f1-score": 0.9320388349514563,
+      "precision": 0.9056603773584906,
+      "recall": 0.96,
+      "support": 50.0
+    },
+    "macro avg": {
+      "f1-score": 0.8646949603827415,
+      "precision": 0.8957332761578045,
+      "recall": 0.865,
+      "support": 200.0
+    },
+    "question": {
+      "f1-score": 0.7951807228915663,
+      "precision": 1.0,
+      "recall": 0.66,
+      "support": 50.0
+    },
+    "weighted avg": {
+      "f1-score": 0.8646949603827414,
+      "precision": 0.8957332761578045,
+      "recall": 0.865,
+      "support": 200.0
+    }
+  }
+}

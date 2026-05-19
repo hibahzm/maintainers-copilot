@@ -19,12 +19,12 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-013 | Keep `memory.embedding` dimension-unconstrained until the embedding model is chosen | accepted | target: vector dimension follows measured model choice, not a guess |
 | D-014 | Use the classifier target vocabulary `bug / feature / docs / question` | accepted | target: code, docs, data splits, and evals use one assignment-aligned label set |
 | D-015 | Use Langfuse as the tracing backend | accepted | target: one Friday demo trace tree includes request root, tool call, retrieval span, token counts, latency, and an error path |
-| D-016 | Start classifier fine-tuning with DistilBERT and freeze its lower 4 encoder blocks | accepted for first run | validation macro-F1 `0.7422`, test macro-F1 `0.9000`, test accuracy `0.9534`; still compare against LLM baseline before deployment choice |
+| D-016 | Start classifier fine-tuning with DistilBERT and freeze its lower 4 encoder blocks | accepted for first run | validation macro-F1 `0.7422`, full-test macro-F1 `0.9000`, 200-row macro-F1 `0.8647` |
 | D-017 | Use a newer temporal test holdout plus deterministic stratified validation | accepted | target: preserve future-like test evaluation while keeping all four labels measurable during model selection |
 | D-018 | Keep large classifier artifacts outside Git and commit only small run evidence | accepted | `run_manifest.json` and `metrics.json` are committed; model weights/checkpoints stay in Drive until MinIO is wired |
 | D-019 | Use TF-IDF + Logistic Regression as the classical classifier baseline | accepted for comparison | validation macro-F1 `0.7414`, test macro-F1 `0.8847`, vocabulary size `50,000` |
-| D-020 | Use OpenAI `gpt-4o-mini` as the LLM classifier baseline | accepted for comparison | chosen for lower latency/cost than flagship larger frontier models; metrics pending on `data/test_200_balanced.jsonl` |
-| D-021 | Use a deterministic 200-row balanced comparison subset for the three-way classifier comparison | accepted | 50 examples per class from the full temporal test split; full `test.jsonl` remains unchanged |
+| D-020 | Use OpenAI `gpt-4o-mini` as the LLM classifier baseline | accepted for comparison | 200-row macro-F1 `0.8671`; estimated run cost `$0.0179`; 95,571 total tokens |
+| D-021 | Use a deterministic 200-row balanced comparison subset for the three-way classifier comparison | accepted | 50 examples per class; SHA-256 `a14faed71a97718cd421fbd84f2ed4d584c3b13f275971fd2b1945429be88f2a` |
 
 ## Classifier target vocabulary
 
@@ -76,7 +76,7 @@ The first encoder run is intentionally modest:
 - logger: Weights & Biases
 - run name: `first-distilbert-freeze4`
 
-The first corrected four-class Colab run completed with validation macro-F1 `0.7422` and validation accuracy `0.8135`. The later test evaluation on the temporal holdout produced test macro-F1 `0.9000` and test accuracy `0.9534`. This beats the classical baseline test macro-F1 `0.8847`, but at lower throughput, so the final deployment choice still waits for the LLM baseline and a latency/cost defense.
+The first corrected four-class Colab run completed with validation macro-F1 `0.7422` and validation accuracy `0.8135`. The later test evaluation on the temporal holdout produced test macro-F1 `0.9000` and test accuracy `0.9534`. On the balanced 200-row comparison subset, DistilBERT reached macro-F1 `0.8647`, essentially tied with OpenAI but without external API cost.
 
 Evidence files:
 
@@ -89,7 +89,7 @@ Large model weights and checkpoints remain outside Git.
 
 The classical comparison track uses TF-IDF word features with unigrams and bigrams, capped at `50,000` features, feeding a balanced Logistic Regression classifier. This gives the project a fast, cheap, explainable baseline before we defend a heavier transformer or LLM path.
 
-The baseline uses the same `data/train.jsonl`, `data/val.jsonl`, and `data/test.jsonl` files as the transformer run. Its committed Colab evidence reports validation macro-F1 `0.7414` and test macro-F1 `0.8847`. This is strong enough to make the baseline non-trivial: the final DistilBERT decision must beat it on the same temporal test split, not only on validation.
+The baseline uses the same `data/train.jsonl`, `data/val.jsonl`, and `data/test.jsonl` files as the transformer run. Its committed Colab evidence reports validation macro-F1 `0.7414` and test macro-F1 `0.8847`. This is strong enough to make the baseline non-trivial: the deployment decision must explain why any heavier model is worth more operational complexity than this fast baseline.
 
 ## OpenAI LLM baseline
 
@@ -97,6 +97,19 @@ The LLM comparison track uses OpenAI `gpt-4o-mini` with the Responses API and St
 
 The notebook starts with a 50-example pilot to avoid accidental spend. The final comparison runs with `FINAL_RUN = True` on `data/test_200_balanced.jsonl`, a deterministic 200-row subset sampled from the full temporal test split. DistilBERT and TF-IDF keep their full-test evidence, but the fair three-way comparison uses this same smaller subset for all three models.
 
+
+
+## 200-row classifier comparison results
+
+All three classifier tracks have now been evaluated on `data/test_200_balanced.jsonl`, the same 200 examples sampled from the temporal test split.
+
+| Track | Accuracy | Macro F1 | Weighted F1 | Throughput / cost note |
+| --- | ---: | ---: | ---: | --- |
+| DistilBERT freeze-4 | `0.8650` | `0.8647` | `0.8647` | `1.61` examples/sec on CPU in this Colab eval |
+| TF-IDF + Logistic Regression | `0.8450` | `0.8465` | `0.8465` | `2577.4` examples/sec; cheapest local baseline |
+| OpenAI `gpt-4o-mini` | `0.8650` | `0.8671` | `0.8671` | `0.80` examples/sec; estimated cost `$0.0179` for 200 examples |
+
+OpenAI is narrowly strongest on macro-F1 on this balanced slice, but the margin over DistilBERT is tiny (`0.0024`) and it is much slower/cost-bearing. TF-IDF is weaker but dramatically faster and simpler. The next decision is the deployment choice, not more training.
 
 ## Balanced 200-row classifier comparison subset
 

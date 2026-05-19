@@ -1,0 +1,56 @@
+{
+  "accuracy": 0.865,
+  "confusion_matrix": [
+    [
+      50,
+      0,
+      0,
+      0
+    ],
+    [
+      3,
+      47,
+      0,
+      0
+    ],
+    [
+      8,
+      1,
+      41,
+      0
+    ],
+    [
+      12,
+      3,
+      0,
+      35
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "bug",
+    "feature",
+    "docs",
+    "question"
+  ],
+  "estimated_cost_usd": 0.017922149999999998,
+  "examples": 200,
+  "latency": {
+    "examples_per_second": 0.7952645498655063,
+    "mean_seconds_per_example": 1.2574431994600013,
+    "total_seconds": 251.48863989200026
+  },
+  "macro_f1": 0.8670823780629595,
+  "per_class_f1": {
+    "bug": 0.8130081300813008,
+    "docs": 0.9010989010989011,
+    "feature": 0.9306930693069307,
+    "question": 0.8235294117647058
+  },
+  "split": "test_200_balanced",
+  "usage": {
+    "input_tokens": 87601,
+    "output_tokens": 7970,
+    "total_tokens": 95571
+  },
+  "weighted_f1": 0.8670823780629595
+}
