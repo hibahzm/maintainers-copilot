@@ -3,7 +3,7 @@
 ## Status
 First corrected four-class fine-tuning run completed from Colab.
 
-This is the first encoder model result, not yet the final deployment choice. It must still be compared against the classical ML baseline and the LLM baseline on the same held-out test split.
+This is the first encoder model result, not yet the final deployment choice. It must still be compared against the classical ML baseline and the LLM baseline on the same 200-row balanced comparison subset.
 
 ## Architecture
 - Model family: `distilbert-base-uncased`
@@ -29,6 +29,7 @@ This is the first encoder model result, not yet the final deployment choice. It 
 | Train | 10,012 | 5,240 | 2,023 | 1,500 | 1,249 | 2010-09-29 → 2023-05-30 |
 | Validation | 2,145 | 1,123 | 433 | 321 | 268 | 2010-10-12 → 2023-05-23 |
 | Test | 2,145 | 1,344 | 330 | 393 | 78 | 2023-05-30 → 2026-05-09 |
+| Balanced 200 | 200 | 50 | 50 | 50 | 50 | 2023-06-02 → 2026-04-22 |
 
 ### Dataset hashes
 
@@ -37,6 +38,7 @@ This is the first encoder model result, not yet the final deployment choice. It 
 | `data/train.jsonl` | `24dd7452cbdff5f01158a9db52f3a63c4bc0a14e1984771a72144729e0973320` |
 | `data/val.jsonl` | `7888030eae31a4fd881d87a16c2c01d337d701094f11993c6483170b3583b797` |
 | `data/test.jsonl` | `aa52b95e4479c495e352bfe23ee3eb3ed75a9ac77bce7c72026971ccb5f744de` |
+| `data/test_200_balanced.jsonl` | `a14faed71a97718cd421fbd84f2ed4d584c3b13f275971fd2b1945429be88f2a` |
 | `data/split_report.json` | `abbf85e030b9a8aa88ac565a34e2fab77d217a2c017dabaf189031f37a3f0645` |
 
 The raw issue snapshot is not checked into this repo handoff because of local disk constraints. The corrected train/validation/test files and split report are committed here; the raw source snapshot should remain in Drive or later MinIO for full reproducibility.
@@ -88,7 +90,7 @@ Test per-class F1:
 | --- | --- | --- |
 | Fine-tuned transformer | `distilbert-base-uncased`, freeze lower 4 layers | validation macro-F1 `0.7422`, test macro-F1 `0.9000` |
 | Classical ML baseline | TF-IDF word n-grams + Logistic Regression | validation macro-F1 `0.7414`, test macro-F1 `0.8847` |
-| LLM baseline | prompt-based issue classifier | pending |
+| LLM baseline | OpenAI `gpt-4o-mini` + Structured Outputs | code/notebook added; metrics pending |
 
 The classical baseline evidence files are committed under `model_server/classifier/runs/classical-tfidf-logreg/`.
 
@@ -110,7 +112,7 @@ Test per-class F1:
 | Docs | `0.9377` |
 | Question | `0.7153` |
 
-Note: both DistilBERT and the classical baseline now have test metrics on the same temporal holdout. Final model choice still requires the LLM baseline plus a latency/cost defense.
+Note: both DistilBERT and the classical baseline already have full temporal-test metrics. The fair three-way comparison now uses `data/test_200_balanced.jsonl` so the OpenAI baseline can be measured without sending all 2,145 test rows.
 
 ## Artifact policy
 

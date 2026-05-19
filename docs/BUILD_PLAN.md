@@ -173,7 +173,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 
 **Add / complete**
 - classical ML baseline: TF-IDF + logistic regression ✅ code + Colab metrics added
-- LLM baseline using the same test split
+- LLM baseline on the same 200-row balanced comparison subset ✅ code/notebook added; metrics pending
 - shared evaluation outputs
 
 **Current evidence**
@@ -181,9 +181,13 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - expected run folder: `model_server/classifier/runs/classical-tfidf-logreg/`
 - classical validation macro-F1: `0.7414`
 - classical test macro-F1: `0.8847`
+- 200-row comparison subset: `data/test_200_balanced.jsonl`
+- subset builder: `python -m scripts.dataset.build_comparison_subset`
+- OpenAI LLM baseline entrypoint: `python -m model_server.classifier.evaluate_openai_llm`
+- OpenAI LLM notebook: `notebooks/llm_openai_baseline_colab.ipynb`
 
 **Done when**
-- all three models are evaluated on the same split
+- all three models are evaluated on `data/test_200_balanced.jsonl`
 - accuracy, macro-F1, per-class F1, latency, and cost are available
 
 ### 2.3 Defend the deployment choice
@@ -211,7 +215,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - classifier eval script and metrics outputs
 
 **Done when**
-- golden classification examples are separate from the train/test split
+- golden classification examples are separate from the train/test split and from `test_200_balanced.jsonl`
 - the same golden set can evaluate all three models
 
 ---

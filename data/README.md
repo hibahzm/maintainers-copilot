@@ -46,3 +46,23 @@ The corrected Colab split files currently committed here contain:
 | `test.jsonl` | 2,145 | bug 1,344; feature 330; docs 393; question 78 |
 
 `raw_issues.jsonl` may remain a zero-byte placeholder in low-space checkouts. Preserve the raw source snapshot in Drive or MinIO, but do not block local model-card and comparison work on copying it into the repo.
+
+
+## 200-row balanced comparison subset
+
+`test_200_balanced.jsonl` is a deterministic, balanced slice sampled from the full temporal `test.jsonl` split. It contains 200 examples total: 50 `bug`, 50 `feature`, 50 `docs`, and 50 `question`.
+
+This file does **not** replace `test.jsonl`. It exists so DistilBERT, TF-IDF, and OpenAI `gpt-4o-mini` can be compared on the exact same examples without paying to send all 2,145 test rows to the LLM.
+
+Regenerate it from the repo root with:
+
+```bash
+python -m scripts.dataset.build_comparison_subset
+```
+
+The generation report is `test_200_balanced_report.json`. Copy both files to Drive before running the 200-example Colab evaluations:
+
+```text
+data/test_200_balanced.jsonl        -> /content/drive/MyDrive/maintainers-copilot/data/test_200_balanced.jsonl
+data/test_200_balanced_report.json -> /content/drive/MyDrive/maintainers-copilot/data/test_200_balanced_report.json
+```

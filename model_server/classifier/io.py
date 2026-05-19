@@ -26,6 +26,7 @@ class IssueExample:
 
     text: str
     target: str
+    identifier: str | None = None
 
 
 def fingerprint_jsonl(path: Path) -> DatasetFingerprint:
@@ -53,6 +54,7 @@ def read_issue_examples(path: Path) -> list[IssueExample]:
         IssueExample(
             text=compose_issue_text(title=record.get("title"), body=record.get("body")),
             target=_target_from_record(record=record, path=path, line_number=line_number),
+            identifier=record.get("id") if isinstance(record.get("id"), str) else None,
         )
         for line_number, record in enumerate(_read_jsonl(path), start=1)
     ]

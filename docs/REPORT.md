@@ -2,6 +2,45 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — Balanced 200-row classifier comparison path added
+
+### Added
+- `scripts/dataset/build_comparison_subset.py`
+- `data/test_200_balanced.jsonl`
+- `data/test_200_balanced_report.json`
+- 200-row run landing zones under `model_server/classifier/runs/`
+
+### Updated
+- OpenAI baseline now defaults to `data/test_200_balanced.jsonl` with batched requests (`BATCH_SIZE = 20`)
+- DistilBERT and classical Colab notebooks now write separate 200-row comparison evidence instead of overwriting full-test evidence
+- docs now separate full temporal-test evidence, 200-row three-way comparison, and the later 25-example golden set
+
+### Design notes
+- The full `data/test.jsonl` remains unchanged and remains useful for cheap local model evidence.
+- The 200-row subset gives a fair, affordable comparison surface for DistilBERT, TF-IDF, and OpenAI on exactly the same examples.
+- The future 25-example golden classification set remains a separate hand-reviewed eval, not a replacement for this sampled comparison subset.
+
+
+## 2026-05-19 — OpenAI LLM baseline scaffold added
+
+### Added
+- `model_server/classifier/evaluate_openai_llm.py`
+- `notebooks/llm_openai_baseline_colab.ipynb`
+- `model_server/classifier/runs/openai-gpt-4o-mini-test-200/README.md`
+
+### Updated
+- `model_server/pyproject.toml`
+- `docs/COLAB_TRAINING.md`
+- `docs/DECISIONS.md`
+- `docs/BUILD_PLAN.md`
+- `docs/SECURITY.md`
+- `model_server/classifier/model_card.md`
+
+### Design notes
+- The third classifier track is now isolated like the other two: a repo command, a standalone Colab notebook, and a dedicated run folder.
+- The OpenAI baseline uses Responses API Structured Outputs so labels are schema-constrained to `bug / feature / docs / question`; the evaluator parses the JSON and rejects unsupported labels before scoring.
+- The notebook defaults to a 50-example pilot to prevent accidental spend; the final evidence uses `FINAL_RUN = True` on the 200-row balanced comparison subset.
+
 ## 2026-05-19 — DistilBERT temporal test results added
 
 ### Added

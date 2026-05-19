@@ -26,9 +26,16 @@ If Vault is unreachable, the bundle is missing, or the payload is malformed, the
 
 ## Notebook secret hygiene
 
-- Do not paste GitHub, Hugging Face, or Weights & Biases tokens directly into notebook cells.
+- Do not paste GitHub, Hugging Face, Weights & Biases, or OpenAI tokens directly into notebook cells.
 - In Colab, provide credentials through the secrets UI or environment variables at runtime.
 - If a token appears in a saved notebook, treat it as exposed and revoke it before continuing.
+- For OpenAI baseline runs, provide `OPENAI_API_KEY` through Colab Secrets, `getpass`, or runtime environment variables only.
+
+## Production vs notebook LLM keys
+
+- Production app/runtime keys belong in Vault under `llm_api_key`.
+- Notebook experiment keys do not go into Git or `.env`; use Colab Secrets or a temporary runtime prompt.
+- When the model server or backend later calls OpenAI in the shipped stack, it should receive the key from the Vault-backed settings path, not from a hardcoded notebook value.
 
 ## Redaction patterns
 

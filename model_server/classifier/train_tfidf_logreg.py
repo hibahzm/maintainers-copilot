@@ -124,7 +124,8 @@ def train_and_evaluate(
     metrics: dict[str, Any] = {"timing": {"fit_seconds": fit_seconds}}
     reports: dict[str, Any] = {}
 
-    for split_name, examples in ("validation", val_examples), ("test", test_examples):
+    evaluation_splits = (("validation", val_examples), (test_split_name(test_path), test_examples))
+    for split_name, examples in evaluation_splits:
         split_metrics, split_report, predict_seconds = evaluate_split(
             pipeline=pipeline,
             examples=examples,
@@ -140,6 +141,10 @@ def train_and_evaluate(
         "labels": list(LABELS),
     }
     return metrics, reports
+
+
+def test_split_name(path: Path) -> str:
+    return "test" if path.name == "test.jsonl" else path.stem
 
 
 def evaluate_split(

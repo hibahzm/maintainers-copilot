@@ -7,9 +7,10 @@ If you do **not** want to clone the repo inside Colab, use the ready-made notebo
 ```text
 notebooks/maintainers_copilot_week7_colab.ipynb      # dataset + DistilBERT fine-tuning track
 notebooks/tfidf_logreg_baseline_colab.ipynb          # classical TF-IDF + Logistic Regression track
+notebooks/llm_openai_baseline_colab.ipynb            # OpenAI LLM baseline track
 ```
 
-Keep these notebooks separate. The DistilBERT notebook fetches/builds the dataset and trains the transformer. The TF-IDF notebook assumes the corrected `train.jsonl`, `val.jsonl`, and `test.jsonl` already exist in Drive, then writes only classical-baseline evidence files.
+Keep these notebooks separate. The DistilBERT notebook fetches/builds the dataset and trains the transformer. The TF-IDF and OpenAI notebooks assume the corrected `train.jsonl`, `val.jsonl`, and `test_200_balanced.jsonl` already exist in Drive, then write only their own baseline evidence files.
 
 The design stays the same:
 
@@ -190,9 +191,9 @@ If Drive is mounted:
 !cp -r artifacts/classifier/first-distilbert-freeze4 /content/drive/MyDrive/maintainers-copilot/artifacts/
 ```
 
-## Cell 12 — Evaluate saved DistilBERT on test
+## Cell 12 — Evaluate saved DistilBERT on the 200-row comparison subset
 
-The DistilBERT notebook now ends with a test-evaluation section. Run it after the model has been copied to Drive at:
+The DistilBERT notebook now ends with a standalone comparison-evaluation section. Run it after the model has been copied to Drive at:
 
 ```text
 /content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/model/
@@ -201,19 +202,59 @@ The DistilBERT notebook now ends with a test-evaluation section. Run it after th
 It evaluates:
 
 ```text
-/content/drive/MyDrive/maintainers-copilot/data/test.jsonl
+/content/drive/MyDrive/maintainers-copilot/data/test_200_balanced.jsonl
 ```
 
 and writes:
 
 ```text
-/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/test_metrics.json
-/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/classification_report.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4-test-200/test_metrics.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4-test-200/classification_report.json
+```
+
+## 200-row comparison subset
+
+The full temporal `test.jsonl` stays in the repo and remains useful evidence for cheap local models. For the fair three-way comparison with OpenAI, use the smaller balanced file:
+
+```text
+/content/drive/MyDrive/maintainers-copilot/data/test_200_balanced.jsonl
+```
+
+It contains 200 examples: 50 `bug`, 50 `feature`, 50 `docs`, and 50 `question`. It is generated from the full `test.jsonl`, not from train/validation.
+
+Before running the comparison notebooks, make sure these files are in Drive:
+
+```text
+/content/drive/MyDrive/maintainers-copilot/data/train.jsonl
+/content/drive/MyDrive/maintainers-copilot/data/val.jsonl
+/content/drive/MyDrive/maintainers-copilot/data/test_200_balanced.jsonl
+/content/drive/MyDrive/maintainers-copilot/data/test_200_balanced_report.json
+```
+
+## DistilBERT 200-row comparison evaluation
+
+Use the final standalone evaluation section in:
+
+```text
+notebooks/maintainers_copilot_week7_colab.ipynb
+```
+
+It loads the existing saved model from:
+
+```text
+/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/model/
+```
+
+and writes the 200-row comparison evidence to:
+
+```text
+/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4-test-200/test_metrics.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4-test-200/classification_report.json
 ```
 
 ## Separate classical baseline notebook
 
-Use this notebook after the corrected split files are already in Drive:
+Use this notebook after the corrected split files and `test_200_balanced.jsonl` are already in Drive:
 
 ```text
 notebooks/tfidf_logreg_baseline_colab.ipynb
@@ -222,9 +263,27 @@ notebooks/tfidf_logreg_baseline_colab.ipynb
 It writes:
 
 ```text
-/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg/run_manifest.json
-/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg/metrics.json
-/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg/classification_report.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg-test-200/run_manifest.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg-test-200/metrics.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg-test-200/classification_report.json
+```
+
+## Separate OpenAI LLM baseline notebook
+
+Use this notebook after `test_200_balanced.jsonl` is in Drive and your OpenAI API key is available in Colab Secrets as `OPENAI_API_KEY`:
+
+```text
+notebooks/llm_openai_baseline_colab.ipynb
+```
+
+It starts with a 50-example pilot by default. For the final comparison, set `FINAL_RUN = True` so it evaluates all 200 balanced examples. Requests are batched with `BATCH_SIZE = 20`, so the final run is about 10 OpenAI requests.
+
+The final run writes:
+
+```text
+/content/drive/MyDrive/maintainers-copilot/artifacts/openai-gpt-4o-mini-test-200/run_manifest.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/openai-gpt-4o-mini-test-200/metrics.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/openai-gpt-4o-mini-test-200/classification_report.json
 ```
 
 ## After a successful corrected run
@@ -238,12 +297,22 @@ Bring back the corrected dataset files and the small run evidence. Use this exac
 | `/content/drive/MyDrive/maintainers-copilot/data/val.jsonl` | `data/val.jsonl` | yes |
 | `/content/drive/MyDrive/maintainers-copilot/data/test.jsonl` | `data/test.jsonl` | yes |
 | `/content/drive/MyDrive/maintainers-copilot/data/split_report.json` | `data/split_report.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/data/test_200_balanced.jsonl` | `data/test_200_balanced.jsonl` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/data/test_200_balanced_report.json` | `data/test_200_balanced_report.json` | yes |
 | `/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/run_manifest.json` | `model_server/classifier/runs/first-distilbert-freeze4/run_manifest.json` | yes |
 | `/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/metrics.json` | `model_server/classifier/runs/first-distilbert-freeze4/metrics.json` | yes |
 | `/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/model/` | keep in Drive | no |
 | `/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/checkpoints/` | keep in Drive | no |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4-test-200/test_metrics.json` | `model_server/classifier/runs/first-distilbert-freeze4-test-200/test_metrics.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4-test-200/classification_report.json` | `model_server/classifier/runs/first-distilbert-freeze4-test-200/classification_report.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg-test-200/run_manifest.json` | `model_server/classifier/runs/classical-tfidf-logreg-test-200/run_manifest.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg-test-200/metrics.json` | `model_server/classifier/runs/classical-tfidf-logreg-test-200/metrics.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg-test-200/classification_report.json` | `model_server/classifier/runs/classical-tfidf-logreg-test-200/classification_report.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/openai-gpt-4o-mini-test-200/run_manifest.json` | `model_server/classifier/runs/openai-gpt-4o-mini-test-200/run_manifest.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/openai-gpt-4o-mini-test-200/metrics.json` | `model_server/classifier/runs/openai-gpt-4o-mini-test-200/metrics.json` | yes |
+| `/content/drive/MyDrive/maintainers-copilot/artifacts/openai-gpt-4o-mini-test-200/classification_report.json` | `model_server/classifier/runs/openai-gpt-4o-mini-test-200/classification_report.json` | yes |
 
-If local disk is tight, prioritize `train.jsonl`, `val.jsonl`, `test.jsonl`, `split_report.json`, `run_manifest.json`, and `metrics.json`. The raw issue snapshot is still useful for reproducibility, but the model weights and checkpoints must stay out of Git.
+If local disk is tight, prioritize `test_200_balanced.jsonl`, `test_200_balanced_report.json`, and the small `run_manifest.json` / `metrics.json` / `classification_report.json` evidence files. The raw issue snapshot is still useful for reproducibility, but the model weights and checkpoints must stay out of Git.
 
 After those files are copied in, update the classifier model card and decisions from the committed evidence files, not from memory.
 

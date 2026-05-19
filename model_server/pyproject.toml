@@ -22,4 +22,5 @@ train = [
   "datasets>=3.2",
   "scikit-learn>=1.6",
   "wandb>=0.19",
+  "openai>=2.0",
 ]

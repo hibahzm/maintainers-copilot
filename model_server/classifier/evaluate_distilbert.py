@@ -90,7 +90,7 @@ def evaluate_saved_model(
     )
     metrics = {
         "created_at": datetime.now(UTC).isoformat(),
-        "split": "test",
+        "split": split_name(test_path),
         "model_dir": str(model_dir),
         "dataset": asdict(fingerprint_jsonl(test_path)),
         "examples": len(examples),
@@ -105,6 +105,10 @@ def evaluate_saved_model(
         "device": str(device),
     }
     return metrics, report
+
+
+def split_name(path: Path) -> str:
+    return "test" if path.name == "test.jsonl" else path.stem
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -151,7 +155,7 @@ def main() -> None:
         batch_size=args.batch_size,
     )
     write_json(args.output_dir / "test_metrics.json", metrics)
-    write_json(args.output_dir / "classification_report.json", {"test": report})
+    write_json(args.output_dir / "classification_report.json", {split_name(args.test_path): report})
     print(json.dumps(metrics, indent=2, sort_keys=True))
 
 

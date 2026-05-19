@@ -9,6 +9,8 @@ Commit these when a run becomes part of the project record:
 - `classification_report.json` — per-class precision/recall/F1 for baseline comparison runs
 - compact derived summaries, if needed, such as `confusion_matrix.json`
 
+LLM baseline runs may also include `predictions.jsonl` for resumability. Commit it only if it is small enough for review and contains no sensitive text; otherwise keep it in Drive and commit the metrics/report files only.
+
 Do **not** commit large training outputs here:
 
 - `model/`

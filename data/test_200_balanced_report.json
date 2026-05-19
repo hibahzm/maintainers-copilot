@@ -1,0 +1,42 @@
+{
+  "date_range": {
+    "newest_created_at": "2026-04-22T14:13:57Z",
+    "oldest_created_at": "2023-06-02T15:45:14Z"
+  },
+  "note": "This file does not replace data/test.jsonl; it is only the cheap three-way comparison slice.",
+  "output_split": {
+    "examples": 200,
+    "path": "data/test_200_balanced.jsonl",
+    "sha256": "a14faed71a97718cd421fbd84f2ed4d584c3b13f275971fd2b1945429be88f2a"
+  },
+  "policy": {
+    "examples_per_label": 50,
+    "labels": [
+      "bug",
+      "feature",
+      "docs",
+      "question"
+    ],
+    "seed": 42,
+    "selection": "deterministic random sample within each class, then sorted by created_at for stable reading",
+    "source": "data/test.jsonl"
+  },
+  "purpose": "small balanced comparison subset for evaluating DistilBERT, TF-IDF, and OpenAI on the same examples",
+  "source_label_counts": {
+    "bug": 1344,
+    "docs": 393,
+    "feature": 330,
+    "question": 78
+  },
+  "source_split": {
+    "examples": 2145,
+    "path": "data/test.jsonl",
+    "sha256": "aa52b95e4479c495e352bfe23ee3eb3ed75a9ac77bce7c72026971ccb5f744de"
+  },
+  "subset_label_counts": {
+    "bug": 50,
+    "docs": 50,
+    "feature": 50,
+    "question": 50
+  }
+}

@@ -23,6 +23,8 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-017 | Use a newer temporal test holdout plus deterministic stratified validation | accepted | target: preserve future-like test evaluation while keeping all four labels measurable during model selection |
 | D-018 | Keep large classifier artifacts outside Git and commit only small run evidence | accepted | `run_manifest.json` and `metrics.json` are committed; model weights/checkpoints stay in Drive until MinIO is wired |
 | D-019 | Use TF-IDF + Logistic Regression as the classical classifier baseline | accepted for comparison | validation macro-F1 `0.7414`, test macro-F1 `0.8847`, vocabulary size `50,000` |
+| D-020 | Use OpenAI `gpt-4o-mini` as the LLM classifier baseline | accepted for comparison | chosen for lower latency/cost than flagship larger frontier models; metrics pending on `data/test_200_balanced.jsonl` |
+| D-021 | Use a deterministic 200-row balanced comparison subset for the three-way classifier comparison | accepted | 50 examples per class from the full temporal test split; full `test.jsonl` remains unchanged |
 
 ## Classifier target vocabulary
 
@@ -88,3 +90,16 @@ Large model weights and checkpoints remain outside Git.
 The classical comparison track uses TF-IDF word features with unigrams and bigrams, capped at `50,000` features, feeding a balanced Logistic Regression classifier. This gives the project a fast, cheap, explainable baseline before we defend a heavier transformer or LLM path.
 
 The baseline uses the same `data/train.jsonl`, `data/val.jsonl`, and `data/test.jsonl` files as the transformer run. Its committed Colab evidence reports validation macro-F1 `0.7414` and test macro-F1 `0.8847`. This is strong enough to make the baseline non-trivial: the final DistilBERT decision must beat it on the same temporal test split, not only on validation.
+
+## OpenAI LLM baseline
+
+The LLM comparison track uses OpenAI `gpt-4o-mini` with the Responses API and Structured Outputs. The baseline prompt receives only the issue title/body, not the GitHub labels, and returns a strict JSON object with `label`, `confidence`, and `rationale`. The JSON schema constrains `label` to exactly `bug`, `feature`, `docs`, or `question`, and the evaluator still validates the parsed label before scoring.
+
+The notebook starts with a 50-example pilot to avoid accidental spend. The final comparison runs with `FINAL_RUN = True` on `data/test_200_balanced.jsonl`, a deterministic 200-row subset sampled from the full temporal test split. DistilBERT and TF-IDF keep their full-test evidence, but the fair three-way comparison uses this same smaller subset for all three models.
+
+
+## Balanced 200-row classifier comparison subset
+
+The full temporal test split remains `data/test.jsonl` with 2,145 examples. Because the OpenAI baseline has direct token cost, the three-way comparison uses `data/test_200_balanced.jsonl`: 50 examples from each target class, sampled deterministically with seed `42` from the full test split.
+
+This is not a new training split and not a replacement for full-test evidence. It is the shared, affordable comparison surface for DistilBERT, TF-IDF, and OpenAI. The later 25-example golden set remains separate and human-reviewed.
