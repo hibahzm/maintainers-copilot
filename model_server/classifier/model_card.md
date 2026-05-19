@@ -63,13 +63,30 @@ The raw issue snapshot is not checked into this repo handoff because of local di
 
 ## DistilBERT test metrics
 
-TBD. The temporal test split exists, but this first saved DistilBERT metrics file records validation metrics only. Final model selection must evaluate all candidate classifiers on the same test split.
+Run: `first-distilbert-freeze4` evaluated on `data/test.jsonl`
+
+| Metric | Value |
+| --- | ---: |
+| Accuracy | `0.9534` |
+| Macro F1 | `0.9000` |
+| Weighted F1 | `0.9517` |
+| Examples/sec | `70.2` |
+| Device | `cuda` |
+
+Test per-class F1:
+
+| Label | F1 |
+| --- | ---: |
+| Bug | `0.9684` |
+| Feature | `0.9512` |
+| Docs | `0.9363` |
+| Question | `0.7442` |
 
 ## Comparison track status
 
 | Track | Implementation | Evidence status |
 | --- | --- | --- |
-| Fine-tuned transformer | `distilbert-base-uncased`, freeze lower 4 layers | validation metrics committed |
+| Fine-tuned transformer | `distilbert-base-uncased`, freeze lower 4 layers | validation macro-F1 `0.7422`, test macro-F1 `0.9000` |
 | Classical ML baseline | TF-IDF word n-grams + Logistic Regression | validation macro-F1 `0.7414`, test macro-F1 `0.8847` |
 | LLM baseline | prompt-based issue classifier | pending |
 
@@ -93,7 +110,7 @@ Test per-class F1:
 | Docs | `0.9377` |
 | Question | `0.7153` |
 
-Note: the classical baseline has test metrics because its Colab run evaluated `test.jsonl`. The DistilBERT run currently has validation metrics only, so final model choice still requires evaluating DistilBERT and the LLM baseline on the same test split.
+Note: both DistilBERT and the classical baseline now have test metrics on the same temporal holdout. Final model choice still requires the LLM baseline plus a latency/cost defense.
 
 ## Artifact policy
 
@@ -101,6 +118,8 @@ Committed evidence:
 
 - `model_server/classifier/runs/first-distilbert-freeze4/run_manifest.json`
 - `model_server/classifier/runs/first-distilbert-freeze4/metrics.json`
+- `model_server/classifier/runs/first-distilbert-freeze4/test_metrics.json`
+- `model_server/classifier/runs/first-distilbert-freeze4/classification_report.json`
 - `model_server/classifier/runs/classical-tfidf-logreg/run_manifest.json`
 - `model_server/classifier/runs/classical-tfidf-logreg/metrics.json`
 - `model_server/classifier/runs/classical-tfidf-logreg/classification_report.json`

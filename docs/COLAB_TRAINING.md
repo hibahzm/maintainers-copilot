@@ -190,6 +190,27 @@ If Drive is mounted:
 !cp -r artifacts/classifier/first-distilbert-freeze4 /content/drive/MyDrive/maintainers-copilot/artifacts/
 ```
 
+## Cell 12 — Evaluate saved DistilBERT on test
+
+The DistilBERT notebook now ends with a test-evaluation section. Run it after the model has been copied to Drive at:
+
+```text
+/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/model/
+```
+
+It evaluates:
+
+```text
+/content/drive/MyDrive/maintainers-copilot/data/test.jsonl
+```
+
+and writes:
+
+```text
+/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/test_metrics.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/first-distilbert-freeze4/classification_report.json
+```
+
 ## Separate classical baseline notebook
 
 Use this notebook after the corrected split files are already in Drive:

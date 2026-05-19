@@ -19,7 +19,7 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-013 | Keep `memory.embedding` dimension-unconstrained until the embedding model is chosen | accepted | target: vector dimension follows measured model choice, not a guess |
 | D-014 | Use the classifier target vocabulary `bug / feature / docs / question` | accepted | target: code, docs, data splits, and evals use one assignment-aligned label set |
 | D-015 | Use Langfuse as the tracing backend | accepted | target: one Friday demo trace tree includes request root, tool call, retrieval span, token counts, latency, and an error path |
-| D-016 | Start classifier fine-tuning with DistilBERT and freeze its lower 4 encoder blocks | accepted for first run | validation macro-F1 `0.7422`, accuracy `0.8135`; still compare against baselines before deployment choice |
+| D-016 | Start classifier fine-tuning with DistilBERT and freeze its lower 4 encoder blocks | accepted for first run | validation macro-F1 `0.7422`, test macro-F1 `0.9000`, test accuracy `0.9534`; still compare against LLM baseline before deployment choice |
 | D-017 | Use a newer temporal test holdout plus deterministic stratified validation | accepted | target: preserve future-like test evaluation while keeping all four labels measurable during model selection |
 | D-018 | Keep large classifier artifacts outside Git and commit only small run evidence | accepted | `run_manifest.json` and `metrics.json` are committed; model weights/checkpoints stay in Drive until MinIO is wired |
 | D-019 | Use TF-IDF + Logistic Regression as the classical classifier baseline | accepted for comparison | validation macro-F1 `0.7414`, test macro-F1 `0.8847`, vocabulary size `50,000` |
@@ -74,7 +74,7 @@ The first encoder run is intentionally modest:
 - logger: Weights & Biases
 - run name: `first-distilbert-freeze4`
 
-The first corrected four-class Colab run completed with validation macro-F1 `0.7422` and accuracy `0.8135`. This accepts the frozen DistilBERT run as the first encoder experiment, but **not** as the final production model. The deployment choice waits until the classical baseline and LLM baseline are evaluated on the same split.
+The first corrected four-class Colab run completed with validation macro-F1 `0.7422` and validation accuracy `0.8135`. The later test evaluation on the temporal holdout produced test macro-F1 `0.9000` and test accuracy `0.9534`. This beats the classical baseline test macro-F1 `0.8847`, but at lower throughput, so the final deployment choice still waits for the LLM baseline and a latency/cost defense.
 
 Evidence files:
 

@@ -2,10 +2,43 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — DistilBERT temporal test results added
 
+### Added
+- `model_server/classifier/runs/first-distilbert-freeze4/test_metrics.json`
+- `model_server/classifier/runs/first-distilbert-freeze4/classification_report.json`
 
+### Updated
+- cleaned the final DistilBERT notebook evaluation cells so they run standalone from Drive
+- `model_server/classifier/model_card.md`
+- `docs/DECISIONS.md`
+- `docs/BUILD_PLAN.md`
 
+### Evidence
+- test accuracy: `0.9534`
+- test macro-F1: `0.9000`
+- test weighted-F1: `0.9517`
+- inference throughput: `70.2` examples/sec on `cuda`
 
+### Design notes
+- DistilBERT now has the missing temporal test evidence, making the comparison with the classical baseline fair on the same held-out split.
+- DistilBERT is slightly stronger than the classical baseline on test macro-F1 (`0.9000` vs `0.8847`), but the classical baseline is far faster, so deployment choice still needs the LLM baseline and a latency/cost discussion.
+
+## 2026-05-19 — DistilBERT test-evaluation path added
+
+### Added
+- `model_server/classifier/evaluate_distilbert.py`
+- final test-evaluation cells in `notebooks/maintainers_copilot_week7_colab.ipynb`
+
+### Updated
+- `docs/COLAB_TRAINING.md`
+- `model_server/classifier/runs/first-distilbert-freeze4/README.md`
+- `model_server/classifier/model_card.md`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- The transformer track can now load the saved Drive model and evaluate the temporal `test.jsonl` split without retraining.
+- Expected handoff files are `test_metrics.json` and `classification_report.json` under `model_server/classifier/runs/first-distilbert-freeze4/`.
 
 ## 2026-05-19 — Classical baseline Colab results added
 

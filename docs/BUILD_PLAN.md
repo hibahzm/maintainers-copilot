@@ -144,6 +144,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 
 **Current evidence**
 - first corrected run: `first-distilbert-freeze4`
+- DistilBERT test metrics added: macro-F1 `0.9000`, accuracy `0.9534`
 - validation macro-F1: `0.7422`
 - validation accuracy: `0.8135`
 - run manifest and metrics are committed under `model_server/classifier/runs/`
