@@ -1,14 +1,15 @@
 """Fine-tune the first encoder classifier experiment on the Week 7 issue dataset."""
 
 import argparse
-import hashlib
 import json
 import os
-from dataclasses import asdict, dataclass
+from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from model_server.classifier.io import DatasetFingerprint, fingerprint_jsonl
+from model_server.classifier.text import compose_issue_text
 from model_server.classifier.training_config import LABEL_TO_ID, TrainingConfig
 
 
@@ -19,15 +20,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-root", type=Path, default=Path("artifacts/classifier"))
     parser.add_argument("--run-name", default=None)
     return parser.parse_args()
-
-
-@dataclass(frozen=True, slots=True)
-class DatasetFingerprint:
-    """Stable facts that let a future model card recover the exact training inputs."""
-
-    path: str
-    sha256: str
-    examples: int
 
 
 def prepare_run(
@@ -45,25 +37,6 @@ def prepare_run(
         "val": fingerprint_jsonl(val_path),
     }
     return config, run_dir, fingerprints
-
-
-def fingerprint_jsonl(path: Path) -> DatasetFingerprint:
-    """Hash and count a non-empty JSONL dataset split."""
-    if not path.exists():
-        raise FileNotFoundError(f"Missing dataset split: {path}")
-
-    digest = hashlib.sha256()
-    examples = 0
-    with path.open("rb") as handle:
-        for line in handle:
-            if line.strip():
-                examples += 1
-            digest.update(line)
-
-    if examples == 0:
-        raise ValueError(f"Dataset split is empty: {path}")
-
-    return DatasetFingerprint(path=str(path), sha256=digest.hexdigest(), examples=examples)
 
 
 def build_run_manifest(
@@ -175,11 +148,6 @@ def train(config: TrainingConfig, run_dir: Path, manifest: dict[str, Any]) -> di
     trainer.save_model(str(run_dir / "model"))
     tokenizer.save_pretrained(str(run_dir / "model"))
     return {key: float(value) for key, value in metrics.items() if isinstance(value, int | float)}
-
-
-def compose_issue_text(title: str, body: str) -> str:
-    """Keep preprocessing explicit and easy to defend in DECISIONS.md later."""
-    return f"{title.strip()}\n\n{body.strip()}".strip()
 
 
 def freeze_lower_encoder_layers(model: Any, layer_count: int) -> None:

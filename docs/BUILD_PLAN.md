@@ -171,9 +171,14 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 ### 2.2 Build the two baselines on the same splits
 
 **Add / complete**
-- classical ML baseline: TF-IDF + logistic regression
+- classical ML baseline: TF-IDF + logistic regression ✅ code added
 - LLM baseline using the same test split
 - shared evaluation outputs
+
+**Current evidence**
+- classical baseline entrypoint: `python -m model_server.classifier.classical_baseline`
+- expected run folder: `model_server/classifier/runs/classical-tfidf-logreg/`
+- metrics are pending execution in an environment with the model-server training dependencies installed
 
 **Done when**
 - all three models are evaluated on the same split

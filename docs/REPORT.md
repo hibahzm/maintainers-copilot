@@ -4,6 +4,27 @@ This is the running build journal. Every meaningful change should add a dated en
 
 
 
+
+## 2026-05-19 — Classical classifier baseline added
+
+### Added
+- `model_server/classifier/classical_baseline.py`
+- `model_server/classifier/io.py`
+- `model_server/classifier/text.py`
+- `model_server/classifier/runs/classical-tfidf-logreg/README.md`
+
+### Updated
+- shared classifier text preprocessing and dataset fingerprint helpers
+- `model_server/classifier/train.py` now reuses those helpers
+- `model_server/classifier/model_card.md`
+- `docs/DECISIONS.md`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- The comparison track now has its second implementation path: TF-IDF word n-grams plus balanced Logistic Regression.
+- The baseline writes the same small evidence shape as the transformer track: manifest, metrics, and classification report.
+- Local execution is pending because the current checkout does not have `scikit-learn` installed; the code path is ready for Colab or an environment with `model_server[train]` installed.
+
 ## 2026-05-19 — Corrected classifier splits and first run evidence committed
 
 ### Added

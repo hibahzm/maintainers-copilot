@@ -65,6 +65,16 @@ The raw issue snapshot is not checked into this repo handoff because of local di
 
 TBD. The temporal test split exists, but this first saved metrics file records validation metrics only. Final model selection must evaluate all candidate classifiers on the same test split.
 
+## Comparison track status
+
+| Track | Implementation | Evidence status |
+| --- | --- | --- |
+| Fine-tuned transformer | `distilbert-base-uncased`, freeze lower 4 layers | validation metrics committed |
+| Classical ML baseline | TF-IDF word n-grams + Logistic Regression | code added; metrics pending execution |
+| LLM baseline | prompt-based issue classifier | pending |
+
+The classical baseline writes its small evidence files under `model_server/classifier/runs/classical-tfidf-logreg/` after execution.
+
 ## Artifact policy
 
 Committed evidence:

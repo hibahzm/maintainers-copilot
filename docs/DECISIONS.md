@@ -22,6 +22,7 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-016 | Start classifier fine-tuning with DistilBERT and freeze its lower 4 encoder blocks | accepted for first run | validation macro-F1 `0.7422`, accuracy `0.8135`; still compare against baselines before deployment choice |
 | D-017 | Use a newer temporal test holdout plus deterministic stratified validation | accepted | target: preserve future-like test evaluation while keeping all four labels measurable during model selection |
 | D-018 | Keep large classifier artifacts outside Git and commit only small run evidence | accepted | `run_manifest.json` and `metrics.json` are committed; model weights/checkpoints stay in Drive until MinIO is wired |
+| D-019 | Use TF-IDF + Logistic Regression as the classical classifier baseline | accepted for comparison | must report validation/test accuracy, macro-F1, per-class F1, latency, and vocabulary size on the same splits |
 
 ## Classifier target vocabulary
 
@@ -81,3 +82,9 @@ Evidence files:
 - `model_server/classifier/runs/first-distilbert-freeze4/metrics.json`
 
 Large model weights and checkpoints remain outside Git.
+
+## Classical baseline
+
+The classical comparison track uses TF-IDF word features with unigrams and bigrams, capped at `50,000` features, feeding a balanced Logistic Regression classifier. This gives the project a fast, cheap, explainable baseline before we defend a heavier transformer or LLM path.
+
+The baseline must use the same `data/train.jsonl`, `data/val.jsonl`, and `data/test.jsonl` files as the transformer run. It writes small evidence files under `model_server/classifier/runs/classical-tfidf-logreg/` and must not commit binary model artifacts.
