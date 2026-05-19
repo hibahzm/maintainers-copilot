@@ -51,3 +51,31 @@ If a caller does not provide them, the API creates both and returns them in the 
 ## First fine-tuning handoff
 
 Use `docs/COLAB_TRAINING.md` for the first notebook run. If local disk is limited, Colab may host both the generated dataset and the model artifacts; the important rule is still that repository code owns the pipeline.
+
+
+## Classifier serving
+
+The selected issue classifier is DistilBERT run `first-distilbert-freeze4`. The model server exposes it at:
+
+```text
+POST /classify
+```
+
+Runtime requirement:
+
+```text
+CLASSIFIER_MODEL_DIR=artifacts/classifier/first-distilbert-freeze4/model
+```
+
+That directory must contain the saved Hugging Face tokenizer/model files from Colab or the future MinIO artifact flow. Do not commit the model weights to Git.
+
+Example request:
+
+```json
+{
+  "title": "BUG: read_csv crashes on empty file",
+  "body": "read_csv raises an unexpected exception when..."
+}
+```
+
+The backend API proxies this through `POST /classifier`, using `MODEL_SERVER_URL` to locate the model server.

@@ -205,13 +205,17 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 ### 2.4 Expose NLP tools through the model server
 
 **Add / complete**
-- `/classify`
+- `/classify` ✅ DistilBERT-backed endpoint added to the model server
+- backend `/classifier` proxy ✅ calls model server `/classify`
 - `/ner`
 - `/summarize`
 
 **Done when**
 - all three are FastAPI endpoints
 - the chatbot will later be able to call them over HTTP
+
+**Serving note**
+- `CLASSIFIER_MODEL_DIR` points at the saved Hugging Face model directory; model weights remain outside Git.
 
 ### 2.5 Build the classification golden set
 

@@ -12,3 +12,6 @@ class ClassifyIssueRequest(APIModel):
 class ClassifyIssueResponse(APIModel):
     label: ClassificationLabel
     confidence: float = Field(ge=0.0, le=1.0)
+    scores: dict[ClassificationLabel, float] = Field(default_factory=dict)
+    model_name: str | None = None
+    model_dir: str | None = None

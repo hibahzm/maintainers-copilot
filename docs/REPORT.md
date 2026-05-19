@@ -2,6 +2,21 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — DistilBERT classifier serving endpoint added
+
+### Added
+- real model-server `POST /classify` endpoint backed by the selected DistilBERT artifact path
+- backend `POST /classifier` proxy service
+- classifier serving tests with fake model/server clients
+
+### Updated
+- `CLASSIFIER_MODEL_DIR` documented as the runtime model path
+- Step 2.4 progress recorded in `docs/BUILD_PLAN.md`
+
+### Design notes
+- Model weights are still not committed. The serving code expects the saved Hugging Face model directory to be mounted or copied into the runtime path.
+- The model server returns `label`, `confidence`, per-label `scores`, `model_name`, and `model_dir`.
+
 ## 2026-05-19 — DistilBERT selected as classifier deployment model
 
 ### Updated

@@ -25,7 +25,7 @@ def get_chat_service() -> ChatService:
 
 
 def get_classifier_service() -> ClassifierService:
-    return ClassifierService()
+    return ClassifierService(model_server_url=settings.model_server_url)
 
 
 def get_memory_service() -> MemoryService:
