@@ -69,6 +69,12 @@ CLASSIFIER_MODEL_DIR=artifacts/classifier/first-distilbert-freeze4/model
 
 That directory must contain the saved Hugging Face tokenizer/model files from Colab or the future MinIO artifact flow. Do not commit the model weights to Git.
 
+For Docker Compose, the host `./artifacts` directory is mounted read-only into the model-server container at `/app/artifacts`, so the container uses:
+
+```text
+CLASSIFIER_MODEL_DIR=/app/artifacts/classifier/first-distilbert-freeze4/model
+```
+
 Example request:
 
 ```json

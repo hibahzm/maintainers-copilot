@@ -2,6 +2,18 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — Local classifier artifact mounted for model server
+
+### Updated
+- `docker-compose.yml`
+- `.dockerignore`
+- `docs/RUNBOOK.md`
+
+### Design notes
+- Mounted host `./artifacts` into the `model-server` container as read-only `/app/artifacts`, so local model weights can be used without committing them.
+- Set the container's `CLASSIFIER_MODEL_DIR` to the mounted DistilBERT model path.
+- Added `artifacts/` to `.dockerignore` so Docker builds do not send local model weights in the build context.
+
 ## 2026-05-19 — Model-server dependencies trimmed
 
 ### Updated

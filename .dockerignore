@@ -8,3 +8,4 @@
 .mypy_cache/
 .venv/
 node_modules/
+artifacts/

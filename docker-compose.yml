@@ -79,6 +79,10 @@ services:
       context: .
       dockerfile: model_server/Dockerfile
     container_name: maintainers-copilot-model-server
+    environment:
+      CLASSIFIER_MODEL_DIR: "/app/artifacts/classifier/first-distilbert-freeze4/model"
+    volumes:
+      - ./artifacts:/app/artifacts:ro
     ports:
       - "${MODEL_SERVER_PORT:-8001}:8001"
     healthcheck:
