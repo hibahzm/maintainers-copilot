@@ -1,0 +1,44 @@
+{
+  "artifact_policy": "commit small metrics/manifests only; do not commit binary model artifacts",
+  "config": {
+    "analyzer": "word",
+    "class_weight": "balanced",
+    "logistic_regression_c": 4.0,
+    "logistic_regression_max_iter": 1000,
+    "lowercase": true,
+    "max_features": 50000,
+    "min_df": 2,
+    "model_family": "tfidf_logistic_regression",
+    "ngram_max": 2,
+    "ngram_min": 1,
+    "random_state": 42,
+    "run_name": "classical-tfidf-logreg",
+    "strip_accents": "unicode",
+    "sublinear_tf": true
+  },
+  "created_at": "2026-05-19T06:38:05.594610+00:00",
+  "dataset": {
+    "test": {
+      "examples": 2145,
+      "path": "/content/drive/MyDrive/maintainers-copilot/data/test.jsonl",
+      "sha256": "aa52b95e4479c495e352bfe23ee3eb3ed75a9ac77bce7c72026971ccb5f744de"
+    },
+    "train": {
+      "examples": 10012,
+      "path": "/content/drive/MyDrive/maintainers-copilot/data/train.jsonl",
+      "sha256": "24dd7452cbdff5f01158a9db52f3a63c4bc0a14e1984771a72144729e0973320"
+    },
+    "val": {
+      "examples": 2145,
+      "path": "/content/drive/MyDrive/maintainers-copilot/data/val.jsonl",
+      "sha256": "7888030eae31a4fd881d87a16c2c01d337d701094f11993c6483170b3583b797"
+    }
+  },
+  "experiment": "classical_baseline",
+  "labels": {
+    "bug": 0,
+    "docs": 2,
+    "feature": 1,
+    "question": 3
+  }
+}

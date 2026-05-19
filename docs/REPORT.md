@@ -6,6 +6,31 @@ This is the running build journal. Every meaningful change should add a dated en
 
 
 
+
+## 2026-05-19 — Classical baseline Colab results added
+
+### Added
+- `model_server/classifier/runs/classical-tfidf-logreg/run_manifest.json`
+- `model_server/classifier/runs/classical-tfidf-logreg/metrics.json`
+- `model_server/classifier/runs/classical-tfidf-logreg/classification_report.json`
+
+### Updated
+- `notebooks/tfidf_logreg_baseline_colab.ipynb`
+- `model_server/classifier/model_card.md`
+- `docs/DECISIONS.md`
+- `docs/BUILD_PLAN.md`
+
+### Evidence
+- validation accuracy: `0.7911`
+- validation macro-F1: `0.7414`
+- test accuracy: `0.9445`
+- test macro-F1: `0.8847`
+- vocabulary size: `50,000`
+
+### Design notes
+- The classical baseline is now a real comparison point, not just scaffolding.
+- DistilBERT currently has validation evidence only, so the next fair comparison step is to evaluate DistilBERT on `test.jsonl` or add the LLM baseline and keep the comparison table explicit about which split each number came from.
+
 ## 2026-05-19 — Classifier track entrypoints clarified
 
 ### Renamed

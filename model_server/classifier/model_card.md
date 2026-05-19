@@ -52,7 +52,7 @@ The raw issue snapshot is not checked into this repo handoff because of local di
 - Seed: `42`
 - Logger: Weights & Biases project `maintainers-copilot-week7`
 
-## Validation metrics
+## DistilBERT validation metrics
 
 | Metric | Value |
 | --- | ---: |
@@ -61,19 +61,39 @@ The raw issue snapshot is not checked into this repo handoff because of local di
 | Eval loss | `0.5508` |
 | Eval samples/sec | `82.148` |
 
-## Test metrics
+## DistilBERT test metrics
 
-TBD. The temporal test split exists, but this first saved metrics file records validation metrics only. Final model selection must evaluate all candidate classifiers on the same test split.
+TBD. The temporal test split exists, but this first saved DistilBERT metrics file records validation metrics only. Final model selection must evaluate all candidate classifiers on the same test split.
 
 ## Comparison track status
 
 | Track | Implementation | Evidence status |
 | --- | --- | --- |
 | Fine-tuned transformer | `distilbert-base-uncased`, freeze lower 4 layers | validation metrics committed |
-| Classical ML baseline | TF-IDF word n-grams + Logistic Regression | code added; metrics pending execution |
+| Classical ML baseline | TF-IDF word n-grams + Logistic Regression | validation macro-F1 `0.7414`, test macro-F1 `0.8847` |
 | LLM baseline | prompt-based issue classifier | pending |
 
-The classical baseline writes its small evidence files under `model_server/classifier/runs/classical-tfidf-logreg/` after execution.
+The classical baseline evidence files are committed under `model_server/classifier/runs/classical-tfidf-logreg/`.
+
+## Classical baseline metrics
+
+Run: `classical-tfidf-logreg`
+
+| Split | Accuracy | Macro F1 | Weighted F1 | Examples/sec |
+| --- | ---: | ---: | ---: | ---: |
+| Validation | `0.7911` | `0.7414` | `0.7885` | `2122.6` |
+| Test | `0.9445` | `0.8847` | `0.9433` | `1312.1` |
+
+Test per-class F1:
+
+| Label | F1 |
+| --- | ---: |
+| Bug | `0.9633` |
+| Feature | `0.9224` |
+| Docs | `0.9377` |
+| Question | `0.7153` |
+
+Note: the classical baseline has test metrics because its Colab run evaluated `test.jsonl`. The DistilBERT run currently has validation metrics only, so final model choice still requires evaluating DistilBERT and the LLM baseline on the same test split.
 
 ## Artifact policy
 
@@ -81,6 +101,9 @@ Committed evidence:
 
 - `model_server/classifier/runs/first-distilbert-freeze4/run_manifest.json`
 - `model_server/classifier/runs/first-distilbert-freeze4/metrics.json`
+- `model_server/classifier/runs/classical-tfidf-logreg/run_manifest.json`
+- `model_server/classifier/runs/classical-tfidf-logreg/metrics.json`
+- `model_server/classifier/runs/classical-tfidf-logreg/classification_report.json`
 
 Not committed:
 
