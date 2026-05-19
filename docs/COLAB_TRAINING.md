@@ -2,20 +2,21 @@
 
 Use this when you want the **whole data-prep + first-training sequence to run inside Google Colab** so your local machine does not need to store the raw dataset or model artifacts.
 
-If you do **not** want to clone the repo inside Colab, use the ready-made notebook:
+If you do **not** want to clone the repo inside Colab, use the ready-made notebooks as separate tracks:
 
 ```text
-notebooks/maintainers_copilot_week7_colab.ipynb
+notebooks/maintainers_copilot_week7_colab.ipynb      # dataset + DistilBERT fine-tuning track
+notebooks/tfidf_logreg_baseline_colab.ipynb          # classical TF-IDF + Logistic Regression track
 ```
 
-That notebook contains the same fetch, split, inspect, and training logic inline so you can upload it directly to Colab and run it cell by cell.
+Keep these notebooks separate. The DistilBERT notebook fetches/builds the dataset and trains the transformer. The TF-IDF notebook assumes the corrected `train.jsonl`, `val.jsonl`, and `test.jsonl` already exist in Drive, then writes only classical-baseline evidence files.
 
 The design stays the same:
 
 - the **repository** owns the scripts, configs, and decisions;
 - **Colab** runs those scripts in a notebook session and supplies GPU compute when training begins.
 
-The standalone notebook mirrors the repository code for convenience. If we later change the canonical pipeline, we should update both together rather than letting them drift.
+The standalone notebooks mirror the repository code for convenience. If we later change the canonical pipeline, we should update the matching notebook too rather than letting them drift.
 
 ## Do we need the data on the laptop?
 
@@ -160,7 +161,7 @@ maintainers-copilot-week7
 ## Cell 9 — Run the first fine-tuning experiment
 
 ```bash
-!python -m model_server.classifier.train \
+!python -m model_server.classifier.train_distilbert \
   --train-path data/train.jsonl \
   --val-path data/val.jsonl \
   --run-name first-distilbert-freeze4
@@ -187,6 +188,22 @@ If Drive is mounted:
 
 ```bash
 !cp -r artifacts/classifier/first-distilbert-freeze4 /content/drive/MyDrive/maintainers-copilot/artifacts/
+```
+
+## Separate classical baseline notebook
+
+Use this notebook after the corrected split files are already in Drive:
+
+```text
+notebooks/tfidf_logreg_baseline_colab.ipynb
+```
+
+It writes:
+
+```text
+/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg/run_manifest.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg/metrics.json
+/content/drive/MyDrive/maintainers-copilot/artifacts/classical-tfidf-logreg/classification_report.json
 ```
 
 ## After a successful corrected run

@@ -128,7 +128,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 ### 1.6 Start the first fine-tuning run
 
 **Add / complete**
-- `model_server/classifier/train.py`
+- `model_server/classifier/train_distilbert.py`
 - run logging
 - first encoder fine-tuning experiment
 
@@ -176,7 +176,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - shared evaluation outputs
 
 **Current evidence**
-- classical baseline entrypoint: `python -m model_server.classifier.classical_baseline`
+- classical baseline entrypoint: `python -m model_server.classifier.train_tfidf_logreg`
 - expected run folder: `model_server/classifier/runs/classical-tfidf-logreg/`
 - metrics are pending execution in an environment with the model-server training dependencies installed
 

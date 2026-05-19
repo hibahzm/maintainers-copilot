@@ -5,7 +5,7 @@ Landing zone for the classical baseline in the Week 7 classifier comparison trac
 Run from the repository root after installing the model-server training dependencies:
 
 ```bash
-python -m model_server.classifier.classical_baseline
+python -m model_server.classifier.train_tfidf_logreg
 ```
 
 Expected small evidence files:

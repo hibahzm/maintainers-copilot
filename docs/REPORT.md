@@ -5,17 +5,29 @@ This is the running build journal. Every meaningful change should add a dated en
 
 
 
+
+## 2026-05-19 — Classifier track entrypoints clarified
+
+### Renamed
+- `model_server/classifier/train.py` → `model_server/classifier/train_distilbert.py`
+- `model_server/classifier/classical_baseline.py` → `model_server/classifier/train_tfidf_logreg.py`
+
+### Design notes
+- The two classifier tracks now read as separate commands instead of generic training files.
+- Colab workflow keeps the classical baseline in `notebooks/tfidf_logreg_baseline_colab.ipynb` rather than appending it into the DistilBERT run notebook.
+
 ## 2026-05-19 — Classical classifier baseline added
 
 ### Added
-- `model_server/classifier/classical_baseline.py`
+- `model_server/classifier/train_tfidf_logreg.py`
+- `notebooks/tfidf_logreg_baseline_colab.ipynb`
 - `model_server/classifier/io.py`
 - `model_server/classifier/text.py`
 - `model_server/classifier/runs/classical-tfidf-logreg/README.md`
 
 ### Updated
 - shared classifier text preprocessing and dataset fingerprint helpers
-- `model_server/classifier/train.py` now reuses those helpers
+- `model_server/classifier/train_distilbert.py` now reuses those helpers
 - `model_server/classifier/model_card.md`
 - `docs/DECISIONS.md`
 - `docs/BUILD_PLAN.md`
@@ -269,7 +281,7 @@ This is the running build journal. Every meaningful change should add a dated en
 
 ### Added
 - reproducible training settings in `model_server/classifier/training_config.py`
-- real training entrypoint in `model_server/classifier/train.py`
+- real DistilBERT training entrypoint in `model_server/classifier/train_distilbert.py`
 - optional `train` dependencies for the model server
 
 ### Updated
