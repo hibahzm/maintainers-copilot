@@ -25,6 +25,7 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-019 | Use TF-IDF + Logistic Regression as the classical classifier baseline | accepted for comparison | validation macro-F1 `0.7414`, test macro-F1 `0.8847`, vocabulary size `50,000` |
 | D-020 | Use OpenAI `gpt-4o-mini` as the LLM classifier baseline | accepted for comparison | 200-row macro-F1 `0.8671`; estimated run cost `$0.0179`; 95,571 total tokens |
 | D-021 | Use a deterministic 200-row balanced comparison subset for the three-way classifier comparison | accepted | 50 examples per class; SHA-256 `a14faed71a97718cd421fbd84f2ed4d584c3b13f275971fd2b1945429be88f2a` |
+| D-022 | Deploy DistilBERT as the project issue classifier | accepted | chosen over OpenAI because macro-F1 is effectively tied while avoiding per-call cost and external API dependency |
 
 ## Classifier target vocabulary
 
@@ -110,6 +111,21 @@ All three classifier tracks have now been evaluated on `data/test_200_balanced.j
 | OpenAI `gpt-4o-mini` | `0.8650` | `0.8671` | `0.8671` | `0.80` examples/sec; estimated cost `$0.0179` for 200 examples |
 
 OpenAI is narrowly strongest on macro-F1 on this balanced slice, but the margin over DistilBERT is tiny (`0.0024`) and it is much slower/cost-bearing. TF-IDF is weaker but dramatically faster and simpler. The next decision is the deployment choice, not more training.
+
+
+## Classifier deployment choice
+
+Choose the fine-tuned DistilBERT run `first-distilbert-freeze4` as the project classifier for `/classify`.
+
+Why this is the right tradeoff now:
+
+- Quality is effectively tied with the OpenAI baseline on the balanced comparison set: DistilBERT macro-F1 `0.8647` vs OpenAI `0.8671`, a difference of only `0.0024`.
+- DistilBERT ties OpenAI on accuracy (`0.8650`) and has stronger full temporal-test evidence (`0.9000` macro-F1 on `data/test.jsonl`).
+- DistilBERT avoids per-request API cost, token budgeting, rate limits, network dependency, and runtime key handling.
+- A larger OpenAI model would likely improve quality, but that would change the cost/latency/security profile and is not necessary for the assignment-grade classifier decision.
+- TF-IDF remains valuable as the cheapest fallback and sanity-check baseline, but its quality is lower on both full test and the 200-row comparison set.
+
+This decision is specific to the **issue classifier**. It does not choose the future RAG embedding model. The RAG track still requires separate retrieval evidence before choosing embeddings.
 
 ## Balanced 200-row classifier comparison subset
 

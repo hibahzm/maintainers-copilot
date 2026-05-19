@@ -194,8 +194,13 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 ### 2.3 Defend the deployment choice
 
 **Add / complete**
-- three-way comparison table in `docs/DECISIONS.md`
-- one chosen production model with a numeric defense
+- three-way comparison table in `docs/DECISIONS.md` ✅
+- one chosen production model with a numeric defense ✅
+
+**Decision**
+- chosen classifier: DistilBERT run `first-distilbert-freeze4`
+- reason: OpenAI is only `0.0024` macro-F1 ahead on the 200-row slice, while DistilBERT avoids per-call API cost, rate limits, external dependency, and production secret handling
+- TF-IDF remains the fast fallback/baseline, not the primary model
 
 ### 2.4 Expose NLP tools through the model server
 
@@ -235,6 +240,8 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - held-out RAG issues do not appear in classifier training
 
 ### 3.2 Choose the embedding model with evidence
+
+This is for RAG/retrieval, not for the issue classifier. The classifier decision above does not force an embedding model.
 
 **Add / complete**
 - at least two embedding candidates

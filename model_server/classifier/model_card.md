@@ -1,9 +1,9 @@
 # Classifier Model Card
 
 ## Status
-First corrected four-class fine-tuning run completed from Colab.
+DistilBERT run `first-distilbert-freeze4` is the selected project classifier.
 
-This is the first encoder model result, not yet the final deployment choice. It must still be compared against the classical ML baseline and the LLM baseline on the same 200-row balanced comparison subset.
+The deployment choice is based on the full temporal test evidence plus the fair 200-row comparison against TF-IDF and OpenAI `gpt-4o-mini`.
 
 ## Architecture
 - Model family: `distilbert-base-uncased`
@@ -126,6 +126,21 @@ All tracks below were evaluated on `data/test_200_balanced.jsonl` (`200` example
 | OpenAI `gpt-4o-mini` | `0.8650` | `0.8671` | `0.8671` | `0.8130` | `0.9307` | `0.9011` | `0.8235` | `0.80` examples/sec; `$0.0179` estimated |
 
 OpenAI is the narrow macro-F1 winner on this slice. DistilBERT ties OpenAI on accuracy and is only `0.0024` macro-F1 behind. TF-IDF is lower quality but dramatically faster and easiest to operate.
+
+
+## Deployment choice
+
+Chosen model: `first-distilbert-freeze4` (`distilbert-base-uncased` with lower 4 encoder blocks frozen).
+
+Decision rationale:
+
+- It is effectively tied with OpenAI on the balanced comparison subset: OpenAI macro-F1 `0.8671`, DistilBERT macro-F1 `0.8647`.
+- It ties OpenAI accuracy on that subset at `0.8650`.
+- It has stronger full temporal-test evidence than the classical baseline: DistilBERT macro-F1 `0.9000` vs TF-IDF `0.8847`.
+- It can run inside the model server without OpenAI runtime cost, API availability risk, rate limits, or production key handling.
+- TF-IDF remains the fast local fallback; OpenAI remains the measured LLM reference point.
+
+This choice does not settle the future RAG embedding model. Embeddings are chosen later with retrieval metrics.
 
 ## Artifact policy
 

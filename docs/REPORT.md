@@ -2,6 +2,23 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — DistilBERT selected as classifier deployment model
+
+### Updated
+- `docs/DECISIONS.md`
+- `docs/BUILD_PLAN.md`
+- `model_server/classifier/model_card.md`
+
+### Decision
+- Selected `first-distilbert-freeze4` as the project issue classifier.
+- Kept TF-IDF as the fast fallback/baseline.
+- Kept OpenAI `gpt-4o-mini` as the measured LLM reference, not the runtime classifier.
+
+### Rationale
+- DistilBERT is effectively tied with OpenAI on the 200-row balanced comparison (`0.8647` vs `0.8671` macro-F1).
+- DistilBERT avoids per-call API cost, rate limits, external availability, and production OpenAI secret handling for classification.
+- Embedding-model selection remains a separate RAG decision in Step 3.
+
 ## 2026-05-19 — 200-row classifier comparison results added
 
 ### Added
