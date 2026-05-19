@@ -81,6 +81,9 @@ services:
     container_name: maintainers-copilot-model-server
     environment:
       CLASSIFIER_MODEL_DIR: "/app/artifacts/classifier/first-distilbert-freeze4/model"
+      OPENAI_SUMMARIZER_MODEL: "${OPENAI_SUMMARIZER_MODEL:-gpt-4o-mini}"
+      # For local smoke only, export OPENAI_API_KEY in your shell or inject it from Vault/secrets.
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
     volumes:
       - ./artifacts:/app/artifacts:ro
     ports:

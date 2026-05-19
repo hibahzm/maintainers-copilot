@@ -207,12 +207,12 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 **Add / complete**
 - `/classify` ✅ DistilBERT-backed endpoint added to the model server and Docker-smoke-tested
 - backend `/classifier` proxy ✅ calls model server `/classify`
-- `/ner`
-- `/summarize`
+- `/ner` ✅ rule-based code-shaped entity extractor added
+- `/summarize` ✅ OpenAI structured-output summarizer added; requires injected API key
 
 **Done when**
-- all three are FastAPI endpoints
-- the chatbot will later be able to call them over HTTP
+- all three are FastAPI endpoints ✅
+- the chatbot will later be able to call them over HTTP ✅
 
 **Serving note**
 - `CLASSIFIER_MODEL_DIR` points at the saved Hugging Face model directory; model weights remain outside Git.

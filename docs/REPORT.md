@@ -2,6 +2,26 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-19 — NER and LLM summarizer tools added
+
+### Added
+- rule-based `/ner` endpoint for code-shaped entities
+- OpenAI-backed `/summarize` endpoint with structured output
+- NER and summarizer service/router tests
+
+### Updated
+- `model_server/pyproject.toml`
+- `.env.example`
+- `docker-compose.yml`
+- `docs/BUILD_PLAN.md`
+- `docs/RUNBOOK.md`
+- `docs/SECURITY.md`
+
+### Design notes
+- NER is integration-only and deterministic: it extracts functions, dotted symbols, exceptions, package/version mentions, file paths, URLs, operating systems, and file types without an LLM call.
+- Summarization uses OpenAI structured output with default model `gpt-4o-mini`, matching the project definition that summarization may be pre-trained or LLM-driven.
+- The summarizer returns `503` when no API key is injected, so Docker can still boot without a secret and the key can remain in Vault/secrets.
+
 ## 2026-05-19 — Classifier Docker smoke test passed
 
 ### Verified

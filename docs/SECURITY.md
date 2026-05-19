@@ -45,3 +45,8 @@ Initial patterns live in `backend/app/infra/redaction.py` and currently cover:
 - bearer tokens
 
 This list is deliberately small for now; each new pattern should be justified by a real leak path or test case.
+
+
+## Model-server summarizer secret
+
+The `/summarize` tool is OpenAI-backed. The model-server may read `OPENAI_API_KEY` or `LLM_API_KEY` from its runtime environment for local smoke tests, but the key must come from Vault or another secret manager in production. Never commit API keys to `.env`, notebooks, run manifests, request logs, or eval outputs.

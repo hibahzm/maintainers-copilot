@@ -109,3 +109,48 @@ label=bug
 confidence=0.9649578332901001
 model_artifact_sha256=45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a
 ```
+
+
+## NER serving
+
+The model server exposes a rule-based code-shaped entity extractor at:
+
+```text
+POST /ner
+```
+
+Example request:
+
+```bash
+curl -X POST http://localhost:8001/ner \
+  -H "Content-Type: application/json" \
+  -d '{"title":"BUG: read_csv crashes on pandas 2.2","body":"ValueError from pandas/io/parsers.py on Windows for CSV."}'
+```
+
+The tool extracts maintainer-oriented entities such as functions, dotted symbols, package/version mentions, exceptions, file paths, URLs, operating systems, and file types.
+
+## Summarizer serving
+
+The model server exposes an OpenAI-backed structured summarizer at:
+
+```text
+POST /summarize
+```
+
+Default model:
+
+```text
+OPENAI_SUMMARIZER_MODEL=gpt-4o-mini
+```
+
+Secrets rule: do not put the API key in Git. Local smoke tests may export `OPENAI_API_KEY`; production should inject it from Vault/secrets into the model-server runtime.
+
+Example request:
+
+```bash
+curl -X POST http://localhost:8001/summarize \
+  -H "Content-Type: application/json" \
+  -d '{"title":"BUG: read_csv crashes on empty file","body":"read_csv raises an unexpected exception when the CSV has no rows."}'
+```
+
+Expected response shape includes `summary`, `key_points`, `affected_entities`, `maintainer_next_steps`, `risk_level`, `model_name`, `provider`, and `response_id`.
