@@ -3,6 +3,32 @@
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
 
+
+## 2026-05-19 — Corrected classifier splits and first run evidence committed
+
+### Added
+- `data/split_report.json`
+- `model_server/classifier/runs/first-distilbert-freeze4/run_manifest.json`
+- `model_server/classifier/runs/first-distilbert-freeze4/metrics.json`
+
+### Updated
+- corrected `data/train.jsonl`, `data/val.jsonl`, and `data/test.jsonl` from the Colab run
+- `model_server/classifier/model_card.md`
+- `docs/DECISIONS.md`
+- `docs/BUILD_PLAN.md`
+- `data/README.md`
+
+### Evidence
+- train: `10,012` examples, SHA-256 `24dd7452cbdff5f01158a9db52f3a63c4bc0a14e1984771a72144729e0973320`
+- validation: `2,145` examples, SHA-256 `7888030eae31a4fd881d87a16c2c01d337d701094f11993c6483170b3583b797`
+- test: `2,145` examples, SHA-256 `aa52b95e4479c495e352bfe23ee3eb3ed75a9ac77bce7c72026971ccb5f744de`
+- first run validation macro-F1: `0.7422`
+- first run validation accuracy: `0.8135`
+
+### Design notes
+- The local raw issue snapshot remains absent/empty because the user is working with limited disk space; the corrected splits and report are enough to continue classifier comparison work.
+- The first DistilBERT run is now evidence-backed, but final model choice still requires the classical and LLM baselines on the same split.
+
 ## 2026-05-19 — Classifier run evidence landing zone added
 
 ### Added

@@ -1,0 +1,62 @@
+{
+  "dropped_records": {
+    "ambiguous_multi_target_label": 244,
+    "no_supported_target_label": 10743
+  },
+  "source_repo": "pandas-dev/pandas",
+  "split_policy": {
+    "seed": 42,
+    "temporal_holdout_priority": "closest target size first, distribution drift second",
+    "test": "strictly newer temporal holdout",
+    "validation": "deterministic stratified split inside the older train/validation pool"
+  },
+  "splits": {
+    "test": {
+      "count": 2145,
+      "date_range": {
+        "newest_created_at": "2026-05-09T11:18:01Z",
+        "oldest_created_at": "2023-05-30T17:15:49Z"
+      },
+      "label_counts": {
+        "bug": 1344,
+        "docs": 393,
+        "feature": 330,
+        "question": 78
+      }
+    },
+    "train": {
+      "count": 10012,
+      "date_range": {
+        "newest_created_at": "2023-05-30T15:35:54Z",
+        "oldest_created_at": "2010-09-29T19:45:47Z"
+      },
+      "label_counts": {
+        "bug": 5240,
+        "docs": 1500,
+        "feature": 2023,
+        "question": 1249
+      }
+    },
+    "val": {
+      "count": 2145,
+      "date_range": {
+        "newest_created_at": "2023-05-23T13:07:37Z",
+        "oldest_created_at": "2010-10-12T16:15:10Z"
+      },
+      "label_counts": {
+        "bug": 1123,
+        "docs": 321,
+        "feature": 433,
+        "question": 268
+      }
+    }
+  },
+  "target_labels": [
+    "bug",
+    "feature",
+    "docs",
+    "question"
+  ],
+  "total_normalized_records": 14302,
+  "total_raw_records": 25289
+}

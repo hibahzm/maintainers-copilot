@@ -19,8 +19,9 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-013 | Keep `memory.embedding` dimension-unconstrained until the embedding model is chosen | accepted | target: vector dimension follows measured model choice, not a guess |
 | D-014 | Use the classifier target vocabulary `bug / feature / docs / question` | accepted | target: code, docs, data splits, and evals use one assignment-aligned label set |
 | D-015 | Use Langfuse as the tracing backend | accepted | target: one Friday demo trace tree includes request root, tool call, retrieval span, token counts, latency, and an error path |
-| D-016 | Start classifier fine-tuning with DistilBERT and freeze its lower 4 encoder blocks | proposed | compare macro-F1, latency, and training behavior before defending the final deployment choice |
+| D-016 | Start classifier fine-tuning with DistilBERT and freeze its lower 4 encoder blocks | accepted for first run | validation macro-F1 `0.7422`, accuracy `0.8135`; still compare against baselines before deployment choice |
 | D-017 | Use a newer temporal test holdout plus deterministic stratified validation | accepted | target: preserve future-like test evaluation while keeping all four labels measurable during model selection |
+| D-018 | Keep large classifier artifacts outside Git and commit only small run evidence | accepted | `run_manifest.json` and `metrics.json` are committed; model weights/checkpoints stay in Drive until MinIO is wired |
 
 ## Classifier target vocabulary
 
@@ -70,5 +71,13 @@ The first encoder run is intentionally modest:
 - task: four-way issue classification
 - freeze policy: lower 4 encoder blocks frozen; top 2 blocks plus classifier head trainable
 - logger: Weights & Biases
+- run name: `first-distilbert-freeze4`
 
-This is marked **proposed**, not accepted, until we have the first metrics. The freeze policy is a hypothesis: preserve lower-level language features, reduce trainable parameters, and test whether that is enough for the issue domain before paying for full fine-tuning.
+The first corrected four-class Colab run completed with validation macro-F1 `0.7422` and accuracy `0.8135`. This accepts the frozen DistilBERT run as the first encoder experiment, but **not** as the final production model. The deployment choice waits until the classical baseline and LLM baseline are evaluated on the same split.
+
+Evidence files:
+
+- `model_server/classifier/runs/first-distilbert-freeze4/run_manifest.json`
+- `model_server/classifier/runs/first-distilbert-freeze4/metrics.json`
+
+Large model weights and checkpoints remain outside Git.

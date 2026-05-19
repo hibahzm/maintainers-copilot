@@ -33,3 +33,16 @@ The checked-in JSONL files may start as empty placeholders. After the corrected 
 ```
 
 Keep large model folders out of `data/`; only dataset inputs and split reports belong here.
+
+
+## Current corrected split snapshot
+
+The corrected Colab split files currently committed here contain:
+
+| Split | Rows | Label counts |
+| --- | ---: | --- |
+| `train.jsonl` | 10,012 | bug 5,240; feature 2,023; docs 1,500; question 1,249 |
+| `val.jsonl` | 2,145 | bug 1,123; feature 433; docs 321; question 268 |
+| `test.jsonl` | 2,145 | bug 1,344; feature 330; docs 393; question 78 |
+
+`raw_issues.jsonl` may remain a zero-byte placeholder in low-space checkouts. Preserve the raw source snapshot in Drive or MinIO, but do not block local model-card and comparison work on copying it into the repo.

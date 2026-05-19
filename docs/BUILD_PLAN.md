@@ -120,6 +120,11 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - the mapping is documented
 - train/val/test exist and class counts are known
 
+**Current evidence**
+- corrected train/validation/test files are present in `data/`
+- `split_report.json` records `14,302` normalized examples from `pandas-dev/pandas`
+- local `raw_issues.jsonl` is still a zero-byte placeholder because the raw snapshot was intentionally not brought back to the low-space checkout
+
 ### 1.6 Start the first fine-tuning run
 
 **Add / complete**
@@ -136,6 +141,12 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 **Done when**
 - the first training run has started
 - the exact dataset version and run configuration are recoverable
+
+**Current evidence**
+- first corrected run: `first-distilbert-freeze4`
+- validation macro-F1: `0.7422`
+- validation accuracy: `0.8135`
+- run manifest and metrics are committed under `model_server/classifier/runs/`
 
 ---
 
