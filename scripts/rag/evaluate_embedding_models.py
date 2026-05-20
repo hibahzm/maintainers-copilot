@@ -72,6 +72,9 @@ class SentenceTransformerEmbedder:
 
         if device == "auto":
             device = "cuda" if torch.cuda.is_available() else "cpu"
+        elif device == "cuda" and not torch.cuda.is_available():
+            print("CUDA was requested, but this Torch build cannot use CUDA. Falling back to CPU.")
+            device = "cpu"
         self.model_name = model_name
         self.device = device
         self.batch_size = batch_size
