@@ -19,7 +19,7 @@ This is the running build journal. Every meaningful change should add a dated en
 
 ### Added
 - `migrations/versions/20260520_0002_rag_tables.py`
-- `scripts/rag/index_pgvector.py`
+- `scripts/rag/ingest_pgvector.py`
 - `scripts/rag/query_pgvector.py`
 
 ### Updated

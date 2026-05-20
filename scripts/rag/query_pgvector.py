@@ -8,7 +8,7 @@ import json
 import os
 from typing import Any
 
-from scripts.rag.index_pgvector import DEFAULT_DATABASE_URL, DEFAULT_EMBEDDING_MODEL, E5Embedder, vector_literal
+from scripts.rag.ingest_pgvector import DEFAULT_DATABASE_URL, DEFAULT_EMBEDDING_MODEL, E5Embedder, vector_literal
 
 
 def parse_args() -> argparse.Namespace:

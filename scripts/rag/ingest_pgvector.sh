@@ -23,7 +23,7 @@ uv run \
   --with torch \
   --with sentence-transformers \
   --with asyncpg \
-  python -m scripts.rag.index_pgvector \
+  python -m scripts.rag.ingest_pgvector \
     --chunks-path "${CHUNKS_PATH}" \
     --database-url "${DATABASE_URL}" \
     --embedding-model "${EMBEDDING_MODEL}" \
