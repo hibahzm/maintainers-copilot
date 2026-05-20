@@ -125,7 +125,8 @@ python -m scripts.rag.evaluate_embedding_models \
   --output-path evals/rag_embedding_model_comparison_results.json \
   --embedding-models sentence-transformers/all-MiniLM-L6-v2 intfloat/e5-small-v2 \
   --device auto \
-  --batch-size 64
+  --batch-size 64 \
+  --no-metadata-filter
 ```
 
 Bring this file back into the repo after Colab finishes:
@@ -134,7 +135,7 @@ Bring this file back into the repo after Colab finishes:
 evals/rag_embedding_model_comparison_results.json
 ```
 
-The comparison is dense-only cosine retrieval so the embedding choice is measured directly, not hidden by BM25. If the corpus is missing any golden-set source IDs, the evaluator fails instead of writing misleading metrics. A lightweight helper notebook is available at `notebooks/rag_embedding_model_comparison_colab.ipynb`.
+The comparison is dense-only cosine retrieval with metadata filters disabled so the embedding choice is measured directly, not hidden by BM25 or label filters. If the corpus is missing any golden-set source IDs, the evaluator fails instead of writing misleading metrics. A lightweight helper notebook is available at `notebooks/rag_embedding_model_comparison_colab.ipynb`.
 
 ## BM25 + hybrid tuning
 

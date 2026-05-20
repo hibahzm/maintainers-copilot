@@ -2,6 +2,19 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Embedding eval metadata filter disabled
+
+### Updated
+- `notebooks/rag_embedding_model_comparison_colab.ipynb`
+- `data/rag/README.md`
+- `scripts/rag/build_dev_corpus.py`
+- `data/rag/dev_issue_sources.json`
+
+### Design notes
+- Embedding model comparison now runs with `--no-metadata-filter` so the dense model choice is measured directly, not dominated by issue-label metadata availability.
+- Tracked dev issue references now include the intended target label, which makes future GitHub fallback rebuilds less sensitive to label changes on the public issue tracker.
+- If Colab has already built `data/rag/chunks/parent_child_chunks.jsonl`, the embedding comparison can be rerun directly without cloning or rebuilding the corpus again.
+
 ## 2026-05-20 — RAG corpus rebuild guardrails added
 
 ### Added

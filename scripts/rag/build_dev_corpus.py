@@ -129,15 +129,15 @@ def iter_dev_github_issue_records(dev_issues_path: Path, *, limit: int) -> list[
         return []
     payload = json.loads(dev_issues_path.read_text(encoding="utf-8"))
     refs = payload.get("issues", [])[:limit]
-    return [github_issue_record(str(ref["repo"]), int(ref["number"])) for ref in refs]
+    return [github_issue_record(str(ref["repo"]), int(ref["number"]), label=ref.get("label")) for ref in refs]
 
 
-def github_issue_record(repo: str, number: int) -> dict[str, Any]:
+def github_issue_record(repo: str, number: int, *, label: str | None = None) -> dict[str, Any]:
     issue = fetch_github_issue(repo, number)
     title = str(issue.get("title") or "Untitled issue")
     body = str(issue.get("body") or "")
     labels = [label.get("name", "") for label in issue.get("labels", []) if isinstance(label, dict)]
-    target_label = next((TARGET_LABEL_MAP[label] for label in labels if label in TARGET_LABEL_MAP), None)
+    target_label = label or next((TARGET_LABEL_MAP[label_name] for label_name in labels if label_name in TARGET_LABEL_MAP), None)
     text = f"# {title}\n\n{body}".strip()
     return {
         "id": f"github-issue:{repo}#{number}",
