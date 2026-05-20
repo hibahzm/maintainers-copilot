@@ -6,8 +6,9 @@ from app.core.config import Settings, settings
 from app.services.auth_service import AuthService
 from app.services.chat_service import ChatService
 from app.services.classifier_service import ClassifierService
+from app.services.chat_tools.model_server_tools import MaintainerToolsService
+from app.services.chat_tools.runner import ChatToolRunner
 from app.services.conversation_state_service import ConversationStateService
-from app.services.maintainer_tools_service import MaintainerToolsService
 from app.services.memory_service import MemoryService
 from app.services.rag_service import RagService
 from app.services.widget_service import WidgetService
@@ -25,8 +26,7 @@ def get_auth_service() -> AuthService:
 def get_chat_service() -> ChatService:
     return ChatService(
         rag_service=get_rag_service(),
-        tools_service=get_maintainer_tools_service(),
-        memory_service=get_memory_service(),
+        tool_runner=get_chat_tool_runner(),
         conversation_state_service=get_conversation_state_service(),
     )
 
@@ -39,6 +39,13 @@ def get_conversation_state_service() -> ConversationStateService:
     return ConversationStateService(
         redis_url=settings.redis_url,
         ttl_seconds=settings.conversation_ttl_seconds,
+    )
+
+
+def get_chat_tool_runner() -> ChatToolRunner:
+    return ChatToolRunner(
+        tools_service=get_maintainer_tools_service(),
+        memory_service=get_memory_service(),
     )
 
 

@@ -1,4 +1,4 @@
-"""Backend service for maintainer NLP tools hosted by the model server."""
+"""Backend client for maintainer NLP tools hosted by the model server."""
 
 from typing import Any
 
@@ -19,10 +19,22 @@ class MaintainerToolsService:
         data = await self._post("/classify", {"title": title, "body": body})
         return ClassifyIssueResponse.model_validate(data)
 
-    async def extract_entities(self, *, title: str, body: str, text: str | None = None) -> dict[str, Any]:
+    async def extract_entities(
+        self,
+        *,
+        title: str,
+        body: str,
+        text: str | None = None,
+    ) -> dict[str, Any]:
         return await self._post("/ner", {"title": title, "body": body, "text": text})
 
-    async def summarize_issue(self, *, title: str, body: str, text: str | None = None) -> dict[str, Any]:
+    async def summarize_issue(
+        self,
+        *,
+        title: str,
+        body: str,
+        text: str | None = None,
+    ) -> dict[str, Any]:
         return await self._post("/summarize", {"title": title, "body": body, "text": text})
 
     async def _post(self, path: str, payload: dict[str, Any]) -> dict[str, Any]:

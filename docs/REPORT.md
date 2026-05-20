@@ -2,6 +2,26 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Chat tool code split into dedicated service package
+
+### Added
+- `backend/app/services/chat_tools/`
+
+### Removed
+- `backend/app/services/maintainer_tools_service.py`
+
+### Updated
+- `backend/app/api/dependencies.py`
+- `backend/app/services/chat_service.py`
+- `backend/pyproject.toml`
+- `backend/tests/services/test_chat_service.py`
+
+### Design notes
+- `ChatService` is now focused on conversation orchestration: short-term memory, response flow, and RAG fallback.
+- Tool-specific responsibilities moved into `chat_tools`: model-server calls, tool selection, execution, text normalization, and answer rendering.
+- This keeps the code ready for auth/roles without mixing identity logic into classifier/NER/summarizer/memory tool code.
+- Backend package metadata now declares `app` as the Hatch wheel package so `uv run --project backend ...` can build the project cleanly.
+
 ## 2026-05-20 — Short-term Redis conversation memory added
 
 ### Added

@@ -1,18 +1,15 @@
 """Chat orchestration over the project's tools."""
 
-from typing import Literal
 from uuid import UUID, uuid4
 
 from app.api.schemas.chat import ChatResponse, ChatToolResult
-from app.api.schemas.memory import MemoryCreateRequest
 from app.domain.chat import Message
 from app.infra.exceptions import ToolFailure
+from app.services.chat_tools.renderer import render_tool_answer
+from app.services.chat_tools.runner import ChatToolRunner
+from app.services.chat_tools.types import ChatToolName
 from app.services.conversation_state_service import ConversationStateService
-from app.services.maintainer_tools_service import MaintainerToolsService
-from app.services.memory_service import MemoryService
 from app.services.rag_service import RagService
-
-ChatToolName = Literal["auto", "rag", "classifier", "ner", "summarizer", "write_memory"]
 
 
 class ChatService:
@@ -27,13 +24,11 @@ class ChatService:
         self,
         *,
         rag_service: RagService,
-        tools_service: MaintainerToolsService | None = None,
-        memory_service: MemoryService | None = None,
+        tool_runner: ChatToolRunner | None = None,
         conversation_state_service: ConversationStateService | None = None,
     ) -> None:
         self.rag_service = rag_service
-        self.tools_service = tools_service
-        self.memory_service = memory_service
+        self.tool_runner = tool_runner
         self.conversation_state_service = conversation_state_service
 
     async def respond(
@@ -68,46 +63,20 @@ class ChatService:
             )
             return response
 
-        selected_tools = self._select_tools(
+        tool_results = await self._run_chat_tools(
             latest_user_message.content,
+            user_id=user_id,
             tools=tools or ["auto"],
             use_rag=use_rag,
             allow_summarizer=allow_summarizer,
             allow_memory_write=allow_memory_write,
-        )
-        memory_result = await self._run_memory_tool(
-            latest_user_message.content,
-            user_id=user_id,
-            selected_tools=selected_tools,
-            allow_memory_write=allow_memory_write,
-        )
-        if memory_result is not None:
-            response = ChatResponse(
-                conversation_id=response_conversation_id,
-                message=Message(
-                    role="assistant",
-                    content=self._render_tool_answer([memory_result]),
-                ),
-                tool_results=[memory_result],
-            )
-            await self._save_short_term_messages(
-                response_conversation_id,
-                conversation_messages,
-                response,
-            )
-            return response
-
-        tool_results = await self._run_issue_tools(
-            latest_user_message.content,
-            selected_tools=selected_tools,
-            allow_summarizer=allow_summarizer,
         )
         if tool_results:
             response = ChatResponse(
                 conversation_id=response_conversation_id,
                 message=Message(
                     role="assistant",
-                    content=self._render_tool_answer(tool_results),
+                    content=render_tool_answer(tool_results),
                 ),
                 tool_results=tool_results,
             )
@@ -187,121 +156,26 @@ class ChatService:
         )
         return response
 
-    async def _run_issue_tools(
-        self,
-        text: str,
-        *,
-        selected_tools: set[str],
-        allow_summarizer: bool,
-    ) -> list[ChatToolResult]:
-        if self.tools_service is None:
-            return []
-
-        title, body = self._split_issue_text(text)
-        results: list[ChatToolResult] = []
-
-        if "classifier" in selected_tools:
-            try:
-                classification = await self.tools_service.classify_issue(title=title, body=body)
-                results.append(
-                    ChatToolResult(
-                        name="classifier.classify",
-                        status="ok",
-                        metadata=classification.model_dump(mode="json"),
-                    )
-                )
-            except ToolFailure as exc:
-                results.append(
-                    ChatToolResult(
-                        name="classifier.classify",
-                        status="failed",
-                        metadata={"error": str(exc)},
-                    )
-                )
-
-        if "ner" in selected_tools:
-            try:
-                entities = await self.tools_service.extract_entities(
-                    title=title,
-                    body=body,
-                    text=text,
-                )
-                results.append(ChatToolResult(name="ner.extract", status="ok", metadata=entities))
-            except ToolFailure as exc:
-                results.append(
-                    ChatToolResult(
-                        name="ner.extract",
-                        status="failed",
-                        metadata={"error": str(exc)},
-                    )
-                )
-
-        if "summarizer" in selected_tools and allow_summarizer:
-            try:
-                summary = await self.tools_service.summarize_issue(
-                    title=title,
-                    body=body,
-                    text=text,
-                )
-                results.append(
-                    ChatToolResult(name="summarizer.summarize", status="ok", metadata=summary)
-                )
-            except ToolFailure as exc:
-                results.append(
-                    ChatToolResult(
-                        name="summarizer.summarize",
-                        status="failed",
-                        metadata={"error": str(exc)},
-                    )
-                )
-
-        return results
-
-    async def _run_memory_tool(
+    async def _run_chat_tools(
         self,
         text: str,
         *,
         user_id: UUID | None,
-        selected_tools: set[str],
+        tools: list[ChatToolName],
+        use_rag: bool,
+        allow_summarizer: bool,
         allow_memory_write: bool,
-    ) -> ChatToolResult | None:
-        if "write_memory" not in selected_tools:
-            return None
-        if not allow_memory_write:
-            return ChatToolResult(
-                name="memory.write",
-                status="blocked",
-                metadata={"error": "Memory writes require allow_memory_write=true."},
-            )
-        if user_id is None:
-            return ChatToolResult(
-                name="memory.write",
-                status="blocked",
-                metadata={"error": "Memory writes require a user_id until auth is wired in."},
-            )
-        if self.memory_service is None:
-            return ChatToolResult(
-                name="memory.write",
-                status="failed",
-                metadata={"error": "Memory service is unavailable."},
-            )
-
-        content = self._memory_content(text)
-        try:
-            record = await self.memory_service.write_memory(
-                MemoryCreateRequest(user_id=user_id, content=content, memory_type="semantic")
-            )
-            return ChatToolResult(
-                name="memory.write",
-                status="ok",
-                metadata=record.model_dump(mode="json"),
-            )
-        except (ToolFailure, RuntimeError) as exc:
-            return ChatToolResult(
-                name="memory.write",
-                status="failed",
-                metadata={"error": str(exc)},
-            )
+    ) -> list[ChatToolResult]:
+        if self.tool_runner is None:
+            return []
+        return await self.tool_runner.run(
+            text,
+            user_id=user_id,
+            tools=tools,
+            use_rag=use_rag,
+            allow_summarizer=allow_summarizer,
+            allow_memory_write=allow_memory_write,
+        )
 
     def _latest_user_message(self, messages: list[Message]) -> Message | None:
         for message in reversed(messages):
@@ -340,102 +214,3 @@ class ChatService:
             return incoming_messages
         return [*stored_messages, *incoming_messages]
 
-    def _select_tools(
-        self,
-        text: str,
-        *,
-        tools: list[ChatToolName],
-        use_rag: bool,
-        allow_summarizer: bool,
-        allow_memory_write: bool,
-    ) -> set[str]:
-        explicit = {tool for tool in tools if tool != "auto"}
-        if explicit:
-            return {tool for tool in explicit if tool != "rag"}
-
-        lowered = text.lower()
-        selected: set[str] = set()
-        if any(word in lowered for word in ("classify", "classification", "label", "triage")):
-            selected.add("classifier")
-        if any(word in lowered for word in ("ner", "entity", "entities", "extract")):
-            selected.add("ner")
-        summary_keywords = ("summarize", "summary", "tl;dr", "tldr")
-        if allow_summarizer and any(word in lowered for word in summary_keywords):
-            selected.add("summarizer")
-        if allow_memory_write and any(
-            phrase in lowered for phrase in ("remember", "save this memory", "write memory")
-        ):
-            selected.add("write_memory")
-
-        if selected:
-            return selected
-        return set() if use_rag else selected
-
-    def _split_issue_text(self, text: str) -> tuple[str, str]:
-        cleaned_lines = [line.strip() for line in text.strip().splitlines() if line.strip()]
-        if not cleaned_lines:
-            return "Untitled issue", ""
-
-        title = cleaned_lines[0]
-        instruction_prefixes = (
-            "classify this issue:",
-            "classify:",
-            "label this issue:",
-            "label:",
-            "triage this issue:",
-            "extract entities:",
-            "summarize this issue:",
-            "summarize:",
-        )
-        lowered_title = title.lower()
-        for prefix in instruction_prefixes:
-            if lowered_title.startswith(prefix):
-                title = title[len(prefix) :].strip() or "Untitled issue"
-                break
-
-        body = "\n".join(cleaned_lines[1:])
-        return title[:300], body
-
-    def _memory_content(self, text: str) -> str:
-        lowered = text.lower()
-        for prefix in ("remember that", "remember:", "save this memory:", "write memory:"):
-            if lowered.startswith(prefix):
-                return text[len(prefix) :].strip()
-        return text.strip()
-
-    def _render_tool_answer(self, tool_results: list[ChatToolResult]) -> str:
-        lines = ["Here is the tool output for this issue:"]
-        for result in tool_results:
-            if result.name == "memory.write":
-                if result.status == "ok":
-                    lines.append("- Memory saved explicitly.")
-                else:
-                    error = result.metadata.get("error", "memory write failed")
-                    lines.append(f"- Memory was not saved: {error}")
-                continue
-
-            if result.status != "ok":
-                lines.append(f"- {result.name}: unavailable right now.")
-                continue
-
-            if result.name == "classifier.classify":
-                label = result.metadata.get("label", "unknown")
-                confidence = result.metadata.get("confidence", 0.0)
-                lines.append(f"- Classification: **{label}** ({confidence:.1%} confidence).")
-            elif result.name == "ner.extract":
-                grouped = result.metadata.get("grouped", {})
-                if grouped:
-                    compact = "; ".join(
-                        f"{kind}: {', '.join(values[:5])}"
-                        for kind, values in grouped.items()
-                        if values
-                    )
-                    lines.append(f"- Extracted entities: {compact}.")
-                else:
-                    lines.append("- Extracted entities: none found.")
-            elif result.name == "summarizer.summarize":
-                summary = result.metadata.get("summary", "")
-                risk = result.metadata.get("risk_level", "unknown")
-                lines.append(f"- Summary: {summary}")
-                lines.append(f"- Risk level: **{risk}**.")
-        return "\n".join(lines)
