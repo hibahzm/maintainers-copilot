@@ -1,0 +1,11 @@
+{
+  "chunk_size_words": 180,
+  "chunks": 185,
+  "created_at": "2026-05-20T07:38:00.541599+00:00",
+  "output_path": "data/rag/chunks/naive_fixed_chunks.jsonl",
+  "overlap_words": 40,
+  "sha256": "4bba5cfb899a8c2927513ce64c6293a69d17deaddd2a8235ffed117d02862680",
+  "source_documents": 49,
+  "source_path": "data/rag/raw/dev_corpus.jsonl",
+  "strategy": "naive_fixed_words"
+}

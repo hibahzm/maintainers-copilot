@@ -1,0 +1,4535 @@
+{
+  "chunks_path": "data/rag/chunks/naive_fixed_chunks.jsonl",
+  "config": {
+    "chunk_strategy": "naive_fixed_words",
+    "embedding": "hash_dense_512",
+    "name": "naive_fixed_hash_dense",
+    "top_k": 10,
+    "uses_metadata_filter": false,
+    "vector_dimensions": 512
+  },
+  "created_at": "2026-05-20T07:38:24.197271+00:00",
+  "golden_path": "evals/golden_rag.json",
+  "metrics": {
+    "examples": 25,
+    "mrr_at_10": 0.6083333333333334,
+    "ndcg_at_10": 0.9316391253149706,
+    "recall_at_1": 0.48,
+    "recall_at_10": 0.84,
+    "recall_at_3": 0.76,
+    "recall_at_5": 0.8
+  },
+  "rows": [
+    {
+      "ground_truth_source_ids": [
+        "project-doc:docs/ARCH.md"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": false,
+      "hit_at_3": false,
+      "hit_at_5": false,
+      "id": "rag-golden-001",
+      "ndcg_at_10": 0.0,
+      "question": "What services are part of the full Maintainers Copilot compose stack?",
+      "reciprocal_rank": 0.0,
+      "retrieved_source_ids": [
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/COLAB_TRAINING.md",
+        "project-doc:docs/COLAB_TRAINING.md",
+        "github-issue:pandas-dev/pandas#53533",
+        "project-doc:docs/RUNBOOK.md",
+        "github-issue:pandas-dev/pandas#55178",
+        "github-issue:pandas-dev/pandas#53763",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "github-issue:pandas-dev/pandas#53665"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0022",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.30179673162184983,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0005",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.30151134457776363,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0006",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.293725228409004,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53533::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-11-07T17:29:39Z",
+            "created_at": "2023-06-06T10:05:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53533,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53533"
+          },
+          "score": 0.29148974335066746,
+          "source_id": "github-issue:pandas-dev/pandas#53533",
+          "source_type": "github_issue",
+          "title": "BUG: iloc-indexing with callable has inconsistent semantics if the return type is a tuple"
+        },
+        {
+          "chunk_id": "project-doc:docs/RUNBOOK.md::fixed-180-40::0000",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/RUNBOOK.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.28696244889092104,
+          "source_id": "project-doc:docs/RUNBOOK.md",
+          "source_type": "project_doc",
+          "title": "Runbook"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55178::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2025-10-19T19:06:01Z",
+            "created_at": "2023-09-17T11:56:01Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55178"
+          },
+          "score": 0.2862282154090816,
+          "source_id": "github-issue:pandas-dev/pandas#55178",
+          "source_type": "github_issue",
+          "title": "ENH: set `__module__` on top-level public objects"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0007",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.278112535705332,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0027",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.267713476223328,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.2667778472704827,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53665::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-11-07T01:19:55Z",
+            "created_at": "2023-06-14T11:48:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 53665,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53665"
+          },
+          "score": 0.26426257915906604,
+          "source_id": "github-issue:pandas-dev/pandas#53665",
+          "source_type": "github_issue",
+          "title": "ENH: Python 3.12 support"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "project-doc:docs/RUNBOOK.md",
+        "project-doc:docs/SECURITY.md"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-002",
+      "ndcg_at_10": 1.0,
+      "question": "Where should production runtime secrets live in this project?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "project-doc:docs/SECURITY.md",
+        "project-doc:docs/SECURITY.md",
+        "project-doc:docs/REPORT.md",
+        "github-issue:pandas-dev/pandas#53898",
+        "github-issue:pandas-dev/pandas#53733",
+        "github-issue:pandas-dev/pandas#54005",
+        "project-doc:docs/COLAB_TRAINING.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/REPORT.md",
+        "github-issue:pandas-dev/pandas#54069"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "project-doc:docs/SECURITY.md::fixed-180-40::0000",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/SECURITY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.3019298199277709,
+          "source_id": "project-doc:docs/SECURITY.md",
+          "source_type": "project_doc",
+          "title": "Security"
+        },
+        {
+          "chunk_id": "project-doc:docs/SECURITY.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/SECURITY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.29275843689664865,
+          "source_id": "project-doc:docs/SECURITY.md",
+          "source_type": "project_doc",
+          "title": "Security"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0025",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.22743941678667035,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53898::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-07-10T17:36:15Z",
+            "created_at": "2023-06-28T04:36:10Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53898,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53898"
+          },
+          "score": 0.22086305214969304,
+          "source_id": "github-issue:pandas-dev/pandas#53898",
+          "source_type": "github_issue",
+          "title": "BUG: interpolate with ffill/bfill method, axis=1, multi-block"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53733::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-06-20T18:57:15Z",
+            "created_at": "2023-06-20T02:58:35Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53733,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53733"
+          },
+          "score": 0.21325442607213338,
+          "source_id": "github-issue:pandas-dev/pandas#53733",
+          "source_type": "github_issue",
+          "title": "BUG: MultiIndex.levels returns extra values after filtering rows"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54005::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-07T08:45:11Z",
+            "created_at": "2023-07-05T13:22:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 54005,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54005"
+          },
+          "score": 0.21256084204799588,
+          "source_id": "github-issue:pandas-dev/pandas#54005",
+          "source_type": "github_issue",
+          "title": "ENH: vlookup or similar"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0008",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.2113829521450379,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0003",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.20965696734438366,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0024",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.20849129075075945,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54069::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-11T03:22:35Z",
+            "created_at": "2023-07-10T20:53:23Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54069"
+          },
+          "score": 0.19371538994457277,
+          "source_id": "github-issue:pandas-dev/pandas#54069",
+          "source_type": "github_issue",
+          "title": "BUG: Error when using Series.pow with fill_value"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "project-doc:docs/DECISIONS.md",
+        "project-doc:docs/REPORT.md"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-003",
+      "ndcg_at_10": 1.2056482329303733,
+      "question": "What model was selected for issue classification and why?",
+      "reciprocal_rank": 0.3333333333333333,
+      "retrieved_source_ids": [
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/DECISIONS.md",
+        "project-doc:docs/DATASET_STRATEGY.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/DATASET_STRATEGY.md",
+        "github-issue:pandas-dev/pandas#54005"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0007",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.30227563311592703,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0008",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.2829798293487226,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.27145951923162004,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0008",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.24999999999999997,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/DECISIONS.md::fixed-180-40::0006",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DECISIONS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.2493773340269082,
+          "source_id": "project-doc:docs/DECISIONS.md",
+          "source_type": "project_doc",
+          "title": "Decisions"
+        },
+        {
+          "chunk_id": "project-doc:docs/DATASET_STRATEGY.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DATASET_STRATEGY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.24701609087778548,
+          "source_id": "project-doc:docs/DATASET_STRATEGY.md",
+          "source_type": "project_doc",
+          "title": "Dataset Strategy"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0007",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.24093544077473367,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0004",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.23510327020127658,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/DATASET_STRATEGY.md::fixed-180-40::0000",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DATASET_STRATEGY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.232463224647135,
+          "source_id": "project-doc:docs/DATASET_STRATEGY.md",
+          "source_type": "project_doc",
+          "title": "Dataset Strategy"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54005::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-07-07T08:45:11Z",
+            "created_at": "2023-07-05T13:22:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 54005,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54005"
+          },
+          "score": 0.23217534438233078,
+          "source_id": "github-issue:pandas-dev/pandas#54005",
+          "source_type": "github_issue",
+          "title": "ENH: vlookup or similar"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "project-doc:docs/DATASET_STRATEGY.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/SECURITY.md"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-004",
+      "ndcg_at_10": 0.23463936301137822,
+      "question": "What is the rule for keeping row-level JSONL dataset files in Git?",
+      "reciprocal_rank": 0.3333333333333333,
+      "retrieved_source_ids": [
+        "project-doc:docs/COLAB_TRAINING.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/DATASET_STRATEGY.md",
+        "project-doc:docs/COLAB_TRAINING.md",
+        "project-doc:docs/DECISIONS.md",
+        "project-doc:docs/RUNBOOK.md",
+        "github-issue:pandas-dev/pandas#54022",
+        "github-issue:pandas-dev/pandas#53533",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/COLAB_TRAINING.md"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0009",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.5099344737276094,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0000",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.48218612362308916,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/DATASET_STRATEGY.md::fixed-180-40::0003",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DATASET_STRATEGY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.48180972924118354,
+          "source_id": "project-doc:docs/DATASET_STRATEGY.md",
+          "source_type": "project_doc",
+          "title": "Dataset Strategy"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.4811403776364295,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "project-doc:docs/DECISIONS.md::fixed-180-40::0011",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DECISIONS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.4780914437337574,
+          "source_id": "project-doc:docs/DECISIONS.md",
+          "source_type": "project_doc",
+          "title": "Decisions"
+        },
+        {
+          "chunk_id": "project-doc:docs/RUNBOOK.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/RUNBOOK.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.47672148523597785,
+          "source_id": "project-doc:docs/RUNBOOK.md",
+          "source_type": "project_doc",
+          "title": "Runbook"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54022::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-07-06T21:05:22Z",
+            "created_at": "2023-07-06T17:48:05Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 54022,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54022"
+          },
+          "score": 0.4589029312518351,
+          "source_id": "github-issue:pandas-dev/pandas#54022",
+          "source_type": "github_issue",
+          "title": "DOC: Improve SettingWithCopyWarning documentation"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53533::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-11-07T17:29:39Z",
+            "created_at": "2023-06-06T10:05:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53533,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53533"
+          },
+          "score": 0.4449692621826781,
+          "source_id": "github-issue:pandas-dev/pandas#53533",
+          "source_type": "github_issue",
+          "title": "BUG: iloc-indexing with callable has inconsistent semantics if the return type is a tuple"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0004",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.43918769225743026,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0002",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.4383381695417283,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "project-doc:docs/BUILD_PLAN.md"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-005",
+      "ndcg_at_10": 3.3863221553163427,
+      "question": "What must Step 3 advanced RAG prove beyond the naive baseline?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/DECISIONS.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/DECISIONS.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/COLAB_TRAINING.md",
+        "project-doc:docs/BUILD_PLAN.md"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0009",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.3798378283632677,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0000",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.35707010090406316,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/DECISIONS.md::fixed-180-40::0011",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DECISIONS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.34117754381277265,
+          "source_id": "project-doc:docs/DECISIONS.md",
+          "source_type": "project_doc",
+          "title": "Decisions"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0008",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.33124867665476965,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0005",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.32618371598350476,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/DECISIONS.md::fixed-180-40::0010",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DECISIONS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.3239864159971879,
+          "source_id": "project-doc:docs/DECISIONS.md",
+          "source_type": "project_doc",
+          "title": "Decisions"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0010",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.3165869118066518,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0012",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.30482215663435985,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0000",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.29034425774155015,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.28345146272488786,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "project-doc:docs/COLAB_TRAINING.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/RUNBOOK.md"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": false,
+      "hit_at_3": false,
+      "hit_at_5": false,
+      "id": "rag-golden-006",
+      "ndcg_at_10": 0.0,
+      "question": "What should happen to large model artifacts before MinIO is wired?",
+      "reciprocal_rank": 0.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#55323",
+        "github-issue:pandas-dev/pandas#54152",
+        "github-issue:pandas-dev/pandas#53928",
+        "github-issue:pandas-dev/pandas#55399",
+        "github-issue:pandas-dev/pandas#54981",
+        "github-issue:pandas-dev/pandas#55188",
+        "github-issue:pandas-dev/pandas#55452",
+        "github-issue:pandas-dev/pandas#54627",
+        "github-issue:pandas-dev/pandas#55181",
+        "github-issue:pandas-dev/pandas#53811"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55323::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-11-03T17:31:22Z",
+            "created_at": "2023-09-29T12:59:49Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55323,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55323"
+          },
+          "score": 0.356475609044861,
+          "source_id": "github-issue:pandas-dev/pandas#55323",
+          "source_type": "github_issue",
+          "title": "ENH: Add list accessor for PyArrow list types to support __getitem__"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54152::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-08-06T15:30:17Z",
+            "created_at": "2023-07-16T00:49:44Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 54152,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54152"
+          },
+          "score": 0.3534681703084305,
+          "source_id": "github-issue:pandas-dev/pandas#54152",
+          "source_type": "github_issue",
+          "title": "BUG: Inconsistent Shallow Copy Behavior in DataFrame with sample() Series"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53928::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-08-12T13:18:56Z",
+            "created_at": "2023-06-29T15:40:33Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53928,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53928"
+          },
+          "score": 0.3309516961607476,
+          "source_id": "github-issue:pandas-dev/pandas#53928",
+          "source_type": "github_issue",
+          "title": "BUG: TypeError: cannot safely cast non-equivalent object to uint32"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55399::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-12-06T01:42:31Z",
+            "created_at": "2023-10-04T13:04:12Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55399,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55399"
+          },
+          "score": 0.32694264879512586,
+          "source_id": "github-issue:pandas-dev/pandas#55399",
+          "source_type": "github_issue",
+          "title": "ENH: Support `errors=\"ignore\"` for astype with pyarrow types"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54981::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-09-06T22:40:25Z",
+            "created_at": "2023-09-03T14:07:15Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54981,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54981"
+          },
+          "score": 0.3267722317103504,
+          "source_id": "github-issue:pandas-dev/pandas#54981",
+          "source_type": "github_issue",
+          "title": "BUG: FutureWarning on pct_change() suggests a solution that does not always work."
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55188::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-09-21T22:42:52Z",
+            "created_at": "2023-09-18T20:31:20Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55188,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55188"
+          },
+          "score": 0.32647062976677316,
+          "source_id": "github-issue:pandas-dev/pandas#55188",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.style.to_latex() does not allow `index=False` as a parameter and does not return consistent "
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55452::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-10-10T13:33:25Z",
+            "created_at": "2023-10-09T13:09:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55452,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55452"
+          },
+          "score": 0.3230485820835709,
+          "source_id": "github-issue:pandas-dev/pandas#55452",
+          "source_type": "github_issue",
+          "title": "BUG: hash_pandas_object(obj).sum() changed value with pandas 2.1.0"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54627::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2026-03-06T20:59:12Z",
+            "created_at": "2023-08-18T16:26:11Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54627,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54627"
+          },
+          "score": 0.31949698907588997,
+          "source_id": "github-issue:pandas-dev/pandas#54627",
+          "source_type": "github_issue",
+          "title": "BUG: groupby.var() does not return arrow types with arrow backed series as input. "
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55181::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-11-20T17:42:09Z",
+            "created_at": "2023-09-18T10:44:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55181,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55181"
+          },
+          "score": 0.315876986356996,
+          "source_id": "github-issue:pandas-dev/pandas#55181",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.mode() fails on sparse integer DataFrames"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53811::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-07-17T16:54:18Z",
+            "created_at": "2023-06-23T00:06:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53811,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53811"
+          },
+          "score": 0.31271128899289485,
+          "source_id": "github-issue:pandas-dev/pandas#53811",
+          "source_type": "github_issue",
+          "title": "BUG: inconsistent space stripping in read_xml"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "project-doc:docs/REPORT.md"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-007",
+      "ndcg_at_10": 2.163054574231909,
+      "question": "What is the classifier model artifact SHA recorded for the selected DistilBERT model?",
+      "reciprocal_rank": 0.5,
+      "retrieved_source_ids": [
+        "project-doc:docs/RUNBOOK.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/RUNBOOK.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/DECISIONS.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/REPORT.md"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "project-doc:docs/RUNBOOK.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/RUNBOOK.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.6097727471733647,
+          "source_id": "project-doc:docs/RUNBOOK.md",
+          "source_type": "project_doc",
+          "title": "Runbook"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0005",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.5906811894663556,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0007",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.5697454202866181,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/RUNBOOK.md::fixed-180-40::0002",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/RUNBOOK.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.5451862681373321,
+          "source_id": "project-doc:docs/RUNBOOK.md",
+          "source_type": "project_doc",
+          "title": "Runbook"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0009",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.5397665507478688,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0008",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.5355995052885686,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0007",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.5254070355456766,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/DECISIONS.md::fixed-180-40::0010",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DECISIONS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.4933061408769137,
+          "source_id": "project-doc:docs/DECISIONS.md",
+          "source_type": "project_doc",
+          "title": "Decisions"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0005",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.4563166475962754,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0017",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.4547542969431243,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#53560"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-008",
+      "ndcg_at_10": 0.6309297535714575,
+      "question": "Which issue asks about converting a string[pyarrow] column to boolean?",
+      "reciprocal_rank": 0.5,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#55060",
+        "github-issue:pandas-dev/pandas#53560",
+        "github-issue:pandas-dev/pandas#55399",
+        "github-issue:pandas-dev/pandas#55452",
+        "github-issue:pandas-dev/pandas#55148",
+        "github-issue:pandas-dev/pandas#53811",
+        "github-issue:pandas-dev/pandas#53533",
+        "github-issue:pandas-dev/pandas#54069",
+        "github-issue:pandas-dev/pandas#55452",
+        "github-issue:pandas-dev/pandas#55188"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55060::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-21T18:29:24Z",
+            "created_at": "2023-09-08T05:45:20Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55060,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55060"
+          },
+          "score": 0.34735218440133453,
+          "source_id": "github-issue:pandas-dev/pandas#55060",
+          "source_type": "github_issue",
+          "title": "ENH: column nicknames or shorthands"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53560::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-24T09:36:55Z",
+            "created_at": "2023-06-08T08:31:47Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53560,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53560"
+          },
+          "score": 0.34176255283909907,
+          "source_id": "github-issue:pandas-dev/pandas#53560",
+          "source_type": "github_issue",
+          "title": "QST: What is the canonical way to convert a column of type `string[pyarrow]` to boolean within a pandas dataframe?"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55399::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-12-06T01:42:31Z",
+            "created_at": "2023-10-04T13:04:12Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55399,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55399"
+          },
+          "score": 0.32694264879512586,
+          "source_id": "github-issue:pandas-dev/pandas#55399",
+          "source_type": "github_issue",
+          "title": "ENH: Support `errors=\"ignore\"` for astype with pyarrow types"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55452::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-10-10T13:33:25Z",
+            "created_at": "2023-10-09T13:09:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55452,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55452"
+          },
+          "score": 0.31354715319876,
+          "source_id": "github-issue:pandas-dev/pandas#55452",
+          "source_type": "github_issue",
+          "title": "BUG: hash_pandas_object(obj).sum() changed value with pandas 2.1.0"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55148::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-10-07T11:00:56Z",
+            "created_at": "2023-09-15T17:03:14Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 55148,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55148"
+          },
+          "score": 0.3129326775438066,
+          "source_id": "github-issue:pandas-dev/pandas#55148",
+          "source_type": "github_issue",
+          "title": "BUG: MultiIndex.levels[x] of sliced DataFrame returns values from the non-sliced index"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53811::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-07-17T16:54:18Z",
+            "created_at": "2023-06-23T00:06:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53811,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53811"
+          },
+          "score": 0.31271128899289485,
+          "source_id": "github-issue:pandas-dev/pandas#53811",
+          "source_type": "github_issue",
+          "title": "BUG: inconsistent space stripping in read_xml"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53533::fixed-180-40::0003",
+          "metadata": {
+            "closed_at": "2023-11-07T17:29:39Z",
+            "created_at": "2023-06-06T10:05:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53533,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53533"
+          },
+          "score": 0.3118885430460292,
+          "source_id": "github-issue:pandas-dev/pandas#53533",
+          "source_type": "github_issue",
+          "title": "BUG: iloc-indexing with callable has inconsistent semantics if the return type is a tuple"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54069::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-07-11T03:22:35Z",
+            "created_at": "2023-07-10T20:53:23Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54069"
+          },
+          "score": 0.31159465034477757,
+          "source_id": "github-issue:pandas-dev/pandas#54069",
+          "source_type": "github_issue",
+          "title": "BUG: Error when using Series.pow with fill_value"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55452::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-10-10T13:33:25Z",
+            "created_at": "2023-10-09T13:09:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55452,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55452"
+          },
+          "score": 0.30822419477364266,
+          "source_id": "github-issue:pandas-dev/pandas#55452",
+          "source_type": "github_issue",
+          "title": "BUG: hash_pandas_object(obj).sum() changed value with pandas 2.1.0"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55188::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-09-21T22:42:52Z",
+            "created_at": "2023-09-18T20:31:20Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55188,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55188"
+          },
+          "score": 0.30725493389951347,
+          "source_id": "github-issue:pandas-dev/pandas#55188",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.style.to_latex() does not allow `index=False` as a parameter and does not return consistent "
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#53733"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-009",
+      "ndcg_at_10": 1.9306765580733931,
+      "question": "Which issue reports MultiIndex.levels returning extra values after filtering rows?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#53733",
+        "github-issue:pandas-dev/pandas#54069",
+        "github-issue:pandas-dev/pandas#53733",
+        "github-issue:pandas-dev/pandas#53733",
+        "github-issue:pandas-dev/pandas#55323",
+        "github-issue:pandas-dev/pandas#54212",
+        "github-issue:pandas-dev/pandas#53533",
+        "github-issue:pandas-dev/pandas#54022",
+        "github-issue:pandas-dev/pandas#53615",
+        "github-issue:pandas-dev/pandas#54178"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53733::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-20T18:57:15Z",
+            "created_at": "2023-06-20T02:58:35Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53733,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53733"
+          },
+          "score": 0.17837651700316895,
+          "source_id": "github-issue:pandas-dev/pandas#53733",
+          "source_type": "github_issue",
+          "title": "BUG: MultiIndex.levels returns extra values after filtering rows"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54069::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-11T03:22:35Z",
+            "created_at": "2023-07-10T20:53:23Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54069"
+          },
+          "score": 0.1493168259503039,
+          "source_id": "github-issue:pandas-dev/pandas#54069",
+          "source_type": "github_issue",
+          "title": "BUG: Error when using Series.pow with fill_value"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53733::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-06-20T18:57:15Z",
+            "created_at": "2023-06-20T02:58:35Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53733,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53733"
+          },
+          "score": 0.14907119849998599,
+          "source_id": "github-issue:pandas-dev/pandas#53733",
+          "source_type": "github_issue",
+          "title": "BUG: MultiIndex.levels returns extra values after filtering rows"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53733::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-06-20T18:57:15Z",
+            "created_at": "2023-06-20T02:58:35Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53733,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53733"
+          },
+          "score": 0.14534441853748634,
+          "source_id": "github-issue:pandas-dev/pandas#53733",
+          "source_type": "github_issue",
+          "title": "BUG: MultiIndex.levels returns extra values after filtering rows"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55323::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-03T17:31:22Z",
+            "created_at": "2023-09-29T12:59:49Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55323,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55323"
+          },
+          "score": 0.1449893023992425,
+          "source_id": "github-issue:pandas-dev/pandas#55323",
+          "source_type": "github_issue",
+          "title": "ENH: Add list accessor for PyArrow list types to support __getitem__"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.1358314562310403,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53533::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-07T17:29:39Z",
+            "created_at": "2023-06-06T10:05:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53533,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53533"
+          },
+          "score": 0.11338934190276817,
+          "source_id": "github-issue:pandas-dev/pandas#53533",
+          "source_type": "github_issue",
+          "title": "BUG: iloc-indexing with callable has inconsistent semantics if the return type is a tuple"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54022::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-07-06T21:05:22Z",
+            "created_at": "2023-07-06T17:48:05Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 54022,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54022"
+          },
+          "score": 0.10808442529177922,
+          "source_id": "github-issue:pandas-dev/pandas#54022",
+          "source_type": "github_issue",
+          "title": "DOC: Improve SettingWithCopyWarning documentation"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53615::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-12T09:53:02Z",
+            "created_at": "2023-06-12T09:48:04Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53615,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53615"
+          },
+          "score": 0.10728835615716402,
+          "source_id": "github-issue:pandas-dev/pandas#53615",
+          "source_type": "github_issue",
+          "title": "QST: \u6211\u6ca1\u6709\u6307\u5b9aengine\uff0c\u5728\u672c\u5730read_excel\u597d\u7528\uff0c\u4f46\u662f\u5728airflow\u4e2d\u5c31\u62a5\u9519\u3002\u5f53\u6211\u6307\u5b9a\u4e4b\u540e\uff0c\u5c31\u4f1a\u62a5\u8fd9\u4e2a\uff0czipfile.BadZipFile: File is not a zip file\uff0cexcel\u6587\u4ef6\u80fd\u6b63\u5e38\u6253\u5f00\u5728\u672c\u5730\uff0c\u6ca1\u6709\u95ee\u9898\u3002"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54178::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-04-29T13:29:30Z",
+            "created_at": "2023-07-18T03:11:27Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 54178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54178"
+          },
+          "score": 0.10559273546969093,
+          "source_id": "github-issue:pandas-dev/pandas#54178",
+          "source_type": "github_issue",
+          "title": "BUILD: `ValueError` raised when importing pandas due to `numpy.ndarray` size change"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#53665"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-010",
+      "ndcg_at_10": 1.6309297535714575,
+      "question": "Which issue asks for Python 3.12 support?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#53665",
+        "github-issue:pandas-dev/pandas#53665",
+        "github-issue:pandas-dev/pandas#53560",
+        "github-issue:pandas-dev/pandas#54212",
+        "project-doc:docs/DATASET_STRATEGY.md",
+        "github-issue:pandas-dev/pandas#53533",
+        "project-doc:docs/DATASET_STRATEGY.md",
+        "project-doc:docs/DECISIONS.md",
+        "project-doc:docs/REPORT.md",
+        "github-issue:pandas-dev/pandas#55452"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53665::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-11-07T01:19:55Z",
+            "created_at": "2023-06-14T11:48:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 53665,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53665"
+          },
+          "score": 0.3057883148625753,
+          "source_id": "github-issue:pandas-dev/pandas#53665",
+          "source_type": "github_issue",
+          "title": "ENH: Python 3.12 support"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53665::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-07T01:19:55Z",
+            "created_at": "2023-06-14T11:48:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 53665,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53665"
+          },
+          "score": 0.30562492275106323,
+          "source_id": "github-issue:pandas-dev/pandas#53665",
+          "source_type": "github_issue",
+          "title": "ENH: Python 3.12 support"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53560::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-06-24T09:36:55Z",
+            "created_at": "2023-06-08T08:31:47Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53560,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53560"
+          },
+          "score": 0.28859164214632904,
+          "source_id": "github-issue:pandas-dev/pandas#53560",
+          "source_type": "github_issue",
+          "title": "QST: What is the canonical way to convert a column of type `string[pyarrow]` to boolean within a pandas dataframe?"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.21105453529535936,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "project-doc:docs/DATASET_STRATEGY.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DATASET_STRATEGY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.1867266132268431,
+          "source_id": "project-doc:docs/DATASET_STRATEGY.md",
+          "source_type": "project_doc",
+          "title": "Dataset Strategy"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53533::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-11-07T17:29:39Z",
+            "created_at": "2023-06-06T10:05:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53533,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53533"
+          },
+          "score": 0.17728105208558365,
+          "source_id": "github-issue:pandas-dev/pandas#53533",
+          "source_type": "github_issue",
+          "title": "BUG: iloc-indexing with callable has inconsistent semantics if the return type is a tuple"
+        },
+        {
+          "chunk_id": "project-doc:docs/DATASET_STRATEGY.md::fixed-180-40::0004",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DATASET_STRATEGY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.1722921969015792,
+          "source_id": "project-doc:docs/DATASET_STRATEGY.md",
+          "source_type": "project_doc",
+          "title": "Dataset Strategy"
+        },
+        {
+          "chunk_id": "project-doc:docs/DECISIONS.md::fixed-180-40::0006",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DECISIONS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.1696603907446675,
+          "source_id": "project-doc:docs/DECISIONS.md",
+          "source_type": "project_doc",
+          "title": "Decisions"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0002",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.15848577035006545,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55452::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-10-10T13:33:25Z",
+            "created_at": "2023-10-09T13:09:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55452,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55452"
+          },
+          "score": 0.15827747734396239,
+          "source_id": "github-issue:pandas-dev/pandas#55452",
+          "source_type": "github_issue",
+          "title": "BUG: hash_pandas_object(obj).sum() changed value with pandas 2.1.0"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#53763"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-011",
+      "ndcg_at_10": 1.0,
+      "question": "Which issue discusses discrepancies in the read_csv docstring?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#53763",
+        "project-doc:docs/COLAB_TRAINING.md",
+        "github-issue:pandas-dev/pandas#55133",
+        "project-doc:docs/SECURITY.md",
+        "project-doc:docs/COLAB_TRAINING.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/BUILD_PLAN.md",
+        "project-doc:docs/COLAB_TRAINING.md",
+        "project-doc:docs/RUNBOOK.md",
+        "github-issue:pandas-dev/pandas#55436"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.4212419672262978,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0009",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.37406600104036225,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55133::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-09-18T19:42:39Z",
+            "created_at": "2023-09-14T07:43:41Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 55133,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55133"
+          },
+          "score": 0.345547370232544,
+          "source_id": "github-issue:pandas-dev/pandas#55133",
+          "source_type": "github_issue",
+          "title": "DOC: rolling axis parameter deprecated, but not in docs"
+        },
+        {
+          "chunk_id": "project-doc:docs/SECURITY.md::fixed-180-40::0000",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/SECURITY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.32024493467004,
+          "source_id": "project-doc:docs/SECURITY.md",
+          "source_type": "project_doc",
+          "title": "Security"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0000",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.3011751105053813,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0027",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.3002730997379377,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0005",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.29933554735698265,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.2980415074406253,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "project-doc:docs/RUNBOOK.md::fixed-180-40::0002",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/RUNBOOK.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.2927984779299092,
+          "source_id": "project-doc:docs/RUNBOOK.md",
+          "source_type": "project_doc",
+          "title": "Runbook"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55436::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-10-08T22:56:49Z",
+            "created_at": "2023-10-07T13:44:34Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 55436,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55436"
+          },
+          "score": 0.291691675598474,
+          "source_id": "github-issue:pandas-dev/pandas#55436",
+          "source_type": "github_issue",
+          "title": "DOC: Move bug fixes in whatsnew for 2.2.0 into the appropriate subsection"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#53900"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-012",
+      "ndcg_at_10": 1.0,
+      "question": "Which issue proposes adding an inplace parameter to DataFrame.melt?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#53900",
+        "github-issue:pandas-dev/pandas#53928",
+        "github-issue:pandas-dev/pandas#55069",
+        "github-issue:pandas-dev/pandas#54981",
+        "github-issue:pandas-dev/pandas#55399",
+        "github-issue:pandas-dev/pandas#55148",
+        "github-issue:pandas-dev/pandas#53811",
+        "github-issue:pandas-dev/pandas#53533",
+        "github-issue:pandas-dev/pandas#54069",
+        "github-issue:pandas-dev/pandas#55398"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53900::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-28T15:46:49Z",
+            "created_at": "2023-06-28T04:52:38Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 53900,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53900"
+          },
+          "score": 0.3605050608756658,
+          "source_id": "github-issue:pandas-dev/pandas#53900",
+          "source_type": "github_issue",
+          "title": "ENH: add optional `inplace` parameter to `DataFrame.melt()`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53928::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-08-12T13:18:56Z",
+            "created_at": "2023-06-29T15:40:33Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53928,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53928"
+          },
+          "score": 0.3511910560050133,
+          "source_id": "github-issue:pandas-dev/pandas#53928",
+          "source_type": "github_issue",
+          "title": "BUG: TypeError: cannot safely cast non-equivalent object to uint32"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55069::fixed-180-40::0003",
+          "metadata": {
+            "closed_at": "2024-02-01T19:04:30Z",
+            "created_at": "2023-09-08T17:35:18Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55069"
+          },
+          "score": 0.34990925405431866,
+          "source_id": "github-issue:pandas-dev/pandas#55069",
+          "source_type": "github_issue",
+          "title": "BUG: pandas int extension dtypes has no attribute byteorder"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54981::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-09-06T22:40:25Z",
+            "created_at": "2023-09-03T14:07:15Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54981,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54981"
+          },
+          "score": 0.3488030432842367,
+          "source_id": "github-issue:pandas-dev/pandas#54981",
+          "source_type": "github_issue",
+          "title": "BUG: FutureWarning on pct_change() suggests a solution that does not always work."
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55399::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-12-06T01:42:31Z",
+            "created_at": "2023-10-04T13:04:12Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55399,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55399"
+          },
+          "score": 0.3474041668898255,
+          "source_id": "github-issue:pandas-dev/pandas#55399",
+          "source_type": "github_issue",
+          "title": "ENH: Support `errors=\"ignore\"` for astype with pyarrow types"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55148::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-10-07T11:00:56Z",
+            "created_at": "2023-09-15T17:03:14Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 55148,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55148"
+          },
+          "score": 0.34596009201802713,
+          "source_id": "github-issue:pandas-dev/pandas#55148",
+          "source_type": "github_issue",
+          "title": "BUG: MultiIndex.levels[x] of sliced DataFrame returns values from the non-sliced index"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53811::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-07-17T16:54:18Z",
+            "created_at": "2023-06-23T00:06:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53811,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53811"
+          },
+          "score": 0.3457153377659422,
+          "source_id": "github-issue:pandas-dev/pandas#53811",
+          "source_type": "github_issue",
+          "title": "BUG: inconsistent space stripping in read_xml"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53533::fixed-180-40::0003",
+          "metadata": {
+            "closed_at": "2023-11-07T17:29:39Z",
+            "created_at": "2023-06-06T10:05:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53533,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53533"
+          },
+          "score": 0.34480575789809587,
+          "source_id": "github-issue:pandas-dev/pandas#53533",
+          "source_type": "github_issue",
+          "title": "BUG: iloc-indexing with callable has inconsistent semantics if the return type is a tuple"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54069::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-07-11T03:22:35Z",
+            "created_at": "2023-07-10T20:53:23Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54069"
+          },
+          "score": 0.3444808472918707,
+          "source_id": "github-issue:pandas-dev/pandas#54069",
+          "source_type": "github_issue",
+          "title": "BUG: Error when using Series.pow with fill_value"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55398::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2024-01-08T18:05:15Z",
+            "created_at": "2023-10-04T13:01:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55398,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55398"
+          },
+          "score": 0.34352156898246755,
+          "source_id": "github-issue:pandas-dev/pandas#55398",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.replace() is inconsistent between `float64` and `Float64`"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#54022"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": true,
+      "hit_at_3": false,
+      "hit_at_5": false,
+      "id": "rag-golden-013",
+      "ndcg_at_10": 0.6164948724497099,
+      "question": "Which issue asks for documentation improvements around SettingWithCopyWarning?",
+      "reciprocal_rank": 0.125,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#53665",
+        "github-issue:pandas-dev/pandas#54212",
+        "github-issue:pandas-dev/pandas#53665",
+        "project-doc:docs/DATASET_STRATEGY.md",
+        "github-issue:pandas-dev/pandas#53596",
+        "github-issue:pandas-dev/pandas#53837",
+        "github-issue:pandas-dev/pandas#54284",
+        "github-issue:pandas-dev/pandas#54022",
+        "github-issue:pandas-dev/pandas#54022",
+        "project-doc:docs/DATASET_STRATEGY.md"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53665::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-07T01:19:55Z",
+            "created_at": "2023-06-14T11:48:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 53665,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53665"
+          },
+          "score": 0.16816819849907808,
+          "source_id": "github-issue:pandas-dev/pandas#53665",
+          "source_type": "github_issue",
+          "title": "ENH: Python 3.12 support"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.1670506032884664,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53665::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-11-07T01:19:55Z",
+            "created_at": "2023-06-14T11:48:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 53665,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53665"
+          },
+          "score": 0.16685595311797863,
+          "source_id": "github-issue:pandas-dev/pandas#53665",
+          "source_type": "github_issue",
+          "title": "ENH: Python 3.12 support"
+        },
+        {
+          "chunk_id": "project-doc:docs/DATASET_STRATEGY.md::fixed-180-40::0004",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DATASET_STRATEGY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.16116459280507603,
+          "source_id": "project-doc:docs/DATASET_STRATEGY.md",
+          "source_type": "project_doc",
+          "title": "Dataset Strategy"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53596::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-11T23:09:57Z",
+            "created_at": "2023-06-11T03:25:21Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53596,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53596"
+          },
+          "score": 0.1608168802256692,
+          "source_id": "github-issue:pandas-dev/pandas#53596",
+          "source_type": "github_issue",
+          "title": "DOC: Minor typo and punctuation error"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53837::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-26T17:41:24Z",
+            "created_at": "2023-06-25T04:57:19Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53837,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53837"
+          },
+          "score": 0.156812512046795,
+          "source_id": "github-issue:pandas-dev/pandas#53837",
+          "source_type": "github_issue",
+          "title": "DOC: `read_clipboard` docstring lacks code-formatting and links to other pandas functions/classes"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54284::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-06T12:08:18Z",
+            "created_at": "2023-07-28T11:44:50Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 54284,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54284"
+          },
+          "score": 0.14870075103173055,
+          "source_id": "github-issue:pandas-dev/pandas#54284",
+          "source_type": "github_issue",
+          "title": "QST: does xls support style"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54022::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-07-06T21:05:22Z",
+            "created_at": "2023-07-06T17:48:05Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 54022,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54022"
+          },
+          "score": 0.14501047335684952,
+          "source_id": "github-issue:pandas-dev/pandas#54022",
+          "source_type": "github_issue",
+          "title": "DOC: Improve SettingWithCopyWarning documentation"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54022::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-06T21:05:22Z",
+            "created_at": "2023-07-06T17:48:05Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 54022,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54022"
+          },
+          "score": 0.13140008270606154,
+          "source_id": "github-issue:pandas-dev/pandas#54022",
+          "source_type": "github_issue",
+          "title": "DOC: Improve SettingWithCopyWarning documentation"
+        },
+        {
+          "chunk_id": "project-doc:docs/DATASET_STRATEGY.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DATASET_STRATEGY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.13100006469140593,
+          "source_id": "project-doc:docs/DATASET_STRATEGY.md",
+          "source_type": "project_doc",
+          "title": "Dataset Strategy"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#54033"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": false,
+      "hit_at_3": false,
+      "hit_at_5": false,
+      "id": "rag-golden-014",
+      "ndcg_at_10": 0.0,
+      "question": "Which issue requests a series.is_constant feature?",
+      "reciprocal_rank": 0.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#55398",
+        "github-issue:pandas-dev/pandas#54005",
+        "github-issue:pandas-dev/pandas#55398",
+        "github-issue:pandas-dev/pandas#54022",
+        "github-issue:pandas-dev/pandas#55060",
+        "project-doc:docs/DECISIONS.md",
+        "github-issue:pandas-dev/pandas#53500",
+        "project-doc:docs/RUNBOOK.md",
+        "project-doc:docs/DECISIONS.md",
+        "github-issue:pandas-dev/pandas#54005"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55398::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2024-01-08T18:05:15Z",
+            "created_at": "2023-10-04T13:01:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55398,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55398"
+          },
+          "score": 0.24664099720478866,
+          "source_id": "github-issue:pandas-dev/pandas#55398",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.replace() is inconsistent between `float64` and `Float64`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54005::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-07-07T08:45:11Z",
+            "created_at": "2023-07-05T13:22:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 54005,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54005"
+          },
+          "score": 0.2437333391107163,
+          "source_id": "github-issue:pandas-dev/pandas#54005",
+          "source_type": "github_issue",
+          "title": "ENH: vlookup or similar"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55398::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-01-08T18:05:15Z",
+            "created_at": "2023-10-04T13:01:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55398,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55398"
+          },
+          "score": 0.23121228232266416,
+          "source_id": "github-issue:pandas-dev/pandas#55398",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.replace() is inconsistent between `float64` and `Float64`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54022::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-06T21:05:22Z",
+            "created_at": "2023-07-06T17:48:05Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 54022,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54022"
+          },
+          "score": 0.22069490362729816,
+          "source_id": "github-issue:pandas-dev/pandas#54022",
+          "source_type": "github_issue",
+          "title": "DOC: Improve SettingWithCopyWarning documentation"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55060::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-21T18:29:24Z",
+            "created_at": "2023-09-08T05:45:20Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55060,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55060"
+          },
+          "score": 0.21556199545914567,
+          "source_id": "github-issue:pandas-dev/pandas#55060",
+          "source_type": "github_issue",
+          "title": "ENH: column nicknames or shorthands"
+        },
+        {
+          "chunk_id": "project-doc:docs/DECISIONS.md::fixed-180-40::0004",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DECISIONS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.19338076916709301,
+          "source_id": "project-doc:docs/DECISIONS.md",
+          "source_type": "project_doc",
+          "title": "Decisions"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53500::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-06-06T20:53:57Z",
+            "created_at": "2023-06-02T15:45:14Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53500,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53500"
+          },
+          "score": 0.19325030145473432,
+          "source_id": "github-issue:pandas-dev/pandas#53500",
+          "source_type": "github_issue",
+          "title": "BUG: column selection in GroupBy NOT returning tuple when grouping by a list containing single element"
+        },
+        {
+          "chunk_id": "project-doc:docs/RUNBOOK.md::fixed-180-40::0000",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/RUNBOOK.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.18582777905985867,
+          "source_id": "project-doc:docs/RUNBOOK.md",
+          "source_type": "project_doc",
+          "title": "Runbook"
+        },
+        {
+          "chunk_id": "project-doc:docs/DECISIONS.md::fixed-180-40::0003",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DECISIONS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.17398005143108833,
+          "source_id": "project-doc:docs/DECISIONS.md",
+          "source_type": "project_doc",
+          "title": "Decisions"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54005::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-07T08:45:11Z",
+            "created_at": "2023-07-05T13:22:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 54005,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54005"
+          },
+          "score": 0.16735680074376041,
+          "source_id": "github-issue:pandas-dev/pandas#54005",
+          "source_type": "github_issue",
+          "title": "ENH: vlookup or similar"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#54069"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-015",
+      "ndcg_at_10": 0.5,
+      "question": "Which issue reports an error when using Series.pow with fill_value?",
+      "reciprocal_rank": 0.3333333333333333,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#54178",
+        "github-issue:pandas-dev/pandas#54748",
+        "github-issue:pandas-dev/pandas#54069",
+        "github-issue:pandas-dev/pandas#54212",
+        "project-doc:docs/BUILD_PLAN.md",
+        "github-issue:pandas-dev/pandas#55452",
+        "github-issue:pandas-dev/pandas#53596",
+        "github-issue:pandas-dev/pandas#55399",
+        "github-issue:pandas-dev/pandas#54022",
+        "github-issue:pandas-dev/pandas#53560"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54178::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-04-29T13:29:30Z",
+            "created_at": "2023-07-18T03:11:27Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 54178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54178"
+          },
+          "score": 0.22438456287309325,
+          "source_id": "github-issue:pandas-dev/pandas#54178",
+          "source_type": "github_issue",
+          "title": "BUILD: `ValueError` raised when importing pandas due to `numpy.ndarray` size change"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54748::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-25T08:26:35Z",
+            "created_at": "2023-08-25T07:36:18Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 54748,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54748"
+          },
+          "score": 0.1978141420187361,
+          "source_id": "github-issue:pandas-dev/pandas#54748",
+          "source_type": "github_issue",
+          "title": "ENH: Replace oldest-supported-numpy with numpy 1.25.x since they guarantee ABI/API compatibility since 1.19.x"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54069::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-11T03:22:35Z",
+            "created_at": "2023-07-10T20:53:23Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54069"
+          },
+          "score": 0.18377455501575865,
+          "source_id": "github-issue:pandas-dev/pandas#54069",
+          "source_type": "github_issue",
+          "title": "BUG: Error when using Series.pow with fill_value"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.17658089310035238,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "project-doc:docs/BUILD_PLAN.md::fixed-180-40::0013",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/BUILD_PLAN.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.17541160386140583,
+          "source_id": "project-doc:docs/BUILD_PLAN.md",
+          "source_type": "project_doc",
+          "title": "Build Plan"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55452::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-10-10T13:33:25Z",
+            "created_at": "2023-10-09T13:09:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55452,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55452"
+          },
+          "score": 0.16854019432007689,
+          "source_id": "github-issue:pandas-dev/pandas#55452",
+          "source_type": "github_issue",
+          "title": "BUG: hash_pandas_object(obj).sum() changed value with pandas 2.1.0"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53596::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-11T23:09:57Z",
+            "created_at": "2023-06-11T03:25:21Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53596,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53596"
+          },
+          "score": 0.16781215551988443,
+          "source_id": "github-issue:pandas-dev/pandas#53596",
+          "source_type": "github_issue",
+          "title": "DOC: Minor typo and punctuation error"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55399::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-12-06T01:42:31Z",
+            "created_at": "2023-10-04T13:04:12Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55399,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55399"
+          },
+          "score": 0.16770509831248423,
+          "source_id": "github-issue:pandas-dev/pandas#55399",
+          "source_type": "github_issue",
+          "title": "ENH: Support `errors=\"ignore\"` for astype with pyarrow types"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54022::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-07-06T21:05:22Z",
+            "created_at": "2023-07-06T17:48:05Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 54022,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54022"
+          },
+          "score": 0.14827249517165172,
+          "source_id": "github-issue:pandas-dev/pandas#54022",
+          "source_type": "github_issue",
+          "title": "DOC: Improve SettingWithCopyWarning documentation"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53560::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-24T09:36:55Z",
+            "created_at": "2023-06-08T08:31:47Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53560,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53560"
+          },
+          "score": 0.14561770819003936,
+          "source_id": "github-issue:pandas-dev/pandas#53560",
+          "source_type": "github_issue",
+          "title": "QST: What is the canonical way to convert a column of type `string[pyarrow]` to boolean within a pandas dataframe?"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#54212"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-016",
+      "ndcg_at_10": 0.6309297535714575,
+      "question": "Which issue is about a local doc build failing because of an rstjinja problem?",
+      "reciprocal_rank": 0.5,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#55398",
+        "github-issue:pandas-dev/pandas#54212",
+        "github-issue:pandas-dev/pandas#54022",
+        "project-doc:docs/DATASET_STRATEGY.md",
+        "github-issue:pandas-dev/pandas#53500",
+        "github-issue:pandas-dev/pandas#55398",
+        "github-issue:pandas-dev/pandas#53763",
+        "github-issue:pandas-dev/pandas#55181",
+        "project-doc:docs/REPORT.md",
+        "github-issue:pandas-dev/pandas#54981"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55398::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2024-01-08T18:05:15Z",
+            "created_at": "2023-10-04T13:01:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55398,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55398"
+          },
+          "score": 0.29986252059621155,
+          "source_id": "github-issue:pandas-dev/pandas#55398",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.replace() is inconsistent between `float64` and `Float64`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.29847618621504834,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54022::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-06T21:05:22Z",
+            "created_at": "2023-07-06T17:48:05Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 54022,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54022"
+          },
+          "score": 0.2979873780801926,
+          "source_id": "github-issue:pandas-dev/pandas#54022",
+          "source_type": "github_issue",
+          "title": "DOC: Improve SettingWithCopyWarning documentation"
+        },
+        {
+          "chunk_id": "project-doc:docs/DATASET_STRATEGY.md::fixed-180-40::0004",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DATASET_STRATEGY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.289343829339757,
+          "source_id": "project-doc:docs/DATASET_STRATEGY.md",
+          "source_type": "project_doc",
+          "title": "Dataset Strategy"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53500::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-06-06T20:53:57Z",
+            "created_at": "2023-06-02T15:45:14Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53500,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53500"
+          },
+          "score": 0.2530240384255299,
+          "source_id": "github-issue:pandas-dev/pandas#53500",
+          "source_type": "github_issue",
+          "title": "BUG: column selection in GroupBy NOT returning tuple when grouping by a list containing single element"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55398::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-01-08T18:05:15Z",
+            "created_at": "2023-10-04T13:01:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55398,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55398"
+          },
+          "score": 0.23149783545399008,
+          "source_id": "github-issue:pandas-dev/pandas#55398",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.replace() is inconsistent between `float64` and `Float64`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0010",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.22986424990745863,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55181::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-20T17:42:09Z",
+            "created_at": "2023-09-18T10:44:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55181,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55181"
+          },
+          "score": 0.22833668863877152,
+          "source_id": "github-issue:pandas-dev/pandas#55181",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.mode() fails on sparse integer DataFrames"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0030",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.2184334141307336,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54981::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-09-06T22:40:25Z",
+            "created_at": "2023-09-03T14:07:15Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54981,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54981"
+          },
+          "score": 0.2164612595469023,
+          "source_id": "github-issue:pandas-dev/pandas#54981",
+          "source_type": "github_issue",
+          "title": "BUG: FutureWarning on pct_change() suggests a solution that does not always work."
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#54284"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-017",
+      "ndcg_at_10": 0.5,
+      "question": "Which issue asks whether xls supports style?",
+      "reciprocal_rank": 0.3333333333333333,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#54212",
+        "github-issue:pandas-dev/pandas#54033",
+        "github-issue:pandas-dev/pandas#54284",
+        "github-issue:pandas-dev/pandas#53763",
+        "project-doc:docs/EVALS.md",
+        "project-doc:docs/DATASET_STRATEGY.md",
+        "project-doc:docs/COLAB_TRAINING.md",
+        "project-doc:docs/COLAB_TRAINING.md",
+        "github-issue:pandas-dev/pandas#55069",
+        "github-issue:pandas-dev/pandas#53763"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.178584606788381,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54033::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-07-12T15:40:26Z",
+            "created_at": "2023-07-07T09:33:08Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 54033,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54033"
+          },
+          "score": 0.116090865053143,
+          "source_id": "github-issue:pandas-dev/pandas#54033",
+          "source_type": "github_issue",
+          "title": "ENH: series.is_constant"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54284::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-06T12:08:18Z",
+            "created_at": "2023-07-28T11:44:50Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 54284,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54284"
+          },
+          "score": 0.11354842112585867,
+          "source_id": "github-issue:pandas-dev/pandas#54284",
+          "source_type": "github_issue",
+          "title": "QST: does xls support style"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0010",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.09029920547884623,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "project-doc:docs/EVALS.md::fixed-180-40::0000",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/EVALS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.09018988047396718,
+          "source_id": "project-doc:docs/EVALS.md",
+          "source_type": "project_doc",
+          "title": "Evaluations"
+        },
+        {
+          "chunk_id": "project-doc:docs/DATASET_STRATEGY.md::fixed-180-40::0004",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DATASET_STRATEGY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.0861460984507896,
+          "source_id": "project-doc:docs/DATASET_STRATEGY.md",
+          "source_type": "project_doc",
+          "title": "Dataset Strategy"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0003",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.08279462104131752,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "project-doc:docs/COLAB_TRAINING.md::fixed-180-40::0004",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/COLAB_TRAINING.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.0735055708307861,
+          "source_id": "project-doc:docs/COLAB_TRAINING.md",
+          "source_type": "project_doc",
+          "title": "Colab Notebook Workflow"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55069::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-02-01T19:04:30Z",
+            "created_at": "2023-09-08T17:35:18Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55069"
+          },
+          "score": 0.07241815037889603,
+          "source_id": "github-issue:pandas-dev/pandas#55069",
+          "source_type": "github_issue",
+          "title": "BUG: pandas int extension dtypes has no attribute byteorder"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0006",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.07163353188265659,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#54627"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-018",
+      "ndcg_at_10": 1.0,
+      "question": "Which issue says groupby.var does not return Arrow types with Arrow-backed input?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#54627",
+        "project-doc:docs/REPORT.md",
+        "github-issue:pandas-dev/pandas#54212",
+        "github-issue:pandas-dev/pandas#55181",
+        "github-issue:pandas-dev/pandas#53733",
+        "project-doc:docs/REPORT.md",
+        "github-issue:pandas-dev/pandas#55188",
+        "github-issue:pandas-dev/pandas#53898",
+        "github-issue:pandas-dev/pandas#53713",
+        "project-doc:docs/REPORT.md"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54627::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2026-03-06T20:59:12Z",
+            "created_at": "2023-08-18T16:26:11Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54627,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54627"
+          },
+          "score": 0.29726421424701527,
+          "source_id": "github-issue:pandas-dev/pandas#54627",
+          "source_type": "github_issue",
+          "title": "BUG: groupby.var() does not return arrow types with arrow backed series as input. "
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0025",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.2516768781388291,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.21072124723064906,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55181::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-20T17:42:09Z",
+            "created_at": "2023-09-18T10:44:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55181,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55181"
+          },
+          "score": 0.20956448873598013,
+          "source_id": "github-issue:pandas-dev/pandas#55181",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.mode() fails on sparse integer DataFrames"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53733::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-20T18:57:15Z",
+            "created_at": "2023-06-20T02:58:35Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53733,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53733"
+          },
+          "score": 0.20806259464411972,
+          "source_id": "github-issue:pandas-dev/pandas#53733",
+          "source_type": "github_issue",
+          "title": "BUG: MultiIndex.levels returns extra values after filtering rows"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0020",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.19323172951663414,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55188::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-09-21T22:42:52Z",
+            "created_at": "2023-09-18T20:31:20Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55188,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55188"
+          },
+          "score": 0.1904829162116307,
+          "source_id": "github-issue:pandas-dev/pandas#55188",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.style.to_latex() does not allow `index=False` as a parameter and does not return consistent "
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53898::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-10T17:36:15Z",
+            "created_at": "2023-06-28T04:36:10Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53898,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53898"
+          },
+          "score": 0.1881931631772702,
+          "source_id": "github-issue:pandas-dev/pandas#53898",
+          "source_type": "github_issue",
+          "title": "BUG: interpolate with ffill/bfill method, axis=1, multi-block"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53713::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-07-17T21:52:10Z",
+            "created_at": "2023-06-18T10:32:00Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53713,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53713"
+          },
+          "score": 0.18516401995451026,
+          "source_id": "github-issue:pandas-dev/pandas#53713",
+          "source_type": "github_issue",
+          "title": "QST: How to prepare my data to avoid being unable to infer frequency"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0003",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.18038281779162574,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#54748"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-019",
+      "ndcg_at_10": 1.0,
+      "question": "Which issue proposes replacing oldest-supported-numpy with numpy 1.25.x?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#54748",
+        "github-issue:pandas-dev/pandas#54178",
+        "github-issue:pandas-dev/pandas#54212",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/DECISIONS.md",
+        "project-doc:docs/REPORT.md",
+        "project-doc:docs/REPORT.md",
+        "github-issue:pandas-dev/pandas#55178",
+        "github-issue:pandas-dev/pandas#53928",
+        "github-issue:pandas-dev/pandas#53898"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54748::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-25T08:26:35Z",
+            "created_at": "2023-08-25T07:36:18Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 54748,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54748"
+          },
+          "score": 0.4845437118523489,
+          "source_id": "github-issue:pandas-dev/pandas#54748",
+          "source_type": "github_issue",
+          "title": "ENH: Replace oldest-supported-numpy with numpy 1.25.x since they guarantee ABI/API compatibility since 1.19.x"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54178::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-04-29T13:29:30Z",
+            "created_at": "2023-07-18T03:11:27Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 54178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54178"
+          },
+          "score": 0.24787130901019933,
+          "source_id": "github-issue:pandas-dev/pandas#54178",
+          "source_type": "github_issue",
+          "title": "BUILD: `ValueError` raised when importing pandas due to `numpy.ndarray` size change"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.17744947135212552,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0015",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.1685731665708067,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/DECISIONS.md::fixed-180-40::0004",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DECISIONS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.14948356774835642,
+          "source_id": "project-doc:docs/DECISIONS.md",
+          "source_type": "project_doc",
+          "title": "Decisions"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0006",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.13787639750914224,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0016",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.13714636824082213,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55178::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2025-10-19T19:06:01Z",
+            "created_at": "2023-09-17T11:56:01Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55178"
+          },
+          "score": 0.1262337488534405,
+          "source_id": "github-issue:pandas-dev/pandas#55178",
+          "source_type": "github_issue",
+          "title": "ENH: set `__module__` on top-level public objects"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53928::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-12T13:18:56Z",
+            "created_at": "2023-06-29T15:40:33Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53928,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53928"
+          },
+          "score": 0.12285902336679022,
+          "source_id": "github-issue:pandas-dev/pandas#53928",
+          "source_type": "github_issue",
+          "title": "BUG: TypeError: cannot safely cast non-equivalent object to uint32"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53898::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-10T17:36:15Z",
+            "created_at": "2023-06-28T04:36:10Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53898,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53898"
+          },
+          "score": 0.12177204676176308,
+          "source_id": "github-issue:pandas-dev/pandas#53898",
+          "source_type": "github_issue",
+          "title": "BUG: interpolate with ffill/bfill method, axis=1, multi-block"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#54981"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-020",
+      "ndcg_at_10": 1.4306765580733931,
+      "question": "Which issue says FutureWarning on pct_change suggests a solution that does not always work?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#54981",
+        "github-issue:pandas-dev/pandas#54022",
+        "github-issue:pandas-dev/pandas#55188",
+        "github-issue:pandas-dev/pandas#54981",
+        "github-issue:pandas-dev/pandas#54178",
+        "github-issue:pandas-dev/pandas#55178",
+        "github-issue:pandas-dev/pandas#55398",
+        "project-doc:docs/REPORT.md",
+        "github-issue:pandas-dev/pandas#55398",
+        "project-doc:docs/DATASET_STRATEGY.md"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54981::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-09-06T22:40:25Z",
+            "created_at": "2023-09-03T14:07:15Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54981,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54981"
+          },
+          "score": 0.3567226644356003,
+          "source_id": "github-issue:pandas-dev/pandas#54981",
+          "source_type": "github_issue",
+          "title": "BUG: FutureWarning on pct_change() suggests a solution that does not always work."
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54022::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-06T21:05:22Z",
+            "created_at": "2023-07-06T17:48:05Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 54022,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54022"
+          },
+          "score": 0.2618482341298008,
+          "source_id": "github-issue:pandas-dev/pandas#54022",
+          "source_type": "github_issue",
+          "title": "DOC: Improve SettingWithCopyWarning documentation"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55188::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-09-21T22:42:52Z",
+            "created_at": "2023-09-18T20:31:20Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55188,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55188"
+          },
+          "score": 0.2603778219616477,
+          "source_id": "github-issue:pandas-dev/pandas#55188",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.style.to_latex() does not allow `index=False` as a parameter and does not return consistent "
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54981::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-09-06T22:40:25Z",
+            "created_at": "2023-09-03T14:07:15Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54981,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54981"
+          },
+          "score": 0.25647589239911844,
+          "source_id": "github-issue:pandas-dev/pandas#54981",
+          "source_type": "github_issue",
+          "title": "BUG: FutureWarning on pct_change() suggests a solution that does not always work."
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54178::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2024-04-29T13:29:30Z",
+            "created_at": "2023-07-18T03:11:27Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 54178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54178"
+          },
+          "score": 0.24262373970773643,
+          "source_id": "github-issue:pandas-dev/pandas#54178",
+          "source_type": "github_issue",
+          "title": "BUILD: `ValueError` raised when importing pandas due to `numpy.ndarray` size change"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55178::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2025-10-19T19:06:01Z",
+            "created_at": "2023-09-17T11:56:01Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55178"
+          },
+          "score": 0.2272727272727273,
+          "source_id": "github-issue:pandas-dev/pandas#55178",
+          "source_type": "github_issue",
+          "title": "ENH: set `__module__` on top-level public objects"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55398::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2024-01-08T18:05:15Z",
+            "created_at": "2023-10-04T13:01:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55398,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55398"
+          },
+          "score": 0.20497762970099898,
+          "source_id": "github-issue:pandas-dev/pandas#55398",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.replace() is inconsistent between `float64` and `Float64`"
+        },
+        {
+          "chunk_id": "project-doc:docs/REPORT.md::fixed-180-40::0021",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/REPORT.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.20075424529139824,
+          "source_id": "project-doc:docs/REPORT.md",
+          "source_type": "project_doc",
+          "title": "Project Report"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55398::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-01-08T18:05:15Z",
+            "created_at": "2023-10-04T13:01:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55398,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55398"
+          },
+          "score": 0.19988898139583086,
+          "source_id": "github-issue:pandas-dev/pandas#55398",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.replace() is inconsistent between `float64` and `Float64`"
+        },
+        {
+          "chunk_id": "project-doc:docs/DATASET_STRATEGY.md::fixed-180-40::0004",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DATASET_STRATEGY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.1994310088043664,
+          "source_id": "project-doc:docs/DATASET_STRATEGY.md",
+          "source_type": "project_doc",
+          "title": "Dataset Strategy"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#55060"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-021",
+      "ndcg_at_10": 1.0,
+      "question": "Which issue requests column nicknames or shorthands?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#55060",
+        "github-issue:pandas-dev/pandas#53763",
+        "github-issue:pandas-dev/pandas#53763",
+        "github-issue:pandas-dev/pandas#53763",
+        "github-issue:pandas-dev/pandas#54212",
+        "github-issue:pandas-dev/pandas#53763",
+        "project-doc:docs/DECISIONS.md",
+        "project-doc:docs/SECURITY.md",
+        "github-issue:pandas-dev/pandas#53763",
+        "project-doc:docs/SECURITY.md"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55060::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-21T18:29:24Z",
+            "created_at": "2023-09-08T05:45:20Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55060,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55060"
+          },
+          "score": 0.25400025400038095,
+          "source_id": "github-issue:pandas-dev/pandas#55060",
+          "source_type": "github_issue",
+          "title": "ENH: column nicknames or shorthands"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0006",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.18624718289490713,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0007",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.174316256892972,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0005",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.16025661604300076,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.14611467828140265,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0004",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.14368053378451953,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "project-doc:docs/DECISIONS.md::fixed-180-40::0003",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/DECISIONS.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.14317709206610116,
+          "source_id": "project-doc:docs/DECISIONS.md",
+          "source_type": "project_doc",
+          "title": "Decisions"
+        },
+        {
+          "chunk_id": "project-doc:docs/SECURITY.md::fixed-180-40::0002",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/SECURITY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.14173667737846019,
+          "source_id": "project-doc:docs/SECURITY.md",
+          "source_type": "project_doc",
+          "title": "Security"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.13215217891996237,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "project-doc:docs/SECURITY.md::fixed-180-40::0001",
+          "metadata": {
+            "format": "markdown",
+            "path": "docs/SECURITY.md",
+            "repo": "maintainers-copilot"
+          },
+          "score": 0.12229989761755712,
+          "source_id": "project-doc:docs/SECURITY.md",
+          "source_type": "project_doc",
+          "title": "Security"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#55069"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-022",
+      "ndcg_at_10": 1.0,
+      "question": "Which issue reports that pandas integer extension dtypes have no byteorder attribute?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#55069",
+        "github-issue:pandas-dev/pandas#55452",
+        "github-issue:pandas-dev/pandas#53615",
+        "github-issue:pandas-dev/pandas#53928",
+        "github-issue:pandas-dev/pandas#54212",
+        "github-issue:pandas-dev/pandas#54069",
+        "github-issue:pandas-dev/pandas#54178",
+        "github-issue:pandas-dev/pandas#55178",
+        "github-issue:pandas-dev/pandas#54033",
+        "github-issue:pandas-dev/pandas#55178"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55069::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-02-01T19:04:30Z",
+            "created_at": "2023-09-08T17:35:18Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55069"
+          },
+          "score": 0.2986754902199874,
+          "source_id": "github-issue:pandas-dev/pandas#55069",
+          "source_type": "github_issue",
+          "title": "BUG: pandas int extension dtypes has no attribute byteorder"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55452::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-10-10T13:33:25Z",
+            "created_at": "2023-10-09T13:09:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55452,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55452"
+          },
+          "score": 0.25276251480171835,
+          "source_id": "github-issue:pandas-dev/pandas#55452",
+          "source_type": "github_issue",
+          "title": "BUG: hash_pandas_object(obj).sum() changed value with pandas 2.1.0"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53615::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-06-12T09:53:02Z",
+            "created_at": "2023-06-12T09:48:04Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53615,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53615"
+          },
+          "score": 0.2448510534371959,
+          "source_id": "github-issue:pandas-dev/pandas#53615",
+          "source_type": "github_issue",
+          "title": "QST: \u6211\u6ca1\u6709\u6307\u5b9aengine\uff0c\u5728\u672c\u5730read_excel\u597d\u7528\uff0c\u4f46\u662f\u5728airflow\u4e2d\u5c31\u62a5\u9519\u3002\u5f53\u6211\u6307\u5b9a\u4e4b\u540e\uff0c\u5c31\u4f1a\u62a5\u8fd9\u4e2a\uff0czipfile.BadZipFile: File is not a zip file\uff0cexcel\u6587\u4ef6\u80fd\u6b63\u5e38\u6253\u5f00\u5728\u672c\u5730\uff0c\u6ca1\u6709\u95ee\u9898\u3002"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53928::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-12T13:18:56Z",
+            "created_at": "2023-06-29T15:40:33Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53928,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53928"
+          },
+          "score": 0.24038098691020582,
+          "source_id": "github-issue:pandas-dev/pandas#53928",
+          "source_type": "github_issue",
+          "title": "BUG: TypeError: cannot safely cast non-equivalent object to uint32"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.23559351655563537,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54069::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-11T03:22:35Z",
+            "created_at": "2023-07-10T20:53:23Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54069"
+          },
+          "score": 0.23067336709451192,
+          "source_id": "github-issue:pandas-dev/pandas#54069",
+          "source_type": "github_issue",
+          "title": "BUG: Error when using Series.pow with fill_value"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54178::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-04-29T13:29:30Z",
+            "created_at": "2023-07-18T03:11:27Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 54178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54178"
+          },
+          "score": 0.22893227903814298,
+          "source_id": "github-issue:pandas-dev/pandas#54178",
+          "source_type": "github_issue",
+          "title": "BUILD: `ValueError` raised when importing pandas due to `numpy.ndarray` size change"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55178::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2025-10-19T19:06:01Z",
+            "created_at": "2023-09-17T11:56:01Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55178"
+          },
+          "score": 0.20994555243259122,
+          "source_id": "github-issue:pandas-dev/pandas#55178",
+          "source_type": "github_issue",
+          "title": "ENH: set `__module__` on top-level public objects"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54033::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-12T15:40:26Z",
+            "created_at": "2023-07-07T09:33:08Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 54033,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54033"
+          },
+          "score": 0.2095644887359802,
+          "source_id": "github-issue:pandas-dev/pandas#54033",
+          "source_type": "github_issue",
+          "title": "ENH: series.is_constant"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55178::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2025-10-19T19:06:01Z",
+            "created_at": "2023-09-17T11:56:01Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55178"
+          },
+          "score": 0.20161945963637798,
+          "source_id": "github-issue:pandas-dev/pandas#55178",
+          "source_type": "github_issue",
+          "title": "ENH: set `__module__` on top-level public objects"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#55121"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": false,
+      "hit_at_3": false,
+      "hit_at_5": false,
+      "id": "rag-golden-023",
+      "ndcg_at_10": 0.0,
+      "question": "Which issue asks to add a name parameter to value_counts?",
+      "reciprocal_rank": 0.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#55148",
+        "github-issue:pandas-dev/pandas#53811",
+        "github-issue:pandas-dev/pandas#53533",
+        "github-issue:pandas-dev/pandas#54069",
+        "github-issue:pandas-dev/pandas#55452",
+        "github-issue:pandas-dev/pandas#53928",
+        "github-issue:pandas-dev/pandas#54152",
+        "github-issue:pandas-dev/pandas#55188",
+        "github-issue:pandas-dev/pandas#53500",
+        "github-issue:pandas-dev/pandas#54627"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55148::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-10-07T11:00:56Z",
+            "created_at": "2023-09-15T17:03:14Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 55148,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55148"
+          },
+          "score": 0.568491202573277,
+          "source_id": "github-issue:pandas-dev/pandas#55148",
+          "source_type": "github_issue",
+          "title": "BUG: MultiIndex.levels[x] of sliced DataFrame returns values from the non-sliced index"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53811::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-07-17T16:54:18Z",
+            "created_at": "2023-06-23T00:06:03Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53811,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53811"
+          },
+          "score": 0.5680890156091938,
+          "source_id": "github-issue:pandas-dev/pandas#53811",
+          "source_type": "github_issue",
+          "title": "BUG: inconsistent space stripping in read_xml"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53533::fixed-180-40::0003",
+          "metadata": {
+            "closed_at": "2023-11-07T17:29:39Z",
+            "created_at": "2023-06-06T10:05:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53533,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53533"
+          },
+          "score": 0.5680883552548789,
+          "source_id": "github-issue:pandas-dev/pandas#53533",
+          "source_type": "github_issue",
+          "title": "BUG: iloc-indexing with callable has inconsistent semantics if the return type is a tuple"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54069::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-07-11T03:22:35Z",
+            "created_at": "2023-07-10T20:53:23Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54069"
+          },
+          "score": 0.5625635680442446,
+          "source_id": "github-issue:pandas-dev/pandas#54069",
+          "source_type": "github_issue",
+          "title": "BUG: Error when using Series.pow with fill_value"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55452::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-10-10T13:33:25Z",
+            "created_at": "2023-10-09T13:09:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55452,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55452"
+          },
+          "score": 0.5620994273193427,
+          "source_id": "github-issue:pandas-dev/pandas#55452",
+          "source_type": "github_issue",
+          "title": "BUG: hash_pandas_object(obj).sum() changed value with pandas 2.1.0"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53928::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-08-12T13:18:56Z",
+            "created_at": "2023-06-29T15:40:33Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53928,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53928"
+          },
+          "score": 0.5614899250748772,
+          "source_id": "github-issue:pandas-dev/pandas#53928",
+          "source_type": "github_issue",
+          "title": "BUG: TypeError: cannot safely cast non-equivalent object to uint32"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54152::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-08-06T15:30:17Z",
+            "created_at": "2023-07-16T00:49:44Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 54152,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54152"
+          },
+          "score": 0.5594542388644594,
+          "source_id": "github-issue:pandas-dev/pandas#54152",
+          "source_type": "github_issue",
+          "title": "BUG: Inconsistent Shallow Copy Behavior in DataFrame with sample() Series"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55188::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-09-21T22:42:52Z",
+            "created_at": "2023-09-18T20:31:20Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55188,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55188"
+          },
+          "score": 0.5556623828915215,
+          "source_id": "github-issue:pandas-dev/pandas#55188",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.style.to_latex() does not allow `index=False` as a parameter and does not return consistent "
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53500::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2023-06-06T20:53:57Z",
+            "created_at": "2023-06-02T15:45:14Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53500,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53500"
+          },
+          "score": 0.5486726407127174,
+          "source_id": "github-issue:pandas-dev/pandas#53500",
+          "source_type": "github_issue",
+          "title": "BUG: column selection in GroupBy NOT returning tuple when grouping by a list containing single element"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54627::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2026-03-06T20:59:12Z",
+            "created_at": "2023-08-18T16:26:11Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54627,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54627"
+          },
+          "score": 0.5473911925465674,
+          "source_id": "github-issue:pandas-dev/pandas#54627",
+          "source_type": "github_issue",
+          "title": "BUG: groupby.var() does not return arrow types with arrow backed series as input. "
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#55181"
+      ],
+      "hit_at_1": false,
+      "hit_at_10": true,
+      "hit_at_3": false,
+      "hit_at_5": true,
+      "id": "rag-golden-024",
+      "ndcg_at_10": 0.43067655807339306,
+      "question": "Which issue reports that DataFrame.mode fails on sparse integer DataFrames?",
+      "reciprocal_rank": 0.25,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#54212",
+        "github-issue:pandas-dev/pandas#53763",
+        "github-issue:pandas-dev/pandas#55178",
+        "github-issue:pandas-dev/pandas#55181",
+        "github-issue:pandas-dev/pandas#55121",
+        "github-issue:pandas-dev/pandas#53928",
+        "github-issue:pandas-dev/pandas#54981",
+        "github-issue:pandas-dev/pandas#53763",
+        "github-issue:pandas-dev/pandas#53763",
+        "github-issue:pandas-dev/pandas#53898"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.21733032996966448,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0006",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.20377190313128826,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55178::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2025-10-19T19:06:01Z",
+            "created_at": "2023-09-17T11:56:01Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55178"
+          },
+          "score": 0.20123585110162415,
+          "source_id": "github-issue:pandas-dev/pandas#55178",
+          "source_type": "github_issue",
+          "title": "ENH: set `__module__` on top-level public objects"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55181::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-20T17:42:09Z",
+            "created_at": "2023-09-18T10:44:25Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55181,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55181"
+          },
+          "score": 0.1891201294354047,
+          "source_id": "github-issue:pandas-dev/pandas#55181",
+          "source_type": "github_issue",
+          "title": "BUG: DataFrame.mode() fails on sparse integer DataFrames"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55121::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2025-08-05T01:53:58Z",
+            "created_at": "2023-09-13T09:55:23Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55121,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55121"
+          },
+          "score": 0.15655607277128739,
+          "source_id": "github-issue:pandas-dev/pandas#55121",
+          "source_type": "github_issue",
+          "title": "ENH: Add a name parameter to value_counts()"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53928::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-12T13:18:56Z",
+            "created_at": "2023-06-29T15:40:33Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 53928,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53928"
+          },
+          "score": 0.15047095877265576,
+          "source_id": "github-issue:pandas-dev/pandas#53928",
+          "source_type": "github_issue",
+          "title": "BUG: TypeError: cannot safely cast non-equivalent object to uint32"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54981::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-09-06T22:40:25Z",
+            "created_at": "2023-09-03T14:07:15Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54981,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54981"
+          },
+          "score": 0.1455556274348955,
+          "source_id": "github-issue:pandas-dev/pandas#54981",
+          "source_type": "github_issue",
+          "title": "BUG: FutureWarning on pct_change() suggests a solution that does not always work."
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0008",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.13613529495622556,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53763::fixed-180-40::0010",
+          "metadata": {
+            "closed_at": "2023-06-26T17:45:54Z",
+            "created_at": "2023-06-21T05:43:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "docs",
+            "number": 53763,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53763"
+          },
+          "score": 0.1359895241734874,
+          "source_id": "github-issue:pandas-dev/pandas#53763",
+          "source_type": "github_issue",
+          "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53898::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-07-10T17:36:15Z",
+            "created_at": "2023-06-28T04:36:10Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53898,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53898"
+          },
+          "score": 0.1355815361366601,
+          "source_id": "github-issue:pandas-dev/pandas#53898",
+          "source_type": "github_issue",
+          "title": "BUG: interpolate with ffill/bfill method, axis=1, multi-block"
+        }
+      ]
+    },
+    {
+      "ground_truth_source_ids": [
+        "github-issue:pandas-dev/pandas#55452"
+      ],
+      "hit_at_1": true,
+      "hit_at_10": true,
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "id": "rag-golden-025",
+      "ndcg_at_10": 1.0,
+      "question": "Which issue says hash_pandas_object(obj).sum changed value with pandas 2.1.0?",
+      "reciprocal_rank": 1.0,
+      "retrieved_source_ids": [
+        "github-issue:pandas-dev/pandas#55452",
+        "github-issue:pandas-dev/pandas#54178",
+        "github-issue:pandas-dev/pandas#55287",
+        "github-issue:pandas-dev/pandas#55178",
+        "github-issue:pandas-dev/pandas#55178",
+        "github-issue:pandas-dev/pandas#55069",
+        "github-issue:pandas-dev/pandas#54212",
+        "github-issue:pandas-dev/pandas#53898",
+        "github-issue:pandas-dev/pandas#55060",
+        "github-issue:pandas-dev/pandas#54748"
+      ],
+      "top_chunks": [
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55452::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-10-10T13:33:25Z",
+            "created_at": "2023-10-09T13:09:46Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55452,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55452"
+          },
+          "score": 0.32139354013675153,
+          "source_id": "github-issue:pandas-dev/pandas#55452",
+          "source_type": "github_issue",
+          "title": "BUG: hash_pandas_object(obj).sum() changed value with pandas 2.1.0"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54178::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-04-29T13:29:30Z",
+            "created_at": "2023-07-18T03:11:27Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 54178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54178"
+          },
+          "score": 0.25169680741614103,
+          "source_id": "github-issue:pandas-dev/pandas#54178",
+          "source_type": "github_issue",
+          "title": "BUILD: `ValueError` raised when importing pandas due to `numpy.ndarray` size change"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55287::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-09-30T18:06:11Z",
+            "created_at": "2023-09-25T17:44:34Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55287,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55287"
+          },
+          "score": 0.1996373523761726,
+          "source_id": "github-issue:pandas-dev/pandas#55287",
+          "source_type": "github_issue",
+          "title": "QST: get the last one value in a dataframe's certain column"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55178::fixed-180-40::0003",
+          "metadata": {
+            "closed_at": "2025-10-19T19:06:01Z",
+            "created_at": "2023-09-17T11:56:01Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55178"
+          },
+          "score": 0.19903648614538955,
+          "source_id": "github-issue:pandas-dev/pandas#55178",
+          "source_type": "github_issue",
+          "title": "ENH: set `__module__` on top-level public objects"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55178::fixed-180-40::0002",
+          "metadata": {
+            "closed_at": "2025-10-19T19:06:01Z",
+            "created_at": "2023-09-17T11:56:01Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 55178,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55178"
+          },
+          "score": 0.18952619181419755,
+          "source_id": "github-issue:pandas-dev/pandas#55178",
+          "source_type": "github_issue",
+          "title": "ENH: set `__module__` on top-level public objects"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55069::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2024-02-01T19:04:30Z",
+            "created_at": "2023-09-08T17:35:18Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 55069,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55069"
+          },
+          "score": 0.18486303725836217,
+          "source_id": "github-issue:pandas-dev/pandas#55069",
+          "source_type": "github_issue",
+          "title": "BUG: pandas int extension dtypes has no attribute byteorder"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54212::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-31T08:41:57Z",
+            "created_at": "2023-07-20T17:42:58Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 54212,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54212"
+          },
+          "score": 0.18131429674266583,
+          "source_id": "github-issue:pandas-dev/pandas#54212",
+          "source_type": "github_issue",
+          "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#53898::fixed-180-40::0001",
+          "metadata": {
+            "closed_at": "2023-07-10T17:36:15Z",
+            "created_at": "2023-06-28T04:36:10Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "bug",
+            "number": 53898,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/53898"
+          },
+          "score": 0.16648178955300671,
+          "source_id": "github-issue:pandas-dev/pandas#53898",
+          "source_type": "github_issue",
+          "title": "BUG: interpolate with ffill/bfill method, axis=1, multi-block"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#55060::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-11-21T18:29:24Z",
+            "created_at": "2023-09-08T05:45:20Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "question",
+            "number": 55060,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/55060"
+          },
+          "score": 0.15920308451727833,
+          "source_id": "github-issue:pandas-dev/pandas#55060",
+          "source_type": "github_issue",
+          "title": "ENH: column nicknames or shorthands"
+        },
+        {
+          "chunk_id": "github-issue:pandas-dev/pandas#54748::fixed-180-40::0000",
+          "metadata": {
+            "closed_at": "2023-08-25T08:26:35Z",
+            "created_at": "2023-08-25T07:36:18Z",
+            "has_maintainer_answer": false,
+            "held_out": true,
+            "label": "feature",
+            "number": 54748,
+            "repo": "pandas-dev/pandas",
+            "url": "https://github.com/pandas-dev/pandas/issues/54748"
+          },
+          "score": 0.15717365336548286,
+          "source_id": "github-issue:pandas-dev/pandas#54748",
+          "source_type": "github_issue",
+          "title": "ENH: Replace oldest-supported-numpy with numpy 1.25.x since they guarantee ABI/API compatibility since 1.19.x"
+        }
+      ]
+    }
+  ]
+}

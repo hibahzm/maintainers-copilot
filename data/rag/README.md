@@ -11,7 +11,7 @@ data/rag/
   README.md                 tracked
   corpus_manifest.json       tracked, small evidence only
   raw/                       ignored local raw corpus files
-  chunks/                    ignored local chunk files
+  chunks/                    ignored local chunk files; small chunk manifests tracked
   indexes/                   ignored local BM25/vector/rerank scratch files
 ```
 
@@ -58,3 +58,30 @@ The dev corpus currently uses:
 - held-out issue records from `data/test_200_balanced.jsonl` if that ignored file is present locally
 
 The full RAG corpus later needs resolved issues with maintainer answers/comments; this first dev corpus is only for building and testing the pipeline shape without requiring a large download.
+
+## Baseline retrieval
+
+Build naive fixed-size chunks:
+
+```bash
+python -m scripts.rag.chunk_corpus
+```
+
+Run the baseline dense-only evaluator:
+
+```bash
+python -m scripts.rag.evaluate_retrieval
+```
+
+Tracked baseline evidence:
+
+```text
+data/rag/chunks/naive_fixed_chunks_manifest.json
+evals/rag_naive_dense_baseline_results.json
+```
+
+The generated chunk rows stay ignored:
+
+```text
+data/rag/chunks/naive_fixed_chunks.jsonl
+```

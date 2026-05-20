@@ -22,6 +22,7 @@ data/rag/raw/*
 !data/rag/raw/.gitkeep
 data/rag/chunks/*
 !data/rag/chunks/.gitkeep
+!data/rag/chunks/*_manifest.json
 data/rag/indexes/*
 !data/rag/indexes/.gitkeep
 data/*.parquet
@@ -38,3 +39,4 @@ data/*.db
 # Generated evaluation outputs
 evals/*_results.json
 !evals/classification_eval_results.json
+!evals/rag_naive_dense_baseline_results.json

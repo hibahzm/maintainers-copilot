@@ -2,6 +2,31 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG golden set and naive dense baseline added
+
+### Added
+- `evals/golden_rag.json`
+- `scripts/rag/chunk_corpus.py`
+- `scripts/rag/evaluate_retrieval.py`
+- `data/rag/chunks/naive_fixed_chunks_manifest.json`
+- `evals/rag_naive_dense_baseline_results.json`
+
+### Evidence
+- golden examples: `25`
+- naive chunks: `185`
+- baseline: fixed-size word chunks + hash-dense cosine retrieval
+- recall@1: `0.4800`
+- recall@3: `0.7600`
+- recall@5: `0.8000`
+- recall@10: `0.8400`
+- MRR@10: `0.6083`
+- nDCG@10: `0.9316`
+
+### Design notes
+- This is the intentionally weak baseline required by the rubric: naive fixed-size chunking plus pure dense retrieval.
+- The baseline uses a deterministic local hash-dense embedding so the first eval has no API cost and no new heavyweight dependency.
+- Later advanced RAG work must beat this baseline with numbers before we claim improvements.
+
 ## 2026-05-20 — RAG dev corpus workspace added
 
 ### Added

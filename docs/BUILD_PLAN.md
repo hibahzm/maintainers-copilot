@@ -263,6 +263,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 ### 3.3 Improve retrieval beyond the naive baseline
 
 **Add / complete**
+- naive fixed-size dense baseline ✅ recall@10 `0.8400`, MRR@10 `0.6083`
 - non-naive chunking
 - sparse retrieval such as BM25
 - dense retrieval in pgvector
@@ -277,9 +278,9 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 ### 3.4 Build the RAG golden set
 
 **Add / complete**
-- `evals/golden_rag.json`
-- 25 question / ideal-answer / ground-truth-chunk triples
-- retrieval and generation metrics
+- `evals/golden_rag.json` ✅
+- 25 question / ideal-answer / ground-truth-source triples ✅
+- retrieval metrics ✅ naive dense baseline recorded
 - five hand-labeled examples for judge-agreement reporting
 
 ### 3.5 Add safe logging and exception hardening
