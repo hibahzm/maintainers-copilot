@@ -2,6 +2,19 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG pgvector ingest wrapper added
+
+### Added
+- `scripts/rag/ingest_pgvector.sh`
+
+### Updated
+- `data/rag/README.md`
+
+### Design notes
+- The ingest wrapper replaces a long error-prone command with one script.
+- It forces CPU PyTorch wheels by default so local indexing does not download large CUDA/NVIDIA packages.
+- Heavy embedding dependencies remain runtime-only for ingestion and are not added to backend/model-server dependencies.
+
 ## 2026-05-20 — pgvector RAG indexing foundation added
 
 ### Added

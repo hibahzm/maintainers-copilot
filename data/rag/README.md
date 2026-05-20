@@ -145,15 +145,14 @@ Committed result: `intfloat/e5-small-v2` is the selected first RAG embedding mod
 After the database migration runs, index the generated parent-child chunks into PostgreSQL/pgvector with the selected embedding model:
 
 ```bash
-pip install -q sentence-transformers asyncpg
+scripts/rag/ingest_pgvector.sh
+```
 
-python -m scripts.rag.index_pgvector \
-  --chunks-path data/rag/chunks/parent_child_chunks.jsonl \
-  --database-url postgresql://copilot:copilot-dev-only@localhost:5432/copilot \
-  --embedding-model intfloat/e5-small-v2 \
-  --device auto \
-  --batch-size 64 \
-  --replace
+The ingest wrapper uses `uv`, CPU-only PyTorch wheels, `sentence-transformers`, and `asyncpg` without adding those heavy packages to the committed service dependencies. Override defaults with environment variables if needed:
+
+```bash
+DEVICE=cpu BATCH_SIZE=32 DATABASE_URL=postgresql://copilot:copilot-dev-only@localhost:5432/copilot \
+  scripts/rag/ingest_pgvector.sh
 ```
 
 Smoke-test dense pgvector search:
