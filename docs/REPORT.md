@@ -2,6 +2,21 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Lightweight CI gate added
+
+### Added
+- `.github/workflows/ci.yml`
+- `evals/check_eval_results.py`
+
+### Updated
+- `docs/BUILD_PLAN.md`
+- `docs/REPORT.md`
+
+### Design notes
+- CI now runs backend unit tests, Python compile checks, widget build checks, and offline eval evidence checks.
+- The eval gate reads `evals/eval_thresholds.yaml` and verifies committed classification macro-F1 plus RAG recall@5 without requiring a model server, OpenAI key, GPU, or pgvector index.
+- Live model/RAG evals remain a release/demo verification step because they depend on external services and downloaded artifacts.
+
 ## 2026-05-20 — Widget origin enforcement added
 
 ### Updated

@@ -365,9 +365,9 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 ### 4.7 Put both eval suites in CI
 
 **Done when**
-- classification and RAG evals both run on push
-- thresholds come from `evals/eval_thresholds.yaml`
-- regressions fail the build
+- classification and RAG eval evidence is checked on push ✅ lightweight CI validates committed metrics against thresholds
+- thresholds come from `evals/eval_thresholds.yaml` ✅
+- regressions fail the build ✅ `evals/check_eval_results.py` fails if macro-F1 or recall@5 drops below threshold
 
 ---
 
