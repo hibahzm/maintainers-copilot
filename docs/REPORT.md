@@ -2,6 +2,29 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — BM25 and hybrid RAG tuning evaluated
+
+### Added
+- `scripts/rag/evaluate_hybrid_retrieval.py`
+- `evals/rag_hybrid_tuning_results.json`
+
+### Evidence
+- chunking strategy: parent-child sections
+- sparse method: BM25
+- dense method: hash-dense cosine
+- tuned weights: dense `{0.0, 0.25, 0.5, 0.65, 0.75, 0.85, 1.0}`
+- best overall: dense `0.0` / sparse `1.0`
+- best overall recall@10: `1.0000`
+- best overall MRR@10: `0.9733`
+- best true hybrid: dense `0.25` / sparse `0.75`
+- best true hybrid recall@10: `1.0000`
+- best true hybrid MRR@10: `0.9533`
+
+### Design notes
+- The tiny dev corpus is lexical enough that pure BM25 wins overall, which is useful evidence rather than a failure.
+- The best true hybrid still beats the parent-child dense-only run on every tracked metric, satisfying the sparse+dense hybrid requirement with a tuned weighting.
+- The chosen hybrid setting for the next RAG stage is dense `0.25` / sparse `0.75` unless later full-corpus evidence changes it.
+
 ## 2026-05-20 — RAG golden set and naive dense baseline added
 
 ### Added

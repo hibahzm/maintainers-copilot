@@ -265,9 +265,9 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 **Add / complete**
 - naive fixed-size dense baseline ✅ recall@10 `0.8400`, MRR@10 `0.6083`
 - non-naive parent-child chunking ✅ recall@10 `0.9200`, MRR@10 `0.7633`
-- sparse retrieval such as BM25
+- sparse retrieval such as BM25 ✅ BM25 overall recall@10 `1.0000`, MRR@10 `0.9733`
 - dense retrieval in pgvector
-- tuned hybrid weighting
+- tuned hybrid weighting ✅ best true hybrid dense `0.25` / sparse `0.75`, recall@10 `1.0000`, MRR@10 `0.9533`
 - cross-encoder reranking
 - one query transformation technique
 - metadata filtering

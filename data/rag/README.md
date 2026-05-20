@@ -108,3 +108,19 @@ Tracked evidence:
 data/rag/chunks/parent_child_chunks_manifest.json
 evals/rag_parent_child_dense_results.json
 ```
+
+## BM25 + hybrid tuning
+
+Evaluate sparse BM25, dense, and hybrid sparse+dense weights over the parent-child chunks:
+
+```bash
+python -m scripts.rag.evaluate_hybrid_retrieval
+```
+
+Tracked evidence:
+
+```text
+evals/rag_hybrid_tuning_results.json
+```
+
+The tuning output records both `best_overall` and `best_hybrid`. On the current dev corpus, pure BM25 is strongest overall, while the best true hybrid uses dense weight `0.25` and sparse weight `0.75`.
