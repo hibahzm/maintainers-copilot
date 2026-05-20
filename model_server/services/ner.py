@@ -17,10 +17,23 @@ KNOWN_PACKAGES = (
     "matplotlib",
     "sqlalchemy",
     "pytest",
-    "python",
     "pip",
     "jupyter",
 )
+
+ENTITY_PRIORITY = {
+    "url": 0,
+    "file_path": 1,
+    "exception": 2,
+    "python_version": 3,
+    "package_version": 4,
+    "function": 5,
+    "dotted_symbol": 6,
+    "version": 7,
+    "package": 8,
+    "operating_system": 9,
+    "file_type": 10,
+}
 
 PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     (
@@ -59,7 +72,7 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ),
     (
         "function",
-        re.compile(r"\b[a-zA-Z_]\w*(?:\.[a-zA-Z_]\w*)?\s*(?=\()"),
+        re.compile(r"\b[a-zA-Z_]\w*(?:\.[a-zA-Z_]\w*)?\s*(?=\()|\b[a-z][a-z0-9]*_[a-zA-Z0-9_]+\b"),
     ),
     (
         "package",
@@ -140,7 +153,14 @@ def _normalize(entity_type: str, text: str) -> str:
 
 def _dedupe(candidates: list[_Candidate]) -> list[_Candidate]:
     # Prefer longer/more specific matches when spans overlap, e.g. pandas.read_csv over pandas.
-    ordered = sorted(candidates, key=lambda item: (item.start, -(item.end - item.start), item.type))
+    ordered = sorted(
+        candidates,
+        key=lambda item: (
+            item.start,
+            -(item.end - item.start),
+            ENTITY_PRIORITY.get(item.type, 100),
+        ),
+    )
     selected: list[_Candidate] = []
     seen: set[tuple[str, str]] = set()
 

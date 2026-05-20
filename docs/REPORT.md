@@ -2,6 +2,23 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — NLP tool smoke tests recorded
+
+### Verified
+- `POST /classify`
+- `POST /ner`
+- `POST /summarize` missing-key failure path
+
+### Evidence
+- Classifier predicted `bug` with confidence `0.9649578332901001`.
+- Classifier response included model artifact SHA-256 `45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a`.
+- NER extracted `pandas 2.2`, `Python 3.12`, `ValueError`, `pandas/io/parsers.py`, `windows`, and `csv`.
+- Summarizer returned the expected missing-key error when no key was injected at container startup.
+
+### Follow-up
+- Improved NER so snake_case symbols such as `read_csv` are extracted as functions even when written without parentheses.
+- Removed `python` from generic package matching so `Python 3.12` is treated as a Python runtime version rather than a package version.
+
 ## 2026-05-20 — Model-server pip install tolerates slow networks
 
 ### Updated
