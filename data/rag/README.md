@@ -142,3 +142,25 @@ evals/rag_hybrid_metadata_filter_results.json
 ```
 
 On the current dev corpus, reliable metadata filters are neutral versus the unfiltered tuned hybrid: they preserve recall@10 `1.0000` and MRR@10 `0.9533` for the best true hybrid.
+
+## Query transformation
+
+Evaluate deterministic issue-query expansion on top of the tuned parent-child hybrid retriever:
+
+```bash
+python -m scripts.rag.evaluate_query_transform
+
+python -m scripts.rag.evaluate_query_transform \
+  --no-metadata-filter \
+  --output-path evals/rag_query_transform_unfiltered_results.json
+```
+
+Tracked evidence:
+
+```text
+evals/rag_query_transform_results.json
+evals/rag_query_transform_unfiltered_results.json
+```
+
+The transform expands maintainer-shaped queries with issue numbers, code symbols, project-service terms, and common pandas API terms. On the current dev corpus, it changes 17 of 25 golden queries and preserves recall@10 `1.0000`, but its MRR@10 `0.9400` is slightly below the untransformed best hybrid MRR@10 `0.9533`. Treat this as an optional/gated query rewrite, not the default path.
+

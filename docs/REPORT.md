@@ -2,6 +2,26 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG query transformation evaluated
+
+### Added
+- `scripts/rag/evaluate_query_transform.py`
+- `evals/rag_query_transform_results.json`
+- `evals/rag_query_transform_unfiltered_results.json`
+
+### Evidence
+- base retriever: parent-child hybrid dense `0.25` / sparse `0.75`
+- query technique: deterministic issue-query expansion
+- changed golden queries: `17` / `25`
+- recall@10: `1.0000`
+- MRR@10: `0.9400`
+- nDCG@10: `0.9292`
+
+### Design notes
+- The query transform preserves perfect recall@10 on the current dev corpus.
+- It slightly hurts ranking quality versus the untransformed best true hybrid, which has MRR@10 `0.9533` and nDCG@10 `0.9355`.
+- We keep this as an implemented, measured technique, but it should be gated for underspecified queries rather than always enabled.
+
 ## 2026-05-20 — RAG metadata filtering evaluated
 
 ### Added
