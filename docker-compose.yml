@@ -82,6 +82,7 @@ services:
     environment:
       CLASSIFIER_MODEL_DIR: "/app/artifacts/classifier/first-distilbert-freeze4/model"
       OPENAI_SUMMARIZER_MODEL: "${OPENAI_SUMMARIZER_MODEL:-gpt-4o-mini}"
+      OPENAI_RAG_ANSWER_MODEL: "${OPENAI_RAG_ANSWER_MODEL:-gpt-4o-mini}"
       RAG_EMBEDDING_MODEL: "${RAG_EMBEDDING_MODEL:-intfloat/e5-small-v2}"
       # For local smoke only, export OPENAI_API_KEY in your shell or inject it from Vault/secrets.
       OPENAI_API_KEY: "${OPENAI_API_KEY:-}"

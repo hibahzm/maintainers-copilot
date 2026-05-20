@@ -272,6 +272,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - cross-encoder reranking ✅ `cross-encoder/ms-marco-MiniLM-L-6-v2` over top-25 hybrid candidates, recall@10 `1.0000`, MRR@10 `0.9533`, nDCG@10 `0.9471`
 - one query transformation technique ✅ deterministic issue-query expansion preserves recall@10 `1.0000`, MRR@10 `0.9400`; optional/gated because untransformed hybrid ranks slightly better
 - metadata filtering ✅ reliable filters preserve best-hybrid recall@10 `1.0000`, MRR@10 `0.9533`
+- RAG answer generation over retrieved chunks ✅ model-server `/rag-answer` with retrieval-only fallback
 
 **Done when**
 - every move beyond fixed-size dense retrieval is justified by a metric

@@ -9,6 +9,7 @@ class RagQueryRequest(APIModel):
     question: str = Field(min_length=1)
     top_k: int = Field(default=5, ge=1, le=20)
     source_type: Literal["project_doc", "github_issue"] | None = None
+    generate_answer: bool = True
 
 
 class RagRetrievedChunk(APIModel):
@@ -30,3 +31,6 @@ class RagQueryResponse(APIModel):
     chunks: list[RagRetrievedChunk]
     retrieval_mode: str
     embedding_model: str
+    answer_provider: str = "retrieval-only"
+    answer_model: str | None = None
+    answer_response_id: str | None = None

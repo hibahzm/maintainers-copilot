@@ -181,7 +181,7 @@ API /rag/query
 
 The embedding model is configured with `RAG_EMBEDDING_MODEL` and defaults to `intfloat/e5-small-v2`. Sparse search uses the generated `rag_chunks.search_vector` column from migration `20260520_0003`. The first model-server query downloads the model if it is not already cached; later queries reuse the cache.
 
-LLM answer generation over retrieved chunks is intentionally the next layer. The current API returns grounded retrieval context first so pgvector can be tested independently.
+LLM answer generation is available through model-server `/rag-answer` when `OPENAI_API_KEY`/`LLM_API_KEY` is injected. If answer generation is unavailable, the API falls back to retrieval-only output with chunks and citations.
 
 ## BM25 + hybrid tuning
 

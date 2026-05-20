@@ -15,4 +15,5 @@ async def query_rag(
         question=payload.question,
         top_k=payload.top_k,
         source_type=payload.source_type,
+        generate_answer=payload.generate_answer,
     )

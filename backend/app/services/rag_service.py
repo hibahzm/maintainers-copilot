@@ -11,11 +11,11 @@ from app.repositories.rag_repo import RagRepository
 
 
 class RagService:
-    """Embed a user query, retrieve chunks from pgvector, and shape citations.
+    """Embed a user query, retrieve chunks from pgvector, and optionally answer.
 
-    Answer generation with an LLM is intentionally the next layer; this service
-    currently returns retrieval-grounded context so the pgvector path can be
-    tested before adding another model call.
+    Retrieval is the primary contract. If LLM answer generation is unavailable
+    because a key is missing or the provider is down, the service still returns
+    grounded chunks/citations for the caller.
     """
 
     def __init__(
@@ -36,6 +36,7 @@ class RagService:
         question: str,
         top_k: int,
         source_type: str | None = None,
+        generate_answer: bool = True,
     ) -> RagQueryResponse:
         embedding_payload = await self._embed_query(question)
         embedding = embedding_payload["embedding"]
@@ -48,12 +49,16 @@ class RagService:
             source_type=source_type,
         )
         citations = self._citations(chunks)
+        answer_payload = await self._generate_answer(question=question, chunks=chunks) if generate_answer and chunks else None
         return RagQueryResponse(
-            answer=self._retrieval_answer(chunks),
-            citations=citations,
+            answer=answer_payload["answer"] if answer_payload else self._retrieval_answer(chunks),
+            citations=answer_payload["citations"] if answer_payload else citations,
             chunks=[self._chunk_schema(chunk) for chunk in chunks],
             retrieval_mode="pgvector_hybrid_dense_sparse_e5",
             embedding_model=embedding_model,
+            answer_provider=answer_payload["provider"] if answer_payload else "retrieval-only",
+            answer_model=answer_payload.get("model_name") if answer_payload else None,
+            answer_response_id=answer_payload.get("response_id") if answer_payload else None,
         )
 
     async def _embed_query(self, question: str) -> dict[str, Any]:
@@ -72,6 +77,29 @@ class RagService:
         if len(embeddings) != 1:
             raise ToolFailure("Embedding model server returned an invalid embedding payload.")
         return {"embedding": embeddings[0], "model_name": data.get("model_name")}
+
+    async def _generate_answer(self, *, question: str, chunks: list[RetrievedChunk]) -> dict[str, Any] | None:
+        payload = {
+            "question": question,
+            "chunks": [
+                {
+                    "source_id": chunk.source_id,
+                    "title": chunk.title,
+                    "parent_title": chunk.parent_title,
+                    "text": chunk.text,
+                    "score": chunk.score,
+                }
+                for chunk in chunks[:5]
+            ],
+        }
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout_seconds) as client:
+                response = await client.post(f"{self.model_server_url}/rag-answer", json=payload)
+                response.raise_for_status()
+        except httpx.HTTPError:
+            return None
+        data: dict[str, Any] = response.json()
+        return data
 
     def _retrieval_answer(self, chunks: list[RetrievedChunk]) -> str:
         if not chunks:

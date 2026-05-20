@@ -2,6 +2,29 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG answer generation hook added
+
+### Added
+- `model_server/routers/rag_answer.py`
+- `model_server/schemas/rag_answer.py`
+- `model_server/services/rag_answer.py`
+- `model_server/tests/test_rag_answer_router.py`
+
+### Updated
+- `backend/app/api/rag.py`
+- `backend/app/api/schemas/rag.py`
+- `backend/app/services/rag_service.py`
+- `backend/tests/services/test_rag_service.py`
+- `docker-compose.yml`
+- `model_server/main.py`
+- `data/rag/README.md`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- Model-server now has `/rag-answer`, an OpenAI structured-output endpoint that answers from retrieved chunks and returns citation source IDs.
+- Backend `/rag/query` calls `/rag-answer` after retrieval when `generate_answer=true`.
+- If the OpenAI key is missing or answer generation fails, `/rag/query` falls back to retrieval-only output instead of hiding the retrieved evidence.
+
 ## 2026-05-20 — Runtime RAG hybrid retrieval added
 
 ### Added
