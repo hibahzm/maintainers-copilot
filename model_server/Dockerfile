@@ -4,12 +4,14 @@ WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
+    PIP_DEFAULT_TIMEOUT=300 \
+    PIP_RETRIES=10 \
     UV_HTTP_TIMEOUT=120 \
     UV_LINK_MODE=copy \
     PATH="/app/.venv/bin:$PATH"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install uv==0.11.11
+    pip install --progress-bar off --timeout 300 --retries 10 uv==0.11.11
 
 COPY model_server/pyproject.toml ./pyproject.toml
 RUN --mount=type=cache,target=/root/.cache/uv \

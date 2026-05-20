@@ -2,6 +2,16 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Model-server pip install tolerates slow networks
+
+### Updated
+- `model_server/Dockerfile`
+
+### Design notes
+- Added longer pip timeout/retry settings for the `uv` install step after Docker timed out downloading the `uv` wheel from PyPI.
+- Disabled the pip progress bar to reduce noisy build output during slow WSL/Docker downloads.
+- This does not change runtime behavior; it only makes dependency installation more resilient.
+
 ## 2026-05-20 — Model-server Docker dependency install hardened
 
 ### Updated
