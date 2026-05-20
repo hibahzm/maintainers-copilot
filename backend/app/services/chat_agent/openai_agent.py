@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from functools import lru_cache
+from pathlib import Path
 from typing import Any
 from uuid import UUID
 
@@ -15,21 +17,13 @@ from app.infra.exceptions import ToolFailure
 from app.services.chat_tools.runner import ChatToolRunner
 from app.services.rag_service import RagService
 
-_AGENT_INSTRUCTIONS = """You are Maintainers Copilot, a precise assistant for
-open-source maintainers.
-Use tools when they would ground the answer or perform an explicit maintainer task.
-You may call multiple tools in one round when the user asks for multiple actions.
-Use rag_search for project/documentation/retrieval questions.
-Use classify_issue for bug/feature/docs/question triage.
-Use extract_entities for code-shaped entities such as functions, packages,
-versions, files, exceptions, and operating systems.
-Use summarize_issue only when the caller has enabled summarization.
-Use write_memory only when the user explicitly asks to remember something and
-memory writes are enabled.
-Never invent tool results. If a tool returns an error, explain the limitation
-briefly and continue with what is known.
-Keep final answers concise and cite retrieved sources when rag_search returns citations.
-"""
+_PROMPT_PATH = Path(__file__).with_name("prompts") / "agent_system.txt"
+
+
+@lru_cache(maxsize=1)
+def agent_system_prompt() -> str:
+    """Load the chat-agent system prompt from the backend-local prompt file."""
+    return _PROMPT_PATH.read_text(encoding="utf-8").strip()
 
 
 @dataclass
@@ -250,7 +244,7 @@ class OpenAIChatAgentService:
     ) -> dict[str, Any]:
         payload: dict[str, Any] = {
             "model": self.model,
-            "instructions": _AGENT_INSTRUCTIONS,
+            "instructions": agent_system_prompt(),
             "input": input_payload,
             "tools": tools,
             "parallel_tool_calls": True,

@@ -6,7 +6,7 @@ from pydantic import SecretStr
 
 from app.api.schemas.classifier import ClassifyIssueResponse
 from app.api.schemas.rag import RagQueryResponse
-from app.services.chat_agent.openai_agent import OpenAIChatAgentService
+from app.services.chat_agent.openai_agent import OpenAIChatAgentService, agent_system_prompt
 from app.services.chat_tools.runner import ChatToolRunner
 
 
@@ -30,6 +30,13 @@ class FakeToolsService:
             scores={"bug": 0.91, "docs": 0.03, "feature": 0.04, "question": 0.02},
             model_name="fake",
         )
+
+
+def test_agent_system_prompt_loads_from_backend_prompt_file():
+    prompt = agent_system_prompt()
+
+    assert "Maintainers Copilot" in prompt
+    assert "rag_search" in prompt
 
 
 @pytest.mark.asyncio

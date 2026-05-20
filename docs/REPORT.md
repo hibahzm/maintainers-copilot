@@ -2,6 +2,20 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Chat agent prompt moved beside backend agent code
+
+### Added
+- `backend/app/services/chat_agent/prompts/agent_system.txt`
+
+### Updated
+- `backend/app/services/chat_agent/openai_agent.py`
+- `backend/tests/services/test_openai_chat_agent_service.py`
+
+### Design notes
+- The OpenAI chat-agent system prompt is now a backend-local prompt file instead of an inline Python string.
+- Keeping the prompt beside the agent service makes prompt changes reviewable without mixing policy text into orchestration code.
+- Root-level `prompts/` remains for experiment/evaluation prompts such as the classifier LLM baseline.
+
 ## 2026-05-20 — OpenAI tool-calling chat agent added
 
 ### Added
