@@ -268,7 +268,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - sparse retrieval such as BM25 ✅ BM25 overall recall@10 `1.0000`, MRR@10 `0.9733`
 - dense retrieval in pgvector
 - tuned hybrid weighting ✅ best true hybrid dense `0.25` / sparse `0.75`, recall@10 `1.0000`, MRR@10 `0.9533`
-- cross-encoder reranking ⏳ eval script added; run in Colab and commit `evals/rag_cross_encoder_rerank_results.json`
+- cross-encoder reranking ✅ `cross-encoder/ms-marco-MiniLM-L-6-v2` over top-25 hybrid candidates, recall@10 `1.0000`, MRR@10 `0.9533`, nDCG@10 `0.9471`
 - one query transformation technique ✅ deterministic issue-query expansion preserves recall@10 `1.0000`, MRR@10 `0.9400`; optional/gated because untransformed hybrid ranks slightly better
 - metadata filtering ✅ reliable filters preserve best-hybrid recall@10 `1.0000`, MRR@10 `0.9533`
 

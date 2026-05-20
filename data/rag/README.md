@@ -186,5 +186,7 @@ Bring this file back into the repo after Colab finishes:
 evals/rag_cross_encoder_rerank_results.json
 ```
 
-The script reranks the top 25 candidates from the tuned hybrid retriever using a true query-document cross-encoder, then reports the same recall@k, MRR@10, and nDCG@10 metrics as the earlier retrieval experiments.
+The script reranks the top 25 candidates from the tuned hybrid retriever using a true query-document cross-encoder, then reports the same recall@k, MRR@10, and nDCG@10 metrics as the earlier retrieval experiments. The committed Colab result uses `cross-encoder/ms-marco-MiniLM-L-6-v2` and reaches recall@10 `1.0000`, MRR@10 `0.9533`, and nDCG@10 `0.9471`.
+
+A lightweight helper notebook is also available at `notebooks/rag_cross_encoder_rerank_colab.ipynb`.
 

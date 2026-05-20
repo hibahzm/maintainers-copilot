@@ -2,6 +2,28 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Cross-encoder RAG rerank results recorded
+
+### Added
+- `evals/rag_cross_encoder_rerank_results.json`
+- `notebooks/rag_cross_encoder_rerank_colab.ipynb`
+
+### Updated
+- `data/rag/README.md`
+- `docs/BUILD_PLAN.md`
+
+### Evidence
+- first-stage retriever: parent-child hybrid dense `0.25` / sparse `0.75`
+- reranker: `cross-encoder/ms-marco-MiniLM-L-6-v2`
+- candidate_k: `25`
+- recall@10: `1.0000`
+- MRR@10: `0.9533`
+- nDCG@10: `0.9471`
+
+### Design notes
+- Cross-encoder reranking preserves perfect recall@10 and the best true-hybrid MRR@10 while improving nDCG@10 versus the unreranked true hybrid (`0.9471` vs `0.9355`).
+- The reranker remains an experiment/runtime component for now; it is not added to the model-server Docker image.
+
 ## 2026-05-20 — Cross-encoder RAG rerank evaluator added
 
 ### Added
