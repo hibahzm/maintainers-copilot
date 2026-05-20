@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Literal
-from uuid import UUID
 
 from pydantic import Field
 
@@ -10,7 +9,6 @@ MemoryType = Literal["semantic", "episodic", "procedural"]
 
 
 class MemoryCreateRequest(APIModel):
-    user_id: UUID
     content: str = Field(min_length=1, max_length=4000)
     memory_type: MemoryType = "semantic"
 

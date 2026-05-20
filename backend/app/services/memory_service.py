@@ -30,10 +30,15 @@ class MemoryService:
         self.repository = repository or MemoryRepository(database_url=database_url)
         self.timeout_seconds = timeout_seconds
 
-    async def write_memory(self, payload: MemoryCreateRequest) -> MemoryRecordResponse:
+    async def write_memory(
+        self,
+        *,
+        user_id: UUID,
+        payload: MemoryCreateRequest,
+    ) -> MemoryRecordResponse:
         embedding = await self._embed_memory(payload.content)
         record = await self.repository.create_memory(
-            user_id=payload.user_id,
+            user_id=user_id,
             memory_type=payload.memory_type,
             content=payload.content,
             embedding=embedding,

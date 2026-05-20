@@ -19,10 +19,11 @@ allow_memory_write = st.sidebar.checkbox(
     value=False,
     help="Only used when your message asks the assistant to remember something.",
 )
-user_id = st.sidebar.text_input(
-    "User ID for memory",
+access_token = st.sidebar.text_input(
+    "Access token",
     value="",
-    help="Temporary until auth is wired into the UI.",
+    type="password",
+    help="Paste the token from /auth/login when you want memory writes tied to your account.",
 )
 
 if "conversation_id" not in st.session_state:
@@ -44,7 +45,6 @@ if prompt:
         st.markdown(prompt)
 
     payload = {
-        "user_id": user_id or None,
         "conversation_id": st.session_state.conversation_id,
         "messages": [
             {"role": item["role"], "content": item["content"]}
@@ -60,7 +60,15 @@ if prompt:
     with st.chat_message("assistant"):
         with st.spinner("Calling maintainer tools…"):
             try:
-                response = httpx.post(f"{API_BASE_URL}/chat", json=payload, timeout=30.0)
+                headers = {}
+                if access_token:
+                    headers["Authorization"] = f"Bearer {access_token}"
+                response = httpx.post(
+                    f"{API_BASE_URL}/chat",
+                    json=payload,
+                    headers=headers,
+                    timeout=30.0,
+                )
                 response.raise_for_status()
                 data = response.json()
                 assistant_message = data["message"]

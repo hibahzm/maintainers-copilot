@@ -308,6 +308,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - auth endpoints ✅ `/auth/register`, `/auth/login`, `/auth/me`
 - JWT signing key from Vault/env ✅ `JWT_SIGNING_KEY`
 - `user` and `admin` roles ✅ user records carry role; admin dependency exists for protected admin routes
+- memory ownership ✅ memory endpoints use the bearer-token user instead of caller-supplied `user_id`
 - admin invite flow
 
 ### 4.2 Build the single tool-calling chatbot

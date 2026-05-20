@@ -2,6 +2,25 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Auth wired into chat and memory ownership
+
+### Updated
+- `backend/app/api/chat.py`
+- `backend/app/api/dependencies.py`
+- `backend/app/api/memory.py`
+- `backend/app/api/schemas/chat.py`
+- `backend/app/api/schemas/memory.py`
+- `backend/app/services/chat_tools/runner.py`
+- `backend/app/services/memory_service.py`
+- `chatbot/pages/chat.py`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- `/memory` now requires a bearer token and always reads/writes memories for the authenticated user.
+- `/chat` accepts an optional bearer token. If present, explicit memory tool calls use that authenticated user; if absent, memory writes stay blocked.
+- Request bodies no longer accept arbitrary `user_id` for chat or memory writes.
+- The Streamlit chat page now accepts an access token instead of a manual user ID.
+
 ## 2026-05-20 — Auth and roles foundation added
 
 ### Added

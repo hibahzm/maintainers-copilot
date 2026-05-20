@@ -38,15 +38,12 @@ def get_user_repository() -> UserRepository:
     return UserRepository(database_url=settings.database_url)
 
 
-async def get_current_user(
+async def get_optional_current_user(
     credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)],
     service: Annotated[AuthService, Depends(get_auth_service)],
-) -> UserResponse:
+) -> UserResponse | None:
     if credentials is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing bearer token.",
-        )
+        return None
     try:
         return await service.current_user(credentials.credentials)
     except PermissionDenied as exc:
@@ -54,6 +51,17 @@ async def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(exc),
         ) from exc
+
+
+async def get_current_user(
+    current_user: Annotated[UserResponse | None, Depends(get_optional_current_user)],
+) -> UserResponse:
+    if current_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Missing bearer token.",
+        )
+    return current_user
 
 
 async def require_admin(
@@ -128,6 +136,7 @@ def get_widget_service() -> WidgetService:
 
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 AuthServiceDep = Annotated[AuthService, Depends(get_auth_service)]
+OptionalCurrentUserDep = Annotated[UserResponse | None, Depends(get_optional_current_user)]
 CurrentUserDep = Annotated[UserResponse, Depends(get_current_user)]
 AdminUserDep = Annotated[UserResponse, Depends(require_admin)]
 ChatServiceDep = Annotated[ChatService, Depends(get_chat_service)]

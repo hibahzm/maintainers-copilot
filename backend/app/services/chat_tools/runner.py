@@ -160,11 +160,8 @@ class ChatToolRunner:
         content = memory_content(text)
         try:
             record = await self.memory_service.write_memory(
-                MemoryCreateRequest(
-                    user_id=user_id,
-                    content=content,
-                    memory_type="semantic",
-                )
+                user_id=user_id,
+                payload=MemoryCreateRequest(content=content, memory_type="semantic"),
             )
             return ChatToolResult(
                 name="memory.write",
