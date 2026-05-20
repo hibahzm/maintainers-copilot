@@ -21,10 +21,18 @@ allow_memory_write = st.sidebar.checkbox(
 )
 access_token = st.sidebar.text_input(
     "Access token",
-    value="",
+    value=st.session_state.get("access_token", ""),
     type="password",
-    help="Paste the token from /auth/login when you want memory writes tied to your account.",
+    help="Login page fills this automatically. You can paste a token manually for smoke tests.",
 )
+if access_token:
+    st.session_state.access_token = access_token
+
+current_user = st.session_state.get("current_user")
+if current_user:
+    st.sidebar.success(f"Signed in: {current_user['email']}")
+elif allow_memory_write:
+    st.sidebar.warning("Memory writes need login; unauthenticated writes will be blocked.")
 
 if "conversation_id" not in st.session_state:
     st.session_state.conversation_id = None

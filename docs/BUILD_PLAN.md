@@ -338,7 +338,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 ### 4.4 Build the maintainer UI
 
 **Streamlit pages**
-- login
+- login ✅ register/login page stores bearer token in Streamlit session state
 - chat ✅ initial Streamlit chat page calls backend `/chat`
 - memory inspector
 - widget config admin

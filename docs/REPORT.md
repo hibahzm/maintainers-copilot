@@ -2,6 +2,18 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Streamlit auth page added
+
+### Updated
+- `chatbot/pages/login.py`
+- `chatbot/pages/chat.py`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- The Streamlit Login page now supports register and login against `/auth/register` and `/auth/login`.
+- Successful auth stores the access token and user profile in `st.session_state`.
+- The Chat page reuses that token automatically, so explicit memory writes are tied to the authenticated user.
+
 ## 2026-05-20 — Auth wired into chat and memory ownership
 
 ### Updated
