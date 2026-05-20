@@ -217,8 +217,8 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 **Serving note**
 - `CLASSIFIER_MODEL_DIR` points at the saved Hugging Face model directory; model weights remain outside Git.
 - Docker smoke result: `POST /classify` returned `bug` with confidence `0.9650` and model artifact SHA-256 `45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a`.
-- Docker smoke result: `POST /ner` returned grouped code-shaped entities for package/version, exception, file path, operating system, and file type.
-- Docker smoke result: `POST /summarize` returned the expected missing-key `503` until an API key is injected at container startup.
+- Docker smoke result: `POST /ner` returned grouped code-shaped entities for function, package/version, Python version, exception, file path, operating system, and file type.
+- Docker smoke result: `POST /summarize` returned the expected missing-key `503` until an API key is injected at container startup, then returned a structured `gpt-4o-mini` summary after the key was injected.
 
 ### 2.5 Build the classification golden set
 

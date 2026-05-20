@@ -8,12 +8,14 @@ This is the running build journal. Every meaningful change should add a dated en
 - `POST /classify`
 - `POST /ner`
 - `POST /summarize` missing-key failure path
+- `POST /summarize` OpenAI success path
 
 ### Evidence
 - Classifier predicted `bug` with confidence `0.9649578332901001`.
 - Classifier response included model artifact SHA-256 `45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a`.
-- NER extracted `pandas 2.2`, `Python 3.12`, `ValueError`, `pandas/io/parsers.py`, `windows`, and `csv`.
+- NER extracted `read_csv`, `pandas 2.2`, `Python 3.12`, `ValueError`, `pandas/io/parsers.py`, `windows`, and `csv`.
 - Summarizer returned the expected missing-key error when no key was injected at container startup.
+- Summarizer returned structured JSON with `summary`, `key_points`, `affected_entities`, `maintainer_next_steps`, `risk_level`, `model_name`, `provider`, and `response_id` after an OpenAI key was injected at container startup.
 
 ### Follow-up
 - Improved NER so snake_case symbols such as `read_csv` are extracted as functions even when written without parentheses.
