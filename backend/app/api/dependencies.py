@@ -21,7 +21,7 @@ def get_auth_service() -> AuthService:
 
 
 def get_chat_service() -> ChatService:
-    return ChatService()
+    return ChatService(rag_service=get_rag_service())
 
 
 def get_classifier_service() -> ClassifierService:

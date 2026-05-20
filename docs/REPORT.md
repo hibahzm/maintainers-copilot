@@ -2,6 +2,25 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Chatbot RAG orchestration started
+
+### Added
+- `backend/tests/services/test_chat_service.py`
+
+### Updated
+- `backend/app/api/chat.py`
+- `backend/app/api/schemas/chat.py`
+- `backend/app/services/chat_service.py`
+- `backend/app/api/dependencies.py`
+- `chatbot/pages/chat.py`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- Backend `/chat` now returns a real `ChatResponse` instead of a feature stub.
+- `ChatService` uses RAG as the first tool and returns citations/tool metadata.
+- The Streamlit chat page sends conversation turns to the backend and displays answers, citations, and tool details.
+- This is Step 4 scaffolding; classifier/NER/summarizer tool routing and memory-aware behavior remain next.
+
 ## 2026-05-20 — RAG answer generation hook added
 
 ### Added

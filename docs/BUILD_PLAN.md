@@ -9,8 +9,8 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 | 0. Shape the repository | done | the system has clear homes and rules |
 | 1. Build the foundation | in progress | the stack boots, secrets resolve, schema exists, dataset exists |
 | 2. Build the NLP comparison track | backlog | three classifiers plus NER/summarization are measurable |
-| 3. Build advanced RAG | backlog | retrieval beats the naive baseline with numbers |
-| 4. Build the chatbot, memory, and widget surfaces | backlog | a real maintainer workflow exists end to end |
+| 3. Build advanced RAG | verification pending | retrieval beats the naive baseline with numbers |
+| 4. Build the chatbot, memory, and widget surfaces | in progress | a real maintainer workflow exists end to end |
 | 5. Harden, package, and ship | backlog | a fresh clone can boot, CI is green, and the demo is ready |
 
 ---
@@ -316,7 +316,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - classify
 - NER
 - summarize
-- RAG search
+- RAG search ✅ initial `/chat` orchestration uses RAG and returns citations/tool metadata
 - explicit `write_memory`
 
 **Rule**
@@ -338,7 +338,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 
 **Streamlit pages**
 - login
-- chat
+- chat ✅ initial Streamlit chat page calls backend `/chat`
 - memory inspector
 - widget config admin
 
