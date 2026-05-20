@@ -27,6 +27,7 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-021 | Use a deterministic 200-row balanced comparison subset for the three-way classifier comparison | accepted | 50 examples per class; SHA-256 `a14faed71a97718cd421fbd84f2ed4d584c3b13f275971fd2b1945429be88f2a` |
 | D-022 | Deploy DistilBERT as the project issue classifier | accepted | chosen over OpenAI because macro-F1 is effectively tied while avoiding per-call cost and external API dependency |
 | D-023 | Use `intfloat/e5-small-v2` as the first RAG dense embedding model | accepted | dense-only golden-set recall@10 `1.0000`, MRR@10 `1.0000`, nDCG@10 `0.9636`; beats `all-MiniLM-L6-v2` MRR@10 `0.9267` |
+| D-024 | Store RAG chunks and dense vectors in PostgreSQL/pgvector | accepted | required vector store; migration `20260520_0002` creates `rag_sources` and `rag_chunks` with `vector(384)` for `e5-small-v2` |
 
 ## RAG embedding model choice
 
@@ -40,6 +41,17 @@ The embedding comparison was run on the 25-question RAG golden set using parent-
 | `sentence-transformers/all-MiniLM-L6-v2` | `1.0000` | `0.9267` | `0.9332` |
 
 `e5-small-v2` is the better initial choice because it retrieves the relevant source at rank 1 for every golden question while staying small enough for the project stack. This decision is for RAG retrieval, not for the issue classifier.
+
+## RAG vector store
+
+Use PostgreSQL/pgvector as the first RAG vector store.
+
+The Compose stack already includes a `pgvector/pgvector:pg16` database, and Alembic migration `20260520_0002` adds the RAG tables:
+
+- `rag_sources` for source documents/issues and metadata
+- `rag_chunks` for parent-child chunks, metadata, text, and `vector(384)` embeddings
+
+This keeps vector search close to the existing app database and satisfies the assignment's pgvector/Qdrant requirement without adding another storage service. Chunk rows and raw corpora still stay out of Git; only reproducibility manifests and evaluation JSON are tracked.
 
 ## Classifier target vocabulary
 

@@ -139,6 +139,34 @@ The comparison is dense-only cosine retrieval with metadata filters disabled so 
 
 Committed result: `intfloat/e5-small-v2` is the selected first RAG embedding model with recall@10 `1.0000`, MRR@10 `1.0000`, and nDCG@10 `0.9636`, beating `all-MiniLM-L6-v2` on ranking quality.
 
+
+## pgvector indexing
+
+After the database migration runs, index the generated parent-child chunks into PostgreSQL/pgvector with the selected embedding model:
+
+```bash
+pip install -q sentence-transformers asyncpg
+
+python -m scripts.rag.index_pgvector \
+  --chunks-path data/rag/chunks/parent_child_chunks.jsonl \
+  --database-url postgresql://copilot:copilot-dev-only@localhost:5432/copilot \
+  --embedding-model intfloat/e5-small-v2 \
+  --device auto \
+  --batch-size 64 \
+  --replace
+```
+
+Smoke-test dense pgvector search:
+
+```bash
+python -m scripts.rag.query_pgvector \
+  "What model was selected for issue classification and why?" \
+  --database-url postgresql://copilot:copilot-dev-only@localhost:5432/copilot \
+  --top-k 5
+```
+
+The indexing script writes `rag_sources` and `rag_chunks`; it does not commit raw chunk rows or embeddings to Git. Query-time embeddings use the E5 `query:` prefix, while stored chunk embeddings use the E5 `passage:` prefix.
+
 ## BM25 + hybrid tuning
 
 Evaluate sparse BM25, dense, and hybrid sparse+dense weights over the parent-child chunks:

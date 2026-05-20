@@ -2,6 +2,24 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — pgvector RAG indexing foundation added
+
+### Added
+- `migrations/versions/20260520_0002_rag_tables.py`
+- `scripts/rag/index_pgvector.py`
+- `scripts/rag/query_pgvector.py`
+
+### Updated
+- `docs/BUILD_PLAN.md`
+- `docs/DECISIONS.md`
+- `data/rag/README.md`
+
+### Design notes
+- The new migration creates `rag_sources` and `rag_chunks`, with `rag_chunks.embedding` as `vector(384)` for the selected `intfloat/e5-small-v2` embedding model.
+- The indexing script embeds parent-child chunks with the E5 `passage:` prefix and stores vectors in pgvector.
+- The query smoke script embeds user questions with the E5 `query:` prefix and searches pgvector by cosine distance.
+- This wires the required pgvector store without adding `sentence-transformers` to the backend Docker image yet. Runtime API integration remains the next slice.
+
 ## 2026-05-20 — RAG embedding model selected
 
 ### Added
