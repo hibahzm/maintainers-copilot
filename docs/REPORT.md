@@ -2,6 +2,25 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Short-term Redis conversation memory added
+
+### Added
+- `backend/app/services/conversation_state_service.py`
+
+### Updated
+- `backend/app/api/dependencies.py`
+- `backend/app/core/config.py`
+- `backend/app/infra/redis_client.py`
+- `backend/app/services/chat_service.py`
+- `backend/tests/services/test_chat_service.py`
+- `docker-compose.yml`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- `/chat` now loads and saves recent conversation turns in Redis by `conversation_id`.
+- The Redis TTL is 2 hours, which is long enough for one maintainer work session but short enough to avoid accidental retention.
+- Short-term memory is best-effort: if Redis is unavailable, chat still answers instead of failing the whole turn.
+
 ## 2026-05-20 — Explicit long-term memory path added
 
 ### Added

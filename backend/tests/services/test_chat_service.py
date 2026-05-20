@@ -36,6 +36,20 @@ class FakeToolsService:
         }
 
 
+class FakeConversationStateService:
+    def __init__(self, messages=None):
+        self.messages = messages or []
+        self.saved_conversation_id = None
+        self.saved_messages = []
+
+    async def load_messages(self, conversation_id):
+        return self.messages
+
+    async def save_messages(self, conversation_id, messages):
+        self.saved_conversation_id = conversation_id
+        self.saved_messages = messages
+
+
 @pytest.mark.asyncio
 async def test_chat_service_uses_rag_for_latest_user_message():
     service = ChatService(rag_service=FakeRagService())
@@ -51,6 +65,31 @@ async def test_chat_service_uses_rag_for_latest_user_message():
     assert response.message.content == "Grounded answer for: Which embedding model did we choose?"
     assert response.citations == ["project-doc:docs/DECISIONS.md"]
     assert response.tool_results[0].name == "rag.query"
+
+
+@pytest.mark.asyncio
+async def test_chat_service_saves_short_term_conversation_state():
+    state = FakeConversationStateService(
+        messages=[
+            Message(role="user", content="first turn"),
+            Message(role="assistant", content="first answer"),
+        ]
+    )
+    service = ChatService(rag_service=FakeRagService(), conversation_state_service=state)
+
+    response = await service.respond(
+        conversation_id="conv-1",
+        messages=[Message(role="user", content="second turn")],
+    )
+
+    assert response.conversation_id == "conv-1"
+    assert state.saved_conversation_id == "conv-1"
+    assert [message.content for message in state.saved_messages] == [
+        "first turn",
+        "first answer",
+        "second turn",
+        "Grounded answer for: second turn",
+    ]
 
 
 @pytest.mark.asyncio

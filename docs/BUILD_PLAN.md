@@ -326,8 +326,8 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 ### 4.3 Add memory
 
 **Short-term**
-- Redis conversation state
-- explicit TTL with justification
+- Redis conversation state ✅ `/chat` saves recent turns by `conversation_id`
+- explicit TTL with justification ✅ 2 hours: enough for a work session, short enough to avoid accidental retention
 
 **Long-term**
 - pgvector-backed memory ✅ explicit memory writes embed content as passages

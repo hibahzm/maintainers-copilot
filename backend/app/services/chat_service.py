@@ -7,6 +7,7 @@ from app.api.schemas.chat import ChatResponse, ChatToolResult
 from app.api.schemas.memory import MemoryCreateRequest
 from app.domain.chat import Message
 from app.infra.exceptions import ToolFailure
+from app.services.conversation_state_service import ConversationStateService
 from app.services.maintainer_tools_service import MaintainerToolsService
 from app.services.memory_service import MemoryService
 from app.services.rag_service import RagService
@@ -28,10 +29,12 @@ class ChatService:
         rag_service: RagService,
         tools_service: MaintainerToolsService | None = None,
         memory_service: MemoryService | None = None,
+        conversation_state_service: ConversationStateService | None = None,
     ) -> None:
         self.rag_service = rag_service
         self.tools_service = tools_service
         self.memory_service = memory_service
+        self.conversation_state_service = conversation_state_service
 
     async def respond(
         self,
@@ -45,16 +48,25 @@ class ChatService:
         allow_memory_write: bool = False,
         tools: list[ChatToolName] | None = None,
     ) -> ChatResponse:
-        latest_user_message = self._latest_user_message(messages)
         response_conversation_id = conversation_id or str(uuid4())
+        stored_messages = await self._load_short_term_messages(conversation_id)
+        conversation_messages = self._merge_short_term_messages(stored_messages, messages)
+        latest_user_message = self._latest_user_message(messages)
+
         if latest_user_message is None:
-            return ChatResponse(
+            response = ChatResponse(
                 conversation_id=response_conversation_id,
                 message=Message(
                     role="assistant",
                     content="Send me a maintainer question or issue context to start.",
                 ),
             )
+            await self._save_short_term_messages(
+                response_conversation_id,
+                conversation_messages,
+                response,
+            )
+            return response
 
         selected_tools = self._select_tools(
             latest_user_message.content,
@@ -70,7 +82,7 @@ class ChatService:
             allow_memory_write=allow_memory_write,
         )
         if memory_result is not None:
-            return ChatResponse(
+            response = ChatResponse(
                 conversation_id=response_conversation_id,
                 message=Message(
                     role="assistant",
@@ -78,6 +90,12 @@ class ChatService:
                 ),
                 tool_results=[memory_result],
             )
+            await self._save_short_term_messages(
+                response_conversation_id,
+                conversation_messages,
+                response,
+            )
+            return response
 
         tool_results = await self._run_issue_tools(
             latest_user_message.content,
@@ -85,7 +103,7 @@ class ChatService:
             allow_summarizer=allow_summarizer,
         )
         if tool_results:
-            return ChatResponse(
+            response = ChatResponse(
                 conversation_id=response_conversation_id,
                 message=Message(
                     role="assistant",
@@ -93,9 +111,15 @@ class ChatService:
                 ),
                 tool_results=tool_results,
             )
+            await self._save_short_term_messages(
+                response_conversation_id,
+                conversation_messages,
+                response,
+            )
+            return response
 
         if not use_rag:
-            return ChatResponse(
+            response = ChatResponse(
                 conversation_id=response_conversation_id,
                 message=Message(
                     role="assistant",
@@ -105,6 +129,12 @@ class ChatService:
                     ),
                 ),
             )
+            await self._save_short_term_messages(
+                response_conversation_id,
+                conversation_messages,
+                response,
+            )
+            return response
 
         try:
             rag_response = await self.rag_service.query(
@@ -113,7 +143,7 @@ class ChatService:
                 generate_answer=True,
             )
         except ToolFailure:
-            return ChatResponse(
+            response = ChatResponse(
                 conversation_id=response_conversation_id,
                 message=Message(
                     role="assistant",
@@ -124,8 +154,14 @@ class ChatService:
                 ),
                 tool_results=[ChatToolResult(name="rag.query", status="failed")],
             )
+            await self._save_short_term_messages(
+                response_conversation_id,
+                conversation_messages,
+                response,
+            )
+            return response
 
-        return ChatResponse(
+        response = ChatResponse(
             conversation_id=response_conversation_id,
             message=Message(role="assistant", content=rag_response.answer),
             citations=rag_response.citations,
@@ -144,6 +180,12 @@ class ChatService:
                 )
             ],
         )
+        await self._save_short_term_messages(
+            response_conversation_id,
+            conversation_messages,
+            response,
+        )
+        return response
 
     async def _run_issue_tools(
         self,
@@ -266,6 +308,37 @@ class ChatService:
             if message.role == "user" and message.content.strip():
                 return message
         return None
+
+    async def _load_short_term_messages(self, conversation_id: str | None) -> list[Message]:
+        if conversation_id is None or self.conversation_state_service is None:
+            return []
+        try:
+            return await self.conversation_state_service.load_messages(conversation_id)
+        except ToolFailure:
+            return []
+
+    async def _save_short_term_messages(
+        self,
+        conversation_id: str,
+        conversation_messages: list[Message],
+        response: ChatResponse,
+    ) -> None:
+        if self.conversation_state_service is None:
+            return
+        messages_to_save = [*conversation_messages, response.message]
+        try:
+            await self.conversation_state_service.save_messages(conversation_id, messages_to_save)
+        except ToolFailure:
+            return
+
+    def _merge_short_term_messages(
+        self,
+        stored_messages: list[Message],
+        incoming_messages: list[Message],
+    ) -> list[Message]:
+        if len(incoming_messages) > 1 or not stored_messages:
+            return incoming_messages
+        return [*stored_messages, *incoming_messages]
 
     def _select_tools(
         self,

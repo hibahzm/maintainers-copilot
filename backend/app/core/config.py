@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     vault_secret_path: str = "maintainers-copilot"
     model_server_url: str = "http://localhost:8001"
     database_url: str = "postgresql://copilot:copilot-dev-only@localhost:5432/copilot"
+    redis_url: str = "redis://localhost:6379/0"
+    conversation_ttl_seconds: int = 7200
     tracing_backend: str = "langfuse"
     tracing_host: str = "https://cloud.langfuse.com"
 
