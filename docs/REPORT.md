@@ -2,6 +2,15 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG ingest uv index strategy fixed
+
+### Updated
+- `scripts/rag/ingest_pgvector.sh`
+
+### Design notes
+- `uv` requires `--index-strategy unsafe-best-match` when resolving the PyTorch `+cpu` wheel across the PyTorch CPU index and PyPI.
+- This is scoped only to the local ingest wrapper, not the service dependency lock.
+
 ## 2026-05-20 — RAG ingest pins CPU Torch
 
 ### Updated

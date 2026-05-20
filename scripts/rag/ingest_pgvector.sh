@@ -18,6 +18,7 @@ if [[ ! -f "${CHUNKS_PATH}" ]]; then
 fi
 
 uv run \
+  --index-strategy unsafe-best-match \
   --index-url https://download.pytorch.org/whl/cpu \
   --extra-index-url https://pypi.org/simple \
   --with "torch==2.5.1+cpu" \
