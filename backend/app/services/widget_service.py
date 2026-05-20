@@ -8,7 +8,7 @@ from app.api.schemas.widget import (
     WidgetConfigResponse,
     WidgetConfigUpsertRequest,
 )
-from app.infra.exceptions import NotFoundError
+from app.infra.exceptions import NotFoundError, PermissionDenied
 from app.repositories.widget_repo import WidgetConfigRecord, WidgetRepository
 
 
@@ -34,16 +34,36 @@ class WidgetService:
         )
         return self._response(record)
 
-    async def get_public_config(self, widget_id: str) -> PublicWidgetConfigResponse:
+    async def get_public_config(
+        self,
+        widget_id: str,
+        *,
+        request_origin: str | None,
+    ) -> PublicWidgetConfigResponse:
         record = await self.repository.get_config(widget_id)
         if record is None:
             raise NotFoundError("Widget config not found.")
+        if record.allowed_origins and request_origin not in record.allowed_origins:
+            raise PermissionDenied("Origin is not allowed for this widget.")
         return PublicWidgetConfigResponse(
             widget_id=record.widget_id,
             theme=record.theme,
             greeting=record.greeting,
             enabled_tools=record.enabled_tools,
         )
+
+    def origin_from_referer(self, referer: str | None) -> str | None:
+        if not referer:
+            return None
+        try:
+            from urllib.parse import urlparse
+
+            parsed = urlparse(referer)
+            if not parsed.scheme or not parsed.netloc:
+                return None
+            return f"{parsed.scheme}://{parsed.netloc}"
+        except ValueError:
+            return None
 
     async def list_configs(self, *, limit: int = 100) -> list[WidgetConfigResponse]:
         records = await self.repository.list_configs(limit=limit)
@@ -56,6 +76,7 @@ class WidgetService:
   const widgetId = script?.dataset.widgetId || "maintainers-copilot";
   const apiBase = script?.dataset.apiBase || new URL(script.src).origin;
   const widgetBase = script?.dataset.widgetUrl || "{widget_url}";
+  const hostOrigin = window.location.origin;
   const button = document.createElement("button");
   button.type = "button";
   button.textContent = script?.dataset.label || "Ask Maintainers Copilot";
@@ -76,7 +97,7 @@ class WidgetService:
 
   const iframe = document.createElement("iframe");
   iframe.title = "Maintainers Copilot";
-  iframe.src = `${{widgetBase}}/?widgetId=${{encodeURIComponent(widgetId)}}&apiBase=${{encodeURIComponent(apiBase)}}`;
+  iframe.src = `${{widgetBase}}/?widgetId=${{encodeURIComponent(widgetId)}}&apiBase=${{encodeURIComponent(apiBase)}}&hostOrigin=${{encodeURIComponent(hostOrigin)}}`;
   iframe.style.cssText = [
     "position:fixed",
     "right:24px",

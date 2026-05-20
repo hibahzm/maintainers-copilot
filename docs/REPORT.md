@@ -2,6 +2,25 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Widget origin enforcement added
+
+### Updated
+- `backend/app/api/widget.py`
+- `backend/app/core/config.py`
+- `backend/app/main.py`
+- `backend/app/services/widget_service.py`
+- `backend/tests/services/test_widget_service.py`
+- `chatbot/pages/widget_config.py`
+- `widget/src/App.jsx`
+- `widget/src/useWidgetConfig.js`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- Public widget config now checks the declared host origin against the widget's saved `allowed_origins`.
+- The loader passes the host page origin into the iframe, and the React widget sends that origin when fetching config.
+- The API now has a centralized CORS allowlist for the local widget, demo host, and Streamlit surfaces.
+- This is the application-level embed boundary; final CSP / `frame-ancestors` hardening remains a Step 5 security item.
+
 ## 2026-05-20 — Embeddable widget skeleton added
 
 ### Updated

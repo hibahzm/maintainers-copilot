@@ -357,9 +357,10 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 ### 4.6 Enforce embed security
 
 **Add / complete**
-- widget table fields: `widget_id`, `allowed_origins`, `theme`, `greeting`, `enabled_tools`
-- CORS allowlist from database config ⏳ widget config stores allowed origins; enforcement still pending
-- `Content-Security-Policy` with `frame-ancestors`
+- widget table fields: `widget_id`, `allowed_origins`, `theme`, `greeting`, `enabled_tools` ✅
+- public widget config origin check ✅ `/widget/config/{widget_id}` rejects origins not listed in the saved widget config
+- API CORS allowlist ✅ dev-safe origins are centralized in settings for the widget, demo host, and Streamlit shell
+- `Content-Security-Policy` with `frame-ancestors` ⏳ still pending for final hardening
 
 ### 4.7 Put both eval suites in CI
 

@@ -4,7 +4,7 @@ from uuid import uuid4
 import pytest
 
 from app.api.schemas.widget import WidgetConfigUpsertRequest
-from app.infra.exceptions import NotFoundError
+from app.infra.exceptions import NotFoundError, PermissionDenied
 from app.repositories.widget_repo import WidgetConfigRecord
 from app.services.widget_service import WidgetService
 
@@ -59,7 +59,10 @@ async def test_widget_service_upserts_and_returns_public_config():
         ),
         actor_user_id=actor_id,
     )
-    public = await service.get_public_config("docs-helper")
+    public = await service.get_public_config(
+        "docs-helper",
+        request_origin="https://example.com",
+    )
 
     assert saved.widget_id == "docs-helper"
     assert saved.created_by_user_id == actor_id
@@ -72,4 +75,35 @@ async def test_widget_service_raises_for_missing_public_config():
     service = WidgetService(repository=FakeWidgetRepository())
 
     with pytest.raises(NotFoundError):
-        await service.get_public_config("missing")
+        await service.get_public_config("missing", request_origin="https://example.com")
+
+
+@pytest.mark.asyncio
+async def test_widget_service_rejects_disallowed_origin():
+    service = WidgetService(repository=FakeWidgetRepository())
+
+    await service.upsert_config(
+        payload=WidgetConfigUpsertRequest(
+            widget_id="docs-helper",
+            allowed_origins=["https://allowed.example"],
+            theme={"mode": "light"},
+            greeting="Hello",
+            enabled_tools=["rag_search"],
+        ),
+        actor_user_id=uuid4(),
+    )
+
+    with pytest.raises(PermissionDenied):
+        await service.get_public_config(
+            "docs-helper",
+            request_origin="https://blocked.example",
+        )
+
+
+def test_widget_loader_passes_host_origin_to_iframe():
+    service = WidgetService(repository=FakeWidgetRepository())
+
+    script = service.loader_script(widget_public_url="http://localhost:4173")
+
+    assert "hostOrigin = window.location.origin" in script
+    assert "hostOrigin=${encodeURIComponent(hostOrigin)}" in script

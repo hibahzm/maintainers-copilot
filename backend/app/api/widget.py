@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query, Response, status
+from fastapi import APIRouter, HTTPException, Query, Request, Response, status
 
 from app.api.dependencies import AdminUserDep, SettingsDep, WidgetServiceDep
 from app.api.schemas.widget import (
@@ -6,7 +6,7 @@ from app.api.schemas.widget import (
     WidgetConfigResponse,
     WidgetConfigUpsertRequest,
 )
-from app.infra.exceptions import NotFoundError
+from app.infra.exceptions import NotFoundError, PermissionDenied
 
 router = APIRouter(prefix="/widget", tags=["widget"])
 
@@ -14,12 +14,20 @@ router = APIRouter(prefix="/widget", tags=["widget"])
 @router.get("/config/{widget_id}", response_model=PublicWidgetConfigResponse)
 async def get_widget_config(
     widget_id: str,
+    request: Request,
     service: WidgetServiceDep,
 ) -> PublicWidgetConfigResponse:
+    request_origin = (
+        request.headers.get("x-widget-origin")
+        or request.headers.get("origin")
+        or service.origin_from_referer(request.headers.get("referer"))
+    )
     try:
-        return await service.get_public_config(widget_id)
+        return await service.get_public_config(widget_id, request_origin=request_origin)
     except NotFoundError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+    except PermissionDenied as exc:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
 
 
 @router.get("/admin/configs", response_model=list[WidgetConfigResponse])

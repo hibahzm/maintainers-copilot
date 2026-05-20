@@ -12,6 +12,7 @@ function queryParam(name, fallback) {
 function App() {
   const apiBase = useMemo(() => queryParam("apiBase", "http://localhost:8000"), []);
   const widgetId = useMemo(() => queryParam("widgetId", "maintainers-copilot"), []);
+  const hostOrigin = useMemo(() => queryParam("hostOrigin", window.location.origin), []);
   const [config, setConfig] = useState(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -21,10 +22,10 @@ function App() {
   const rootRef = useRef(null);
 
   useEffect(() => {
-    fetchWidgetConfig({ apiBase, widgetId })
+    fetchWidgetConfig({ apiBase, widgetId, hostOrigin })
       .then(setConfig)
       .catch((exc) => setError(exc.message));
-  }, [apiBase, widgetId]);
+  }, [apiBase, widgetId, hostOrigin]);
 
   useEffect(() => {
     if (rootRef.current) notifyParentOfHeight(rootRef.current.scrollHeight + 24);

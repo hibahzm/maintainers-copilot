@@ -26,7 +26,7 @@ with st.form("widget-config-form"):
     widget_id = st.text_input("Widget ID", value="maintainers-copilot")
     allowed_origins_text = st.text_area(
         "Allowed origins, one per line",
-        value="http://localhost:5173\nhttp://localhost:8501",
+        value="http://localhost:5173\nhttp://localhost:8080\nhttp://localhost:8501",
     )
     greeting = st.text_area("Greeting", value="How can I help maintainers today?")
     accent_color = st.text_input("Accent color", value="#2563eb")
