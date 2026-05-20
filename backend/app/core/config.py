@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     )
     chat_agent_model: str = "gpt-4o-mini"
     chat_agent_max_tool_rounds: int = 3
+    widget_public_url: str = "http://localhost:4173"
     tracing_backend: str = "langfuse"
     tracing_host: str = "https://cloud.langfuse.com"
 

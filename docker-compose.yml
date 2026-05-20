@@ -115,6 +115,7 @@ services:
       OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
       CHAT_AGENT_MODEL: "${CHAT_AGENT_MODEL:-gpt-4o-mini}"
       CHAT_AGENT_MAX_TOOL_ROUNDS: "${CHAT_AGENT_MAX_TOOL_ROUNDS:-3}"
+      WIDGET_PUBLIC_URL: "${WIDGET_PUBLIC_URL:-http://localhost:4173}"
       VAULT_ADDR: "http://vault:8200"
     ports:
       - "${API_PORT:-8000}:8000"

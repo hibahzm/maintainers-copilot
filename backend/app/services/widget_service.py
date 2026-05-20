@@ -1,6 +1,7 @@
 """Widget configuration and embed-snippet workflows."""
 
 from uuid import UUID
+from urllib.parse import quote
 
 from app.api.schemas.widget import (
     PublicWidgetConfigResponse,
@@ -47,6 +48,64 @@ class WidgetService:
     async def list_configs(self, *, limit: int = 100) -> list[WidgetConfigResponse]:
         records = await self.repository.list_configs(limit=limit)
         return [self._response(record) for record in records]
+
+    def loader_script(self, *, widget_public_url: str) -> str:
+        widget_url = quote(widget_public_url.rstrip("/"), safe=":/")
+        return f"""(() => {{
+  const script = document.currentScript;
+  const widgetId = script?.dataset.widgetId || "maintainers-copilot";
+  const apiBase = script?.dataset.apiBase || new URL(script.src).origin;
+  const widgetBase = script?.dataset.widgetUrl || "{widget_url}";
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = script?.dataset.label || "Ask Maintainers Copilot";
+  button.style.cssText = [
+    "position:fixed",
+    "right:24px",
+    "bottom:24px",
+    "z-index:2147483647",
+    "border:0",
+    "border-radius:999px",
+    "padding:12px 16px",
+    "background:#2563eb",
+    "color:#fff",
+    "font:600 14px system-ui,sans-serif",
+    "box-shadow:0 10px 30px rgba(15,23,42,.25)",
+    "cursor:pointer"
+  ].join(";");
+
+  const iframe = document.createElement("iframe");
+  iframe.title = "Maintainers Copilot";
+  iframe.src = `${{widgetBase}}/?widgetId=${{encodeURIComponent(widgetId)}}&apiBase=${{encodeURIComponent(apiBase)}}`;
+  iframe.style.cssText = [
+    "position:fixed",
+    "right:24px",
+    "bottom:78px",
+    "z-index:2147483647",
+    "width:380px",
+    "height:560px",
+    "max-width:calc(100vw - 32px)",
+    "border:0",
+    "border-radius:18px",
+    "box-shadow:0 20px 60px rgba(15,23,42,.28)",
+    "display:none",
+    "background:#fff"
+  ].join(";");
+
+  button.addEventListener("click", () => {{
+    iframe.style.display = iframe.style.display === "none" ? "block" : "none";
+  }});
+
+  window.addEventListener("message", (event) => {{
+    if (event.data?.type !== "widget:resize") return;
+    const height = Number(event.data.height);
+    if (Number.isFinite(height)) iframe.style.height = `${{Math.min(Math.max(height, 320), 720)}}px`;
+  }});
+
+  document.body.appendChild(iframe);
+  document.body.appendChild(button);
+}})();
+"""
 
     def _response(self, record: WidgetConfigRecord) -> WidgetConfigResponse:
         return WidgetConfigResponse.model_validate(record.model_dump())

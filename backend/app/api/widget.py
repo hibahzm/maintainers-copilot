@@ -1,7 +1,6 @@
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, Response, status
 
-from app.api.dependencies import AdminUserDep, WidgetServiceDep
-from app.api.schemas.common import FeatureStubResponse
+from app.api.dependencies import AdminUserDep, SettingsDep, WidgetServiceDep
 from app.api.schemas.widget import (
     PublicWidgetConfigResponse,
     WidgetConfigResponse,
@@ -48,7 +47,9 @@ async def upsert_widget_config(
     return await service.upsert_config(payload=payload, actor_user_id=admin_user.id)
 
 
-@router.get("/widget.js", response_model=FeatureStubResponse)
-async def widget_loader(service: WidgetServiceDep) -> FeatureStubResponse:
-    _ = service
-    return FeatureStubResponse(feature="widget loader")
+@router.get("/widget.js")
+async def widget_loader(service: WidgetServiceDep, settings: SettingsDep) -> Response:
+    return Response(
+        content=service.loader_script(widget_public_url=settings.widget_public_url),
+        media_type="application/javascript",
+    )

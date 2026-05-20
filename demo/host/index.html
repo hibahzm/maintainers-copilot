@@ -3,9 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <title>Maintainers Copilot Demo Host</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 48px;
+        color: #0f172a;
+      }
+    </style>
   </head>
   <body>
     <h1>Demo Host</h1>
-    <p>The future embed script will be pasted here.</p>
+    <p>This page embeds the Maintainers Copilot widget through the backend loader.</p>
+    <script
+      src="http://localhost:8000/widget/widget.js"
+      data-widget-id="maintainers-copilot"
+      data-widget-url="http://localhost:4173"
+      data-api-base="http://localhost:8000"
+    ></script>
   </body>
 </html>

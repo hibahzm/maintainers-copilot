@@ -2,6 +2,26 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Embeddable widget skeleton added
+
+### Updated
+- `backend/app/api/widget.py`
+- `backend/app/core/config.py`
+- `backend/app/services/widget_service.py`
+- `docker-compose.yml`
+- `widget/src/App.jsx`
+- `widget/src/postMessage.js`
+- `widget/src/useWidgetConfig.js`
+- `widget/src/style.css`
+- `demo/host/index.html`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- Backend `/widget/widget.js` now returns a JavaScript loader that injects a fixed bubble and iframe.
+- The widget app fetches public widget config, applies runtime theme color, and calls backend `/chat` with non-streaming messages.
+- The widget posts resize messages to the host page so the iframe can adjust height.
+- The demo host now embeds the loader script. Streaming and origin enforcement are still later hardening steps.
+
 ## 2026-05-20 — Widget config admin surface added
 
 ### Added

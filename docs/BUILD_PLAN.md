@@ -346,13 +346,13 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 ### 4.5 Build the embeddable widget
 
 **Add / complete**
-- Vite React widget bundle
-- collapsed bubble → expanded chat panel
-- streamed messages
-- runtime theme from widget config
-- `/widget.js` loader
-- host page under `demo/host/`
-- iframe `postMessage` resize channel
+- Vite React widget bundle ✅ basic chat panel added
+- collapsed bubble → expanded chat panel ✅ backend `/widget/widget.js` injects fixed bubble + iframe
+- streamed messages ⏳ widget currently uses non-streaming `/chat`
+- runtime theme from widget config ✅ widget fetches public config and applies accent color
+- `/widget.js` loader ✅ returns JavaScript loader from backend
+- host page under `demo/host/` ✅ demo script tag added
+- iframe `postMessage` resize channel ✅ widget posts height to parent
 
 ### 4.6 Enforce embed security
 
