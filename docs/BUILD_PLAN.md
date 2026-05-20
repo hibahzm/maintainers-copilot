@@ -360,7 +360,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - widget table fields: `widget_id`, `allowed_origins`, `theme`, `greeting`, `enabled_tools` ✅
 - public widget config origin check ✅ `/widget/config/{widget_id}` rejects origins not listed in the saved widget config
 - API CORS allowlist ✅ dev-safe origins are centralized in settings for the widget, demo host, and Streamlit shell
-- `Content-Security-Policy` with `frame-ancestors` ⏳ still pending for final hardening
+- `Content-Security-Policy` with `frame-ancestors` ✅ widget and demo host Nginx configs include local-dev security headers
 
 ### 4.7 Put both eval suites in CI
 

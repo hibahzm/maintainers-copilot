@@ -11,15 +11,17 @@ This is the running build journal. Every meaningful change should add a dated en
 - `backend/app/services/widget_service.py`
 - `backend/tests/services/test_widget_service.py`
 - `chatbot/pages/widget_config.py`
+- `demo/host/nginx.conf`
 - `widget/src/App.jsx`
 - `widget/src/useWidgetConfig.js`
+- `widget/nginx.conf`
 - `docs/BUILD_PLAN.md`
 
 ### Design notes
 - Public widget config now checks the declared host origin against the widget's saved `allowed_origins`.
 - The loader passes the host page origin into the iframe, and the React widget sends that origin when fetching config.
 - The API now has a centralized CORS allowlist for the local widget, demo host, and Streamlit surfaces.
-- This is the application-level embed boundary; final CSP / `frame-ancestors` hardening remains a Step 5 security item.
+- The widget and demo host Nginx configs now add local-dev CSP, referrer, and content-type hardening headers, including `frame-ancestors` for the widget.
 
 ## 2026-05-20 — Embeddable widget skeleton added
 
