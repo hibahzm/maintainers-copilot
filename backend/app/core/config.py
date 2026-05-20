@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     database_url: str = "postgresql://copilot:copilot-dev-only@localhost:5432/copilot"
     redis_url: str = "redis://localhost:6379/0"
     conversation_ttl_seconds: int = 7200
+    jwt_signing_key: SecretStr = SecretStr("dev-only-jwt-signing-key")
+    access_token_ttl_minutes: int = 60
     openai_api_key: SecretStr | None = Field(
         default=None,
         validation_alias=AliasChoices("OPENAI_API_KEY", "LLM_API_KEY"),

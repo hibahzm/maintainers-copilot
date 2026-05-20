@@ -2,6 +2,28 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Auth and roles foundation added
+
+### Added
+- `backend/tests/services/test_auth_service.py`
+
+### Updated
+- `backend/app/api/auth.py`
+- `backend/app/api/dependencies.py`
+- `backend/app/api/schemas/auth.py`
+- `backend/app/core/config.py`
+- `backend/app/repositories/user_repo.py`
+- `backend/app/services/auth_service.py`
+- `docker-compose.yml`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- `/auth/register` and `/auth/login` now create and validate users against the existing `users` table.
+- Passwords are hashed with PBKDF2-SHA256 using per-password salts.
+- Access tokens are signed HS256 JWTs using `JWT_SIGNING_KEY`; local compose has a dev-only default and production should inject it from Vault/secrets.
+- User records carry `user` or `admin` roles. `CurrentUserDep` and `AdminUserDep` are available for protected endpoints.
+- `user` means normal chat/memory ownership. `admin` means product configuration privileges such as widget/tool/admin pages.
+
 ## 2026-05-20 — Chat agent prompt moved beside backend agent code
 
 ### Added

@@ -1,8 +1,12 @@
 from typing import Annotated
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
+from app.api.schemas.auth import UserResponse
 from app.core.config import Settings, settings
+from app.infra.exceptions import PermissionDenied
+from app.repositories.user_repo import UserRepository
 from app.services.auth_service import AuthService
 from app.services.chat_agent.openai_agent import OpenAIChatAgentService
 from app.services.chat_service import ChatService
@@ -14,6 +18,8 @@ from app.services.memory_service import MemoryService
 from app.services.rag_service import RagService
 from app.services.widget_service import WidgetService
 
+bearer_scheme = HTTPBearer(auto_error=False)
+
 
 def get_settings() -> Settings:
     """Expose application settings through FastAPI dependency injection."""
@@ -21,7 +27,44 @@ def get_settings() -> Settings:
 
 
 def get_auth_service() -> AuthService:
-    return AuthService()
+    return AuthService(
+        jwt_signing_key=settings.jwt_signing_key,
+        repository=get_user_repository(),
+        access_token_ttl_minutes=settings.access_token_ttl_minutes,
+    )
+
+
+def get_user_repository() -> UserRepository:
+    return UserRepository(database_url=settings.database_url)
+
+
+async def get_current_user(
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)],
+    service: Annotated[AuthService, Depends(get_auth_service)],
+) -> UserResponse:
+    if credentials is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Missing bearer token.",
+        )
+    try:
+        return await service.current_user(credentials.credentials)
+    except PermissionDenied as exc:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(exc),
+        ) from exc
+
+
+async def require_admin(
+    current_user: Annotated[UserResponse, Depends(get_current_user)],
+) -> UserResponse:
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin role required.",
+        )
+    return current_user
 
 
 def get_chat_service() -> ChatService:
@@ -85,6 +128,8 @@ def get_widget_service() -> WidgetService:
 
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 AuthServiceDep = Annotated[AuthService, Depends(get_auth_service)]
+CurrentUserDep = Annotated[UserResponse, Depends(get_current_user)]
+AdminUserDep = Annotated[UserResponse, Depends(require_admin)]
 ChatServiceDep = Annotated[ChatService, Depends(get_chat_service)]
 ClassifierServiceDep = Annotated[ClassifierService, Depends(get_classifier_service)]
 MemoryServiceDep = Annotated[MemoryService, Depends(get_memory_service)]
