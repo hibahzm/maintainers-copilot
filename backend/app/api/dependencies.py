@@ -4,6 +4,7 @@ from fastapi import Depends
 
 from app.core.config import Settings, settings
 from app.services.auth_service import AuthService
+from app.services.chat_agent.openai_agent import OpenAIChatAgentService
 from app.services.chat_service import ChatService
 from app.services.classifier_service import ClassifierService
 from app.services.chat_tools.model_server_tools import MaintainerToolsService
@@ -27,6 +28,7 @@ def get_chat_service() -> ChatService:
     return ChatService(
         rag_service=get_rag_service(),
         tool_runner=get_chat_tool_runner(),
+        agent_service=get_openai_chat_agent_service(),
         conversation_state_service=get_conversation_state_service(),
     )
 
@@ -46,6 +48,16 @@ def get_chat_tool_runner() -> ChatToolRunner:
     return ChatToolRunner(
         tools_service=get_maintainer_tools_service(),
         memory_service=get_memory_service(),
+    )
+
+
+def get_openai_chat_agent_service() -> OpenAIChatAgentService:
+    return OpenAIChatAgentService(
+        api_key=settings.openai_api_key,
+        model=settings.chat_agent_model,
+        rag_service=get_rag_service(),
+        tool_runner=get_chat_tool_runner(),
+        max_tool_rounds=settings.chat_agent_max_tool_rounds,
     )
 
 

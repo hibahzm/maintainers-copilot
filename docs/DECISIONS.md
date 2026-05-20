@@ -28,6 +28,23 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-022 | Deploy DistilBERT as the project issue classifier | accepted | chosen over OpenAI because macro-F1 is effectively tied while avoiding per-call cost and external API dependency |
 | D-023 | Use `intfloat/e5-small-v2` as the first RAG dense embedding model | accepted | dense-only golden-set recall@10 `1.0000`, MRR@10 `1.0000`, nDCG@10 `0.9636`; beats `all-MiniLM-L6-v2` MRR@10 `0.9267` |
 | D-024 | Store RAG chunks and dense vectors in PostgreSQL/pgvector | accepted | required vector store; migration `20260520_0002` creates `rag_sources` and `rag_chunks` with `vector(384)` for `e5-small-v2` |
+| D-025 | Use one bounded OpenAI Responses API tool-calling loop for the chatbot agent | accepted | satisfies the single tool-calling LLM requirement without adding a multi-agent/workflow framework; local deterministic routing remains a no-key fallback |
+
+## Chatbot agent shape
+
+Use one OpenAI Responses API function-calling loop as the chatbot agent.
+
+The model receives the user conversation plus tool schemas. It may call zero, one, or multiple tools in a round. The backend executes only the fixed allowlisted tools, returns each tool result to the model as a function-call output, and then the model writes the final answer. The loop is bounded at three tool rounds to avoid infinite tool-call chains.
+
+Available tools:
+
+- `rag_search`
+- `classify_issue`
+- `extract_entities`
+- `summarize_issue`
+- `write_memory`
+
+Summarization and long-term memory writes are gated by explicit request flags. If no OpenAI key is configured, `/chat` falls back to the deterministic local routing path so the stack remains smoke-testable without token spend.
 
 ## RAG embedding model choice
 

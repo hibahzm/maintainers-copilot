@@ -313,14 +313,14 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 ### 4.2 Build the single tool-calling chatbot
 
 **Tools**
-- classify ✅ routed through `/chat` when the user asks to classify/label/triage an issue
-- NER ✅ routed through `/chat` when the user asks to extract entities
-- summarize ✅ routed through `/chat` only when the UI/API explicitly allows the LLM summarizer
-- RAG search ✅ initial `/chat` orchestration uses RAG and returns citations/tool metadata
+- classify ✅ available to the OpenAI tool-calling chat agent
+- NER ✅ available to the OpenAI tool-calling chat agent
+- summarize ✅ available only when the UI/API explicitly allows the LLM summarizer
+- RAG search ✅ available as `rag_search`; returns retrieved chunks/citations to the agent
 - explicit `write_memory` ✅ guarded by `allow_memory_write` and backed by pgvector memory records/audit log
 
 **Rule**
-- one tool-calling LLM, not a workflow and not a multi-agent system
+- one tool-calling LLM ✅ bounded OpenAI Responses API loop with max 3 tool rounds
 - no automatic long-term memory writes
 
 ### 4.3 Add memory

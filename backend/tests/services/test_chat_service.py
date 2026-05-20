@@ -1,8 +1,10 @@
 import pytest
 
 from app.api.schemas.classifier import ClassifyIssueResponse
+from app.api.schemas.chat import ChatToolResult
 from app.api.schemas.rag import RagQueryResponse
 from app.domain.chat import Message
+from app.services.chat_agent.openai_agent import AgentRunResult
 from app.services.chat_service import ChatService
 from app.services.chat_tools.runner import ChatToolRunner
 
@@ -51,6 +53,18 @@ class FakeConversationStateService:
         self.saved_messages = messages
 
 
+class FakeAgentService:
+    is_configured = True
+
+    async def respond(self, **kwargs):
+        return AgentRunResult(
+            answer="Agent final answer.",
+            citations=["project-doc:docs/BUILD_PLAN.md"],
+            tool_results=[ChatToolResult(name="rag.query", status="ok")],
+            response_id="resp_test",
+        )
+
+
 @pytest.mark.asyncio
 async def test_chat_service_uses_rag_for_latest_user_message():
     service = ChatService(rag_service=FakeRagService())
@@ -65,6 +79,24 @@ async def test_chat_service_uses_rag_for_latest_user_message():
     assert response.message.role == "assistant"
     assert response.message.content == "Grounded answer for: Which embedding model did we choose?"
     assert response.citations == ["project-doc:docs/DECISIONS.md"]
+    assert response.tool_results[0].name == "rag.query"
+
+
+@pytest.mark.asyncio
+async def test_chat_service_prefers_configured_llm_agent():
+    service = ChatService(
+        rag_service=FakeRagService(),
+        tool_runner=ChatToolRunner(tools_service=FakeToolsService()),
+        agent_service=FakeAgentService(),
+    )
+
+    response = await service.respond(
+        conversation_id="conv-1",
+        messages=[Message(role="user", content="Classify this issue")],
+    )
+
+    assert response.message.content == "Agent final answer."
+    assert response.citations == ["project-doc:docs/BUILD_PLAN.md"]
     assert response.tool_results[0].name == "rag.query"
 
 

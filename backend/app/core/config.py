@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, SecretStr
+from pydantic import AliasChoices, BaseModel, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -17,6 +17,12 @@ class Settings(BaseSettings):
     database_url: str = "postgresql://copilot:copilot-dev-only@localhost:5432/copilot"
     redis_url: str = "redis://localhost:6379/0"
     conversation_ttl_seconds: int = 7200
+    openai_api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices("OPENAI_API_KEY", "LLM_API_KEY"),
+    )
+    chat_agent_model: str = "gpt-4o-mini"
+    chat_agent_max_tool_rounds: int = 3
     tracing_backend: str = "langfuse"
     tracing_host: str = "https://cloud.langfuse.com"
 

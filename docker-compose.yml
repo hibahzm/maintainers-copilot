@@ -110,6 +110,9 @@ services:
       DATABASE_URL: "postgresql://copilot:copilot-dev-only@db:5432/copilot"
       REDIS_URL: "redis://redis:6379/0"
       CONVERSATION_TTL_SECONDS: "${CONVERSATION_TTL_SECONDS:-7200}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      CHAT_AGENT_MODEL: "${CHAT_AGENT_MODEL:-gpt-4o-mini}"
+      CHAT_AGENT_MAX_TOOL_ROUNDS: "${CHAT_AGENT_MAX_TOOL_ROUNDS:-3}"
       VAULT_ADDR: "http://vault:8200"
     ports:
       - "${API_PORT:-8000}:8000"

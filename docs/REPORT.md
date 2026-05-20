@@ -2,6 +2,28 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — OpenAI tool-calling chat agent added
+
+### Added
+- `backend/app/services/chat_agent/`
+- `backend/tests/services/test_openai_chat_agent_service.py`
+
+### Updated
+- `backend/app/api/dependencies.py`
+- `backend/app/core/config.py`
+- `backend/app/services/chat_service.py`
+- `backend/tests/services/test_chat_service.py`
+- `docker-compose.yml`
+- `docs/BUILD_PLAN.md`
+- `docs/DECISIONS.md`
+
+### Design notes
+- `/chat` now prefers a bounded OpenAI Responses API function-calling loop when an OpenAI key is configured.
+- The agent can call `rag_search`, `classify_issue`, `extract_entities`, `summarize_issue`, and `write_memory`.
+- Tool execution remains in backend-owned code. The model chooses tools, but it never directly touches databases, Redis, model-server internals, or memory writes.
+- The loop is capped at three tool rounds to avoid infinite tool-call chains.
+- If no OpenAI key is configured, the existing deterministic routing path remains as a local no-cost fallback.
+
 ## 2026-05-20 — Chat tool code split into dedicated service package
 
 ### Added

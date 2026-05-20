@@ -5,6 +5,7 @@ from uuid import UUID, uuid4
 from app.api.schemas.chat import ChatResponse, ChatToolResult
 from app.domain.chat import Message
 from app.infra.exceptions import ToolFailure
+from app.services.chat_agent.openai_agent import AgentRunResult, OpenAIChatAgentService
 from app.services.chat_tools.renderer import render_tool_answer
 from app.services.chat_tools.runner import ChatToolRunner
 from app.services.chat_tools.types import ChatToolName
@@ -25,10 +26,12 @@ class ChatService:
         *,
         rag_service: RagService,
         tool_runner: ChatToolRunner | None = None,
+        agent_service: OpenAIChatAgentService | None = None,
         conversation_state_service: ConversationStateService | None = None,
     ) -> None:
         self.rag_service = rag_service
         self.tool_runner = tool_runner
+        self.agent_service = agent_service
         self.conversation_state_service = conversation_state_service
 
     async def respond(
@@ -55,6 +58,28 @@ class ChatService:
                     role="assistant",
                     content="Send me a maintainer question or issue context to start.",
                 ),
+            )
+            await self._save_short_term_messages(
+                response_conversation_id,
+                conversation_messages,
+                response,
+            )
+            return response
+
+        agent_response = await self._run_agent(
+            user_id=user_id,
+            messages=conversation_messages,
+            use_rag=use_rag,
+            top_k=top_k,
+            allow_summarizer=allow_summarizer,
+            allow_memory_write=allow_memory_write,
+        )
+        if agent_response is not None:
+            response = ChatResponse(
+                conversation_id=response_conversation_id,
+                message=Message(role="assistant", content=agent_response.answer),
+                citations=agent_response.citations,
+                tool_results=agent_response.tool_results,
             )
             await self._save_short_term_messages(
                 response_conversation_id,
@@ -156,6 +181,30 @@ class ChatService:
         )
         return response
 
+    async def _run_agent(
+        self,
+        *,
+        user_id: UUID | None,
+        messages: list[Message],
+        use_rag: bool,
+        top_k: int,
+        allow_summarizer: bool,
+        allow_memory_write: bool,
+    ) -> AgentRunResult | None:
+        if self.agent_service is None or not self.agent_service.is_configured:
+            return None
+        try:
+            return await self.agent_service.respond(
+                user_id=user_id,
+                messages=[message.model_dump(mode="json") for message in messages],
+                use_rag=use_rag,
+                top_k=top_k,
+                allow_summarizer=allow_summarizer,
+                allow_memory_write=allow_memory_write,
+            )
+        except ToolFailure:
+            return None
+
     async def _run_chat_tools(
         self,
         text: str,
@@ -213,4 +262,3 @@ class ChatService:
         if len(incoming_messages) > 1 or not stored_messages:
             return incoming_messages
         return [*stored_messages, *incoming_messages]
-
