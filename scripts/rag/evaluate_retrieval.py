@@ -120,8 +120,12 @@ def reciprocal_rank(results: list[dict[str, Any]], relevant_sources: set[str]) -
 
 def dcg_at_k(results: list[dict[str, Any]], relevant_sources: set[str], k: int) -> float:
     score = 0.0
+    credited_sources: set[str] = set()
     for index, result in enumerate(results[:k], start=1):
-        relevance = 1.0 if result["source_id"] in relevant_sources else 0.0
+        source_id = result["source_id"]
+        relevance = 1.0 if source_id in relevant_sources and source_id not in credited_sources else 0.0
+        if relevance:
+            credited_sources.add(source_id)
         score += relevance / math.log2(index + 1)
     return score
 

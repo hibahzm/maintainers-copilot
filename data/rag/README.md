@@ -85,3 +85,26 @@ The generated chunk rows stay ignored:
 ```text
 data/rag/chunks/naive_fixed_chunks.jsonl
 ```
+
+## Parent-child chunking
+
+Build non-naive parent-child chunks:
+
+```bash
+python -m scripts.rag.chunk_parent_child
+```
+
+Evaluate them with the same dense-only evaluator:
+
+```bash
+python -m scripts.rag.evaluate_retrieval \
+  --chunks-path data/rag/chunks/parent_child_chunks.jsonl \
+  --output-path evals/rag_parent_child_dense_results.json
+```
+
+Tracked evidence:
+
+```text
+data/rag/chunks/parent_child_chunks_manifest.json
+evals/rag_parent_child_dense_results.json
+```

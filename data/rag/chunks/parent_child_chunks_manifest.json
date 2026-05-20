@@ -1,0 +1,12 @@
+{
+  "child_overlap_words": 24,
+  "child_size_words": 96,
+  "chunks": 609,
+  "created_at": "2026-05-20T07:44:33.751412+00:00",
+  "output_path": "data/rag/chunks/parent_child_chunks.jsonl",
+  "parents": 495,
+  "sha256": "dc13b5c930a9c28901682833b9c97fc82f84ce5c3d5fe8cf895909d44e7994df",
+  "source_documents": 49,
+  "source_path": "data/rag/raw/dev_corpus.jsonl",
+  "strategy": "parent_child_sections"
+}

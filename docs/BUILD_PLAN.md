@@ -264,7 +264,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 
 **Add / complete**
 - naive fixed-size dense baseline ✅ recall@10 `0.8400`, MRR@10 `0.6083`
-- non-naive chunking
+- non-naive parent-child chunking ✅ recall@10 `0.9200`, MRR@10 `0.7633`
 - sparse retrieval such as BM25
 - dense retrieval in pgvector
 - tuned hybrid weighting

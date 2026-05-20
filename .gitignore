@@ -40,3 +40,4 @@ data/*.db
 evals/*_results.json
 !evals/classification_eval_results.json
 !evals/rag_naive_dense_baseline_results.json
+!evals/rag_parent_child_dense_results.json

@@ -20,12 +20,34 @@ This is the running build journal. Every meaningful change should add a dated en
 - recall@5: `0.8000`
 - recall@10: `0.8400`
 - MRR@10: `0.6083`
-- nDCG@10: `0.9316`
+- nDCG@10: `0.6412`
 
 ### Design notes
 - This is the intentionally weak baseline required by the rubric: naive fixed-size chunking plus pure dense retrieval.
 - The baseline uses a deterministic local hash-dense embedding so the first eval has no API cost and no new heavyweight dependency.
 - Later advanced RAG work must beat this baseline with numbers before we claim improvements.
+
+## 2026-05-20 — Parent-child RAG chunking evaluated
+
+### Added
+- `scripts/rag/chunk_parent_child.py`
+- `data/rag/chunks/parent_child_chunks_manifest.json`
+- `evals/rag_parent_child_dense_results.json`
+
+### Evidence
+- parent sections: `495`
+- child chunks: `609`
+- retrieval method held constant: hash-dense cosine retrieval
+- recall@1: `0.6800` vs baseline `0.4800`
+- recall@3: `0.8000` vs baseline `0.7600`
+- recall@5: `0.9200` vs baseline `0.8000`
+- recall@10: `0.9200` vs baseline `0.8400`
+- MRR@10: `0.7633` vs baseline `0.6083`
+- nDCG@10: `0.7881` vs baseline `0.6412`
+
+### Design notes
+- Parent-child chunking beats the naive fixed-size dense baseline on every tracked retrieval metric.
+- The evaluator now counts each relevant source only once for nDCG so duplicate chunks from the same source do not inflate ranking quality.
 
 ## 2026-05-20 — RAG dev corpus workspace added
 

@@ -8,12 +8,12 @@
     "uses_metadata_filter": false,
     "vector_dimensions": 512
   },
-  "created_at": "2026-05-20T07:38:24.197271+00:00",
+  "created_at": "2026-05-20T07:45:00.991041+00:00",
   "golden_path": "evals/golden_rag.json",
   "metrics": {
     "examples": 25,
     "mrr_at_10": 0.6083333333333334,
-    "ndcg_at_10": 0.9316391253149706,
+    "ndcg_at_10": 0.6412195424200943,
     "recall_at_1": 0.48,
     "recall_at_10": 0.84,
     "recall_at_3": 0.76,
@@ -197,7 +197,7 @@
       "hit_at_3": true,
       "hit_at_5": true,
       "id": "rag-golden-002",
-      "ndcg_at_10": 1.0,
+      "ndcg_at_10": 0.6131471927654584,
       "question": "Where should production runtime secrets live in this project?",
       "reciprocal_rank": 1.0,
       "retrieved_source_ids": [
@@ -365,7 +365,7 @@
       "hit_at_3": true,
       "hit_at_5": true,
       "id": "rag-golden-003",
-      "ndcg_at_10": 1.2056482329303733,
+      "ndcg_at_10": 0.5437713091520254,
       "question": "What model was selected for issue classification and why?",
       "reciprocal_rank": 0.3333333333333333,
       "retrieved_source_ids": [
@@ -676,7 +676,7 @@
       "hit_at_3": true,
       "hit_at_5": true,
       "id": "rag-golden-005",
-      "ndcg_at_10": 3.3863221553163427,
+      "ndcg_at_10": 1.0,
       "question": "What must Step 3 advanced RAG prove beyond the naive baseline?",
       "reciprocal_rank": 1.0,
       "retrieved_source_ids": [
@@ -1022,7 +1022,7 @@
       "hit_at_3": true,
       "hit_at_5": true,
       "id": "rag-golden-007",
-      "ndcg_at_10": 2.163054574231909,
+      "ndcg_at_10": 0.6309297535714575,
       "question": "What is the classifier model artifact SHA recorded for the selected DistilBERT model?",
       "reciprocal_rank": 0.5,
       "retrieved_source_ids": [
@@ -1366,7 +1366,7 @@
       "hit_at_3": true,
       "hit_at_5": true,
       "id": "rag-golden-009",
-      "ndcg_at_10": 1.9306765580733931,
+      "ndcg_at_10": 1.0,
       "question": "Which issue reports MultiIndex.levels returning extra values after filtering rows?",
       "reciprocal_rank": 1.0,
       "retrieved_source_ids": [
@@ -1563,7 +1563,7 @@
       "hit_at_3": true,
       "hit_at_5": true,
       "id": "rag-golden-010",
-      "ndcg_at_10": 1.6309297535714575,
+      "ndcg_at_10": 1.0,
       "question": "Which issue asks for Python 3.12 support?",
       "reciprocal_rank": 1.0,
       "retrieved_source_ids": [
@@ -2099,7 +2099,7 @@
       "hit_at_3": false,
       "hit_at_5": false,
       "id": "rag-golden-013",
-      "ndcg_at_10": 0.6164948724497099,
+      "ndcg_at_10": 0.31546487678572877,
       "question": "Which issue asks for documentation improvements around SettingWithCopyWarning?",
       "reciprocal_rank": 0.125,
       "retrieved_source_ids": [
@@ -3383,7 +3383,7 @@
       "hit_at_3": true,
       "hit_at_5": true,
       "id": "rag-golden-020",
-      "ndcg_at_10": 1.4306765580733931,
+      "ndcg_at_10": 1.0,
       "question": "Which issue says FutureWarning on pct_change suggests a solution that does not always work?",
       "reciprocal_rank": 1.0,
       "retrieved_source_ids": [
