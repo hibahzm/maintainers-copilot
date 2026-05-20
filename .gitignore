@@ -18,6 +18,12 @@ widget/dist/*
 
 # Data artifacts
 data/*.jsonl
+data/rag/raw/*
+!data/rag/raw/.gitkeep
+data/rag/chunks/*
+!data/rag/chunks/.gitkeep
+data/rag/indexes/*
+!data/rag/indexes/.gitkeep
 data/*.parquet
 data/*.csv
 data/*.db

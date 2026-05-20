@@ -2,6 +2,24 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG dev corpus workspace added
+
+### Added
+- `data/rag/README.md`
+- `data/rag/corpus_manifest.json`
+- ignored local RAG folders: `data/rag/raw/`, `data/rag/chunks/`, `data/rag/indexes/`
+- `scripts/rag/build_dev_corpus.py`
+
+### Updated
+- `.gitignore`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- Step 3 starts with a small local dev corpus so we can build and evaluate RAG logic without downloading the full pandas docs/issues corpus locally.
+- Raw corpus rows, chunks, and indexes stay out of Git; only small manifests and metrics are tracked.
+- The initial dev corpus builder uses project Markdown docs plus held-out issue text from the ignored `data/test_200_balanced.jsonl` file when available.
+- The full rubric corpus still needs resolved issues with maintainer answers/comments; that belongs in the later MinIO-backed corpus.
+
 ## 2026-05-20 — Golden classification eval completed
 
 ### Added

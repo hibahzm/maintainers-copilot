@@ -1,0 +1,23 @@
+{
+  "corpus_name": "maintainers-copilot-rag-dev",
+  "created_at": "2026-05-20T07:30:03.669029+00:00",
+  "description": "Small local development corpus for Step 3 RAG. Raw/chunk/index files stay outside Git.",
+  "documents": 49,
+  "output_path": "data/rag/raw/dev_corpus.jsonl",
+  "sha256": "387fa3a24cca839824d57f1188e28163761b6c141ba63b7a5bff5b0529820ff1",
+  "sources": [
+    {
+      "documents": 9,
+      "note": null,
+      "path": "docs",
+      "source_type": "project_doc"
+    },
+    {
+      "documents": 40,
+      "note": "Held-out issue text only in the dev corpus; maintainer-answer comments are added in the full MinIO corpus.",
+      "path": "data/test_200_balanced.jsonl",
+      "source_type": "github_issue"
+    }
+  ],
+  "status": "generated"
+}

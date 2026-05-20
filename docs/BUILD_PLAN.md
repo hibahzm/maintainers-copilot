@@ -241,11 +241,15 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 ### 3.1 Build the corpus
 
 **Corpus must contain**
-- project docs
-- a held-out slice of resolved issues with maintainer answers
+- project docs ✅ dev corpus scaffold added
+- a held-out slice of resolved issues with maintainer answers ⏳ dev corpus starts with held-out issue text; full corpus needs maintainer comments/answers
 
 **Rule**
 - held-out RAG issues do not appear in classifier training
+
+**Current dev-corpus rule**
+- raw corpus/chunk/index files stay outside Git under ignored `data/rag/` folders
+- `data/rag/corpus_manifest.json` is tracked as small reproducibility evidence
 
 ### 3.2 Choose the embedding model with evidence
 
