@@ -22,6 +22,7 @@ from scripts.rag.evaluate_retrieval import (
     ndcg_at_k,
     passes_filter,
     reciprocal_rank,
+    validate_golden_coverage,
 )
 
 DEFAULT_CHUNKS_PATH = Path("data/rag/chunks/parent_child_chunks.jsonl")
@@ -189,6 +190,7 @@ def choose_best(runs: list[dict[str, Any]]) -> dict[str, Any]:
 def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     chunks = load_jsonl(args.chunks_path)
     golden = load_json(args.golden_path)
+    validate_golden_coverage(chunks, golden)
     runs = [evaluate_model(model_name=model, chunks=chunks, golden=golden, args=args) for model in args.embedding_models]
     best = choose_best(runs)
     return {

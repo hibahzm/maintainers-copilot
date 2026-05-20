@@ -1,0 +1,246 @@
+{
+  "description": "Public GitHub issue IDs used to rebuild the small RAG dev corpus without committing raw issue bodies.",
+  "issues": [
+    {
+      "number": 53500,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53500",
+      "title": "BUG: column selection in GroupBy NOT returning tuple when grouping by a list containing single element"
+    },
+    {
+      "number": 53533,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53533",
+      "title": "BUG: iloc-indexing with callable has inconsistent semantics if the return type is a tuple"
+    },
+    {
+      "number": 53560,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53560",
+      "title": "QST: What is the canonical way to convert a column of type `string[pyarrow]` to boolean within a pandas dataframe?"
+    },
+    {
+      "number": 53596,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53596",
+      "title": "DOC: Minor typo and punctuation error"
+    },
+    {
+      "number": 53615,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53615",
+      "title": "QST: 我没有指定engine，在本地read_excel好用，但是在airflow中就报错。当我指定之后，就会报这个，zipfile.BadZipFile: File is not a zip file，excel文件能正常打开在本地，没有问题。"
+    },
+    {
+      "number": 53665,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53665",
+      "title": "ENH: Python 3.12 support"
+    },
+    {
+      "number": 53713,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53713",
+      "title": "QST: How to prepare my data to avoid being unable to infer frequency"
+    },
+    {
+      "number": 53733,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53733",
+      "title": "BUG: MultiIndex.levels returns extra values after filtering rows"
+    },
+    {
+      "number": 53763,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53763",
+      "title": "DOC: discrepancies in read_csv docstring between docstring guide or type hints"
+    },
+    {
+      "number": 53811,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53811",
+      "title": "BUG: inconsistent space stripping in read_xml"
+    },
+    {
+      "number": 53837,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53837",
+      "title": "DOC: `read_clipboard` docstring lacks code-formatting and links to other pandas functions/classes"
+    },
+    {
+      "number": 53898,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53898",
+      "title": "BUG: interpolate with ffill/bfill method, axis=1, multi-block"
+    },
+    {
+      "number": 53900,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53900",
+      "title": "ENH: add optional `inplace` parameter to `DataFrame.melt()`"
+    },
+    {
+      "number": 53928,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#53928",
+      "title": "BUG: TypeError: cannot safely cast non-equivalent object to uint32"
+    },
+    {
+      "number": 54005,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54005",
+      "title": "ENH: vlookup or similar"
+    },
+    {
+      "number": 54022,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54022",
+      "title": "DOC: Improve SettingWithCopyWarning documentation"
+    },
+    {
+      "number": 54033,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54033",
+      "title": "ENH: series.is_constant"
+    },
+    {
+      "number": 54069,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54069",
+      "title": "BUG: Error when using Series.pow with fill_value"
+    },
+    {
+      "number": 54152,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54152",
+      "title": "BUG: Inconsistent Shallow Copy Behavior in DataFrame with sample() Series"
+    },
+    {
+      "number": 54178,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54178",
+      "title": "BUILD: `ValueError` raised when importing pandas due to `numpy.ndarray` size change"
+    },
+    {
+      "number": 54212,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54212",
+      "title": "BUG: Doc build fails locally due to `rstjinja` issue with `doc/source/user_guide/style.nbconvert.ipynb`"
+    },
+    {
+      "number": 54284,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54284",
+      "title": "QST: does xls support style"
+    },
+    {
+      "number": 54627,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54627",
+      "title": "BUG: groupby.var() does not return arrow types with arrow backed series as input. "
+    },
+    {
+      "number": 54748,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54748",
+      "title": "ENH: Replace oldest-supported-numpy with numpy 1.25.x since they guarantee ABI/API compatibility since 1.19.x"
+    },
+    {
+      "number": 54981,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#54981",
+      "title": "BUG: FutureWarning on pct_change() suggests a solution that does not always work."
+    },
+    {
+      "number": 55060,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55060",
+      "title": "ENH: column nicknames or shorthands"
+    },
+    {
+      "number": 55069,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55069",
+      "title": "BUG: pandas int extension dtypes has no attribute byteorder"
+    },
+    {
+      "number": 55121,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55121",
+      "title": "ENH: Add a name parameter to value_counts()"
+    },
+    {
+      "number": 55133,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55133",
+      "title": "DOC: rolling axis parameter deprecated, but not in docs"
+    },
+    {
+      "number": 55148,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55148",
+      "title": "BUG: MultiIndex.levels[x] of sliced DataFrame returns values from the non-sliced index"
+    },
+    {
+      "number": 55178,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55178",
+      "title": "ENH: set `__module__` on top-level public objects"
+    },
+    {
+      "number": 55181,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55181",
+      "title": "BUG: DataFrame.mode() fails on sparse integer DataFrames"
+    },
+    {
+      "number": 55188,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55188",
+      "title": "BUG: DataFrame.style.to_latex() does not allow `index=False` as a parameter and does not return consistent "
+    },
+    {
+      "number": 55215,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55215",
+      "title": "Why doesn't the .at() function work for pandas?"
+    },
+    {
+      "number": 55287,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55287",
+      "title": "QST: get the last one value in a dataframe's certain column"
+    },
+    {
+      "number": 55323,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55323",
+      "title": "ENH: Add list accessor for PyArrow list types to support __getitem__"
+    },
+    {
+      "number": 55398,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55398",
+      "title": "BUG: DataFrame.replace() is inconsistent between `float64` and `Float64`"
+    },
+    {
+      "number": 55399,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55399",
+      "title": "ENH: Support `errors=\"ignore\"` for astype with pyarrow types"
+    },
+    {
+      "number": 55436,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55436",
+      "title": "DOC: Move bug fixes in whatsnew for 2.2.0 into the appropriate subsection"
+    },
+    {
+      "number": 55452,
+      "repo": "pandas-dev/pandas",
+      "source_id": "github-issue:pandas-dev/pandas#55452",
+      "title": "BUG: hash_pandas_object(obj).sum() changed value with pandas 2.1.0"
+    }
+  ],
+  "source": "first 40 records from data/test_200_balanced.jsonl used by scripts/rag/build_dev_corpus.py during Step 3 setup"
+}

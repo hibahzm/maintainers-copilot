@@ -19,6 +19,7 @@ from scripts.rag.evaluate_retrieval import (
     metrics,
     ndcg_at_k,
     reciprocal_rank,
+    validate_golden_coverage,
 )
 
 DEFAULT_CHUNKS_PATH = Path("data/rag/chunks/parent_child_chunks.jsonl")
@@ -94,6 +95,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     )
     chunks = load_jsonl(args.chunks_path)
     golden = load_json(args.golden_path)
+    validate_golden_coverage(chunks, golden)
     chunk_vectors = {chunk["chunk_id"]: embed(chunk.get("text", ""), args.dimensions) for chunk in chunks}
     bm25 = BM25Index(chunks)
 

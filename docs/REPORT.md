@@ -2,6 +2,22 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG corpus rebuild guardrails added
+
+### Added
+- `data/rag/dev_issue_sources.json`
+
+### Updated
+- `scripts/rag/build_dev_corpus.py`
+- retrieval evaluation scripts under `scripts/rag/`
+- `data/rag/README.md`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- Fresh Colab clones do not include ignored JSONL data files, so `build_dev_corpus` can now rebuild the dev issue corpus from tracked public issue IDs by fetching issue bodies from GitHub.
+- Retrieval evaluators now validate that every golden-set source ID exists in the chunk corpus before scoring. This prevents silently valid-looking but misleading metrics when the corpus only contains project docs.
+- The first embedding result brought back from Colab was intentionally not committed because it was generated from an incomplete 9-document corpus. It should be regenerated after this guardrail fix.
+
 ## 2026-05-20 — RAG embedding comparison evaluator added
 
 ### Added

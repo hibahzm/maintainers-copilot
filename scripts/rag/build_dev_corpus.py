@@ -5,7 +5,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from dataclasses import asdict, dataclass
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -14,6 +17,16 @@ DEFAULT_DOCS_DIR = Path("docs")
 DEFAULT_ISSUES_PATH = Path("data/test_200_balanced.jsonl")
 DEFAULT_OUTPUT_PATH = Path("data/rag/raw/dev_corpus.jsonl")
 DEFAULT_MANIFEST_PATH = Path("data/rag/corpus_manifest.json")
+DEFAULT_GOLDEN_PATH = Path("evals/golden_rag.json")
+DEFAULT_DEV_ISSUES_PATH = Path("data/rag/dev_issue_sources.json")
+DEFAULT_GITHUB_REPO = "pandas-dev/pandas"
+GITHUB_ISSUE_SOURCE_PATTERN = re.compile(r"^github-issue:(?P<repo>[^#]+)#(?P<number>\d+)$")
+TARGET_LABEL_MAP = {
+    "bug": "bug",
+    "enhancement": "feature",
+    "docs": "docs",
+    "usage question": "question",
+}
 
 
 @dataclass(frozen=True)
@@ -42,6 +55,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--issues-path", type=Path, default=DEFAULT_ISSUES_PATH)
     parser.add_argument("--output-path", type=Path, default=DEFAULT_OUTPUT_PATH)
     parser.add_argument("--manifest-path", type=Path, default=DEFAULT_MANIFEST_PATH)
+    parser.add_argument("--golden-path", type=Path, default=DEFAULT_GOLDEN_PATH)
+    parser.add_argument("--dev-issues-path", type=Path, default=DEFAULT_DEV_ISSUES_PATH)
+    parser.add_argument("--github-repo", default=DEFAULT_GITHUB_REPO)
     parser.add_argument("--issue-limit", type=int, default=40)
     return parser.parse_args()
 
@@ -88,7 +104,7 @@ def iter_issue_records(path: Path, limit: int) -> list[dict[str, Any]]:
             text = f"# {title}\n\n{body}".strip()
             records.append(
                 {
-                    "id": f"github-issue:{issue_id}",
+                    "id": issue_id if issue_id.startswith("github-issue:") else f"github-issue:{issue_id}",
                     "source_type": "github_issue",
                     "source_path": str(issue.get("url") or issue_id),
                     "title": title,
@@ -106,6 +122,83 @@ def iter_issue_records(path: Path, limit: int) -> list[dict[str, Any]]:
                 }
             )
     return records
+
+
+def iter_dev_github_issue_records(dev_issues_path: Path, *, limit: int) -> list[dict[str, Any]]:
+    if not dev_issues_path.exists():
+        return []
+    payload = json.loads(dev_issues_path.read_text(encoding="utf-8"))
+    refs = payload.get("issues", [])[:limit]
+    return [github_issue_record(str(ref["repo"]), int(ref["number"])) for ref in refs]
+
+
+def github_issue_record(repo: str, number: int) -> dict[str, Any]:
+    issue = fetch_github_issue(repo, number)
+    title = str(issue.get("title") or "Untitled issue")
+    body = str(issue.get("body") or "")
+    labels = [label.get("name", "") for label in issue.get("labels", []) if isinstance(label, dict)]
+    target_label = next((TARGET_LABEL_MAP[label] for label in labels if label in TARGET_LABEL_MAP), None)
+    text = f"# {title}\n\n{body}".strip()
+    return {
+        "id": f"github-issue:{repo}#{number}",
+        "source_type": "github_issue",
+        "source_path": str(issue.get("html_url") or f"https://github.com/{repo}/issues/{number}"),
+        "title": title,
+        "text": text,
+        "metadata": {
+            "repo": repo,
+            "number": number,
+            "label": target_label,
+            "created_at": issue.get("created_at"),
+            "closed_at": issue.get("closed_at"),
+            "url": issue.get("html_url"),
+            "held_out": True,
+            "has_maintainer_answer": False,
+            "source": "github_api_dev_issue_sources",
+        },
+    }
+
+
+def iter_golden_github_issue_records(golden_path: Path, *, repo: str, limit: int) -> list[dict[str, Any]]:
+    """Fetch the small golden-set issue corpus when local JSONL data is absent.
+
+    This keeps a fresh Colab clone reproducible without committing row-level issue
+    datasets to Git. The public GitHub API is enough because we fetch only the
+    issue records referenced by `evals/golden_rag.json`.
+    """
+    if not golden_path.exists():
+        return []
+
+    golden = json.loads(golden_path.read_text(encoding="utf-8"))
+    issue_numbers: list[int] = []
+    seen: set[int] = set()
+    for record in golden:
+        for source_id in record.get("ground_truth_source_ids", []):
+            match = GITHUB_ISSUE_SOURCE_PATTERN.match(str(source_id))
+            if not match or match.group("repo") != repo:
+                continue
+            number = int(match.group("number"))
+            if number not in seen:
+                seen.add(number)
+                issue_numbers.append(number)
+            if len(issue_numbers) >= limit:
+                break
+        if len(issue_numbers) >= limit:
+            break
+
+    return [github_issue_record(repo, number) for number in issue_numbers]
+
+
+def fetch_github_issue(repo: str, number: int) -> dict[str, Any]:
+    url = f"https://api.github.com/repos/{repo}/issues/{number}"
+    request = Request(url, headers={"Accept": "application/vnd.github+json", "User-Agent": "maintainers-copilot-rag-corpus-builder"})
+    try:
+        with urlopen(request, timeout=30) as response:
+            return json.load(response)
+    except HTTPError as exc:
+        raise RuntimeError(f"GitHub issue fetch failed for {repo}#{number}: HTTP {exc.code}") from exc
+    except URLError as exc:
+        raise RuntimeError(f"GitHub issue fetch failed for {repo}#{number}: {exc.reason}") from exc
 
 
 def write_jsonl(path: Path, records: list[dict[str, Any]]) -> None:
@@ -142,6 +235,18 @@ def main() -> None:
     args = parse_args()
     doc_records = iter_doc_records(args.docs_dir)
     issue_records = iter_issue_records(args.issues_path, args.issue_limit)
+    issue_source_path = args.issues_path.as_posix()
+    issue_source_note = "Held-out issue text only in the dev corpus; maintainer-answer comments are added in the full MinIO corpus."
+    if not issue_records:
+        issue_records = iter_dev_github_issue_records(args.dev_issues_path, limit=args.issue_limit)
+        issue_source_path = args.dev_issues_path.as_posix()
+        if issue_records:
+            issue_source_note = "Fetched public GitHub issue records from tracked issue IDs because the local JSONL issue dataset was absent."
+    if not issue_records:
+        issue_records = iter_golden_github_issue_records(args.golden_path, repo=args.github_repo, limit=args.issue_limit)
+        issue_source_path = args.golden_path.as_posix()
+        if issue_records:
+            issue_source_note = "Fetched public GitHub issue records referenced by the RAG golden set because no local/dev issue list was available."
     records = doc_records + issue_records
     if not records:
         raise RuntimeError("No RAG corpus records were found. Check docs dir and local issue data paths.")
@@ -162,9 +267,9 @@ def main() -> None:
             ),
             CorpusSource(
                 source_type="github_issue",
-                path=args.issues_path.as_posix(),
+                path=issue_source_path,
                 documents=len(issue_records),
-                note="Held-out issue text only in the dev corpus; maintainer-answer comments are added in the full MinIO corpus.",
+                note=issue_source_note,
             ),
         ],
     )

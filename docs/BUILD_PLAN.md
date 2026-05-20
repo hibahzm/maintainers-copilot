@@ -250,6 +250,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 **Current dev-corpus rule**
 - raw corpus/chunk/index files stay outside Git under ignored `data/rag/` folders
 - `data/rag/corpus_manifest.json` is tracked as small reproducibility evidence
+- `data/rag/dev_issue_sources.json` tracks only public issue IDs so Colab can rebuild the same dev corpus without committing raw issue text
 
 ### 3.2 Choose the embedding model with evidence
 

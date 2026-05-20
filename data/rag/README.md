@@ -10,6 +10,7 @@ The repository tracks only small manifests and documentation. Raw corpora, chunk
 data/rag/
   README.md                 tracked
   corpus_manifest.json       tracked, small evidence only
+  dev_issue_sources.json      tracked public issue IDs for reproducible dev-corpus rebuilds
   raw/                       ignored local raw corpus files
   chunks/                    ignored local chunk files; small chunk manifests tracked
   indexes/                   ignored local BM25/vector/rerank scratch files
@@ -49,13 +50,14 @@ Default outputs:
 
 ```text
 data/rag/raw/dev_corpus.jsonl
- data/rag/corpus_manifest.json
+data/rag/corpus_manifest.json
 ```
 
 The dev corpus currently uses:
 
 - local project Markdown docs from `docs/*.md`
 - held-out issue records from `data/test_200_balanced.jsonl` if that ignored file is present locally
+- otherwise, public GitHub issue records fetched from tracked IDs in `data/rag/dev_issue_sources.json`
 
 The full RAG corpus later needs resolved issues with maintainer answers/comments; this first dev corpus is only for building and testing the pipeline shape without requiring a large download.
 
@@ -122,7 +124,7 @@ python -m scripts.rag.evaluate_embedding_models \
   --golden-path evals/golden_rag.json \
   --output-path evals/rag_embedding_model_comparison_results.json \
   --embedding-models sentence-transformers/all-MiniLM-L6-v2 intfloat/e5-small-v2 \
-  --device cuda \
+  --device auto \
   --batch-size 64
 ```
 
@@ -132,7 +134,7 @@ Bring this file back into the repo after Colab finishes:
 evals/rag_embedding_model_comparison_results.json
 ```
 
-The comparison is dense-only cosine retrieval so the embedding choice is measured directly, not hidden by BM25. A lightweight helper notebook is available at `notebooks/rag_embedding_model_comparison_colab.ipynb`.
+The comparison is dense-only cosine retrieval so the embedding choice is measured directly, not hidden by BM25. If the corpus is missing any golden-set source IDs, the evaluator fails instead of writing misleading metrics. A lightweight helper notebook is available at `notebooks/rag_embedding_model_comparison_colab.ipynb`.
 
 ## BM25 + hybrid tuning
 

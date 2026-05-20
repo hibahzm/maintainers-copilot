@@ -69,6 +69,25 @@ def cosine(left: dict[int, float], right: dict[int, float]) -> float:
     return sum(value * right.get(index, 0.0) for index, value in left.items())
 
 
+def validate_golden_coverage(chunks: list[dict[str, Any]], golden: list[dict[str, Any]]) -> None:
+    available_source_ids = {chunk.get("source_id") for chunk in chunks}
+    missing = sorted(
+        {
+            source_id
+            for record in golden
+            for source_id in record.get("ground_truth_source_ids", [])
+            if source_id not in available_source_ids
+        }
+    )
+    if missing:
+        preview = ", ".join(missing[:8])
+        suffix = "" if len(missing) <= 8 else f" ... plus {len(missing) - 8} more"
+        raise RuntimeError(
+            "RAG golden-set sources are missing from the chunk corpus: "
+            f"{preview}{suffix}. Rebuild the corpus/chunks before evaluating."
+        )
+
+
 def passes_filter(chunk: dict[str, Any], metadata_filter: dict[str, Any] | None) -> bool:
     if not metadata_filter:
         return True
@@ -151,6 +170,7 @@ def evaluate(args: argparse.Namespace) -> dict[str, Any]:
     config = RetrievalConfig(top_k=args.top_k, vector_dimensions=args.dimensions, uses_metadata_filter=args.use_metadata_filter)
     chunks = load_jsonl(args.chunks_path)
     golden = load_json(args.golden_path)
+    validate_golden_coverage(chunks, golden)
     chunk_vectors = {chunk["chunk_id"]: embed(chunk.get("text", ""), args.dimensions) for chunk in chunks}
 
     rows = []
