@@ -109,6 +109,31 @@ data/rag/chunks/parent_child_chunks_manifest.json
 evals/rag_parent_child_dense_results.json
 ```
 
+
+## Embedding model comparison
+
+Compare at least two dense embedding candidates on the same parent-child chunks and RAG golden set:
+
+```bash
+pip install -q sentence-transformers
+
+python -m scripts.rag.evaluate_embedding_models \
+  --chunks-path data/rag/chunks/parent_child_chunks.jsonl \
+  --golden-path evals/golden_rag.json \
+  --output-path evals/rag_embedding_model_comparison_results.json \
+  --embedding-models sentence-transformers/all-MiniLM-L6-v2 intfloat/e5-small-v2 \
+  --device cuda \
+  --batch-size 64
+```
+
+Bring this file back into the repo after Colab finishes:
+
+```text
+evals/rag_embedding_model_comparison_results.json
+```
+
+The comparison is dense-only cosine retrieval so the embedding choice is measured directly, not hidden by BM25. A lightweight helper notebook is available at `notebooks/rag_embedding_model_comparison_colab.ipynb`.
+
 ## BM25 + hybrid tuning
 
 Evaluate sparse BM25, dense, and hybrid sparse+dense weights over the parent-child chunks:

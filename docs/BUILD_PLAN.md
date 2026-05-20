@@ -256,8 +256,8 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 This is for RAG/retrieval, not for the issue classifier. The classifier decision above does not force an embedding model.
 
 **Add / complete**
-- at least two embedding candidates
-- retrieval-quality comparison on the RAG golden set
+- at least two embedding candidates ⏳ eval script added for `all-MiniLM-L6-v2` vs `e5-small-v2`
+- retrieval-quality comparison on the RAG golden set ⏳ run in Colab and commit `evals/rag_embedding_model_comparison_results.json`
 - chosen model documented in `docs/DECISIONS.md`
 
 ### 3.3 Improve retrieval beyond the naive baseline

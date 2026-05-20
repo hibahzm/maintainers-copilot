@@ -2,6 +2,22 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG embedding comparison evaluator added
+
+### Added
+- `scripts/rag/evaluate_embedding_models.py`
+- `notebooks/rag_embedding_model_comparison_colab.ipynb`
+
+### Updated
+- `data/rag/README.md`
+- `docs/BUILD_PLAN.md`
+- `.gitignore`
+
+### Design notes
+- The evaluator compares dense embedding candidates directly on the RAG golden set using parent-child chunks.
+- It is kept as an experiment/Colab dependency so `sentence-transformers` does not bloat the local Docker images before the model choice is justified.
+- Default candidates are `sentence-transformers/all-MiniLM-L6-v2` and `intfloat/e5-small-v2`; the output file is `evals/rag_embedding_model_comparison_results.json`.
+
 ## 2026-05-20 — Cross-encoder RAG rerank results recorded
 
 ### Added

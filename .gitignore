@@ -46,3 +46,4 @@ evals/*_results.json
 !evals/rag_query_transform_results.json
 !evals/rag_query_transform_unfiltered_results.json
 !evals/rag_cross_encoder_rerank_results.json
+!evals/rag_embedding_model_comparison_results.json
