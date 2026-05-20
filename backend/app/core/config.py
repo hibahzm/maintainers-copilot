@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     vault_mount_point: str = "secret"
     vault_secret_path: str = "maintainers-copilot"
     model_server_url: str = "http://localhost:8001"
+    database_url: str = "postgresql://copilot:copilot-dev-only@localhost:5432/copilot"
     tracing_backend: str = "langfuse"
     tracing_host: str = "https://cloud.langfuse.com"
 

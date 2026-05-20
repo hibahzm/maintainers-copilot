@@ -2,6 +2,31 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Runtime RAG retrieval path added
+
+### Added
+- `model_server/routers/embedder.py`
+- `model_server/schemas/embedder.py`
+- `model_server/services/embedder.py`
+- `backend/app/domain/rag.py`
+- `backend/app/repositories/rag_repo.py`
+- `backend/tests/services/test_rag_service.py`
+- `model_server/tests/test_embedder_router.py`
+
+### Updated
+- `backend/app/api/rag.py`
+- `backend/app/api/schemas/rag.py`
+- `backend/app/services/rag_service.py`
+- `backend/app/api/dependencies.py`
+- `backend/app/core/config.py`
+- `model_server/main.py`
+- `docker-compose.yml`
+
+### Design notes
+- Model-server now exposes `/embed` for E5 query/passsage embeddings without adding `sentence-transformers`; it uses `transformers` + CPU Torch already present in the model-server image.
+- Backend `/rag/query` now embeds the user question through model-server, queries `rag_chunks` in pgvector, and returns citations plus retrieved chunks.
+- LLM answer generation is intentionally not mixed into this step; retrieval can be tested first, then answer synthesis/reranking can be layered on top.
+
 ## 2026-05-20 — RAG ingest uv index strategy fixed
 
 ### Updated

@@ -267,7 +267,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - naive fixed-size dense baseline ✅ recall@10 `0.8400`, MRR@10 `0.6083`
 - non-naive parent-child chunking ✅ recall@10 `0.9200`, MRR@10 `0.7633`
 - sparse retrieval such as BM25 ✅ BM25 overall recall@10 `1.0000`, MRR@10 `0.9733`
-- dense retrieval in pgvector ⏳ schema + indexing/query smoke scripts added; run migrations and index chunks next
+- dense retrieval in pgvector ⏳ schema, ingest scripts, model-server embedding endpoint, and backend `/rag/query` retrieval path added; run indexing and smoke tests next
 - tuned hybrid weighting ✅ best true hybrid dense `0.25` / sparse `0.75`, recall@10 `1.0000`, MRR@10 `0.9533`
 - cross-encoder reranking ✅ `cross-encoder/ms-marco-MiniLM-L-6-v2` over top-25 hybrid candidates, recall@10 `1.0000`, MRR@10 `0.9533`, nDCG@10 `0.9471`
 - one query transformation technique ✅ deterministic issue-query expansion preserves recall@10 `1.0000`, MRR@10 `0.9400`; optional/gated because untransformed hybrid ranks slightly better

@@ -166,6 +166,22 @@ python -m scripts.rag.query_pgvector \
 
 The indexing script writes `rag_sources` and `rag_chunks`; it does not commit raw chunk rows or embeddings to Git. Query-time embeddings use the E5 `query:` prefix, while stored chunk embeddings use the E5 `passage:` prefix.
 
+
+## Runtime query path
+
+The runtime query path is split across services:
+
+```text
+API /rag/query
+  -> model-server /embed with input_type=query
+  -> PostgreSQL/pgvector dense search over rag_chunks
+  -> citations + retrieved chunks returned to caller
+```
+
+The embedding model is configured with `RAG_EMBEDDING_MODEL` and defaults to `intfloat/e5-small-v2`. The first model-server query downloads the model if it is not already cached; later queries reuse the cache.
+
+LLM answer generation over retrieved chunks is intentionally the next layer. The current API returns grounded retrieval context first so pgvector can be tested independently.
+
 ## BM25 + hybrid tuning
 
 Evaluate sparse BM25, dense, and hybrid sparse+dense weights over the parent-child chunks:

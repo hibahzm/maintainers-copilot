@@ -1,16 +1,18 @@
 from fastapi import APIRouter
 
 from app.api.dependencies import RagServiceDep
-from app.api.schemas.common import FeatureStubResponse
-from app.api.schemas.rag import RagQueryRequest
+from app.api.schemas.rag import RagQueryRequest, RagQueryResponse
 
 router = APIRouter(prefix="/rag", tags=["rag"])
 
 
-@router.post("/query", response_model=FeatureStubResponse)
+@router.post("/query", response_model=RagQueryResponse)
 async def query_rag(
     payload: RagQueryRequest,
     service: RagServiceDep,
-) -> FeatureStubResponse:
-    _ = payload, service
-    return FeatureStubResponse(feature="rag query")
+) -> RagQueryResponse:
+    return await service.query(
+        question=payload.question,
+        top_k=payload.top_k,
+        source_type=payload.source_type,
+    )

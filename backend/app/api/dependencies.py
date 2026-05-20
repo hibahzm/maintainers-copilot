@@ -33,7 +33,10 @@ def get_memory_service() -> MemoryService:
 
 
 def get_rag_service() -> RagService:
-    return RagService()
+    return RagService(
+        model_server_url=settings.model_server_url,
+        database_url=settings.database_url,
+    )
 
 
 def get_widget_service() -> WidgetService:
