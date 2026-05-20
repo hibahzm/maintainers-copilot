@@ -7,6 +7,7 @@ from app.api.schemas.auth import UserResponse
 from app.core.config import Settings, settings
 from app.infra.exceptions import PermissionDenied
 from app.repositories.user_repo import UserRepository
+from app.repositories.widget_repo import WidgetRepository
 from app.services.auth_service import AuthService
 from app.services.chat_agent.openai_agent import OpenAIChatAgentService
 from app.services.chat_service import ChatService
@@ -131,7 +132,11 @@ def get_rag_service() -> RagService:
 
 
 def get_widget_service() -> WidgetService:
-    return WidgetService()
+    return WidgetService(repository=get_widget_repository())
+
+
+def get_widget_repository() -> WidgetRepository:
+    return WidgetRepository(database_url=settings.database_url)
 
 
 SettingsDep = Annotated[Settings, Depends(get_settings)]

@@ -341,7 +341,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - login ✅ register/login page stores bearer token in Streamlit session state
 - chat ✅ initial Streamlit chat page calls backend `/chat`
 - memory inspector ✅ lists authenticated user's long-term memories
-- widget config admin
+- widget config admin ✅ admin API and Streamlit config page added
 
 ### 4.5 Build the embeddable widget
 
@@ -358,7 +358,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 
 **Add / complete**
 - widget table fields: `widget_id`, `allowed_origins`, `theme`, `greeting`, `enabled_tools`
-- CORS allowlist from database config
+- CORS allowlist from database config ⏳ widget config stores allowed origins; enforcement still pending
 - `Content-Security-Policy` with `frame-ancestors`
 
 ### 4.7 Put both eval suites in CI

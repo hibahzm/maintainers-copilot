@@ -2,6 +2,26 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Widget config admin surface added
+
+### Added
+- `backend/tests/services/test_widget_service.py`
+
+### Updated
+- `backend/app/api/dependencies.py`
+- `backend/app/api/schemas/widget.py`
+- `backend/app/api/widget.py`
+- `backend/app/repositories/widget_repo.py`
+- `backend/app/services/widget_service.py`
+- `chatbot/pages/widget_config.py`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- Admin users can upsert and list widget configs through `/widget/admin/...` endpoints.
+- Public clients can read safe widget config through `/widget/config/{widget_id}`.
+- Widget config stores `widget_id`, `allowed_origins`, `theme`, `greeting`, and `enabled_tools`; enforcement of allowed origins is still a later security step.
+- Streamlit now has a real admin widget config form instead of a placeholder.
+
 ## 2026-05-20 — Streamlit memory inspector wired to API
 
 ### Updated
