@@ -2,6 +2,16 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Streamlit memory inspector wired to API
+
+### Updated
+- `chatbot/pages/memory_inspector.py`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- The Memory Inspector now calls `/memory` with the bearer token stored by the Login page.
+- It lists memories owned by the authenticated user and no longer uses a placeholder.
+
 ## 2026-05-20 — Streamlit auth page added
 
 ### Updated

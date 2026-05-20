@@ -340,7 +340,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 **Streamlit pages**
 - login ✅ register/login page stores bearer token in Streamlit session state
 - chat ✅ initial Streamlit chat page calls backend `/chat`
-- memory inspector
+- memory inspector ✅ lists authenticated user's long-term memories
 - widget config admin
 
 ### 4.5 Build the embeddable widget
