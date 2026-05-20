@@ -2,6 +2,25 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Chatbot NLP tool routing added
+
+### Added
+- `backend/app/services/maintainer_tools_service.py`
+
+### Updated
+- `backend/app/api/chat.py`
+- `backend/app/api/dependencies.py`
+- `backend/app/api/schemas/chat.py`
+- `backend/app/services/chat_service.py`
+- `backend/tests/services/test_chat_service.py`
+- `chatbot/pages/chat.py`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- `/chat` can now route explicit maintainer-tool requests to classifier, NER, and summarizer tools.
+- Classifier and NER are local model-server tools. Summarizer is guarded by `allow_summarizer=false` by default because it may call OpenAI.
+- General questions still fall back to the RAG tool, so Step 4 now has a real chatbot surface over Step 2 and Step 3.
+
 ## 2026-05-20 — Chatbot RAG orchestration started
 
 ### Added

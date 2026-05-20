@@ -313,9 +313,9 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 ### 4.2 Build the single tool-calling chatbot
 
 **Tools**
-- classify
-- NER
-- summarize
+- classify ✅ routed through `/chat` when the user asks to classify/label/triage an issue
+- NER ✅ routed through `/chat` when the user asks to extract entities
+- summarize ✅ routed through `/chat` only when the UI/API explicitly allows the LLM summarizer
 - RAG search ✅ initial `/chat` orchestration uses RAG and returns citations/tool metadata
 - explicit `write_memory`
 

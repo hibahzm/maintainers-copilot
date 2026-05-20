@@ -6,6 +6,7 @@ from app.core.config import Settings, settings
 from app.services.auth_service import AuthService
 from app.services.chat_service import ChatService
 from app.services.classifier_service import ClassifierService
+from app.services.maintainer_tools_service import MaintainerToolsService
 from app.services.memory_service import MemoryService
 from app.services.rag_service import RagService
 from app.services.widget_service import WidgetService
@@ -21,11 +22,18 @@ def get_auth_service() -> AuthService:
 
 
 def get_chat_service() -> ChatService:
-    return ChatService(rag_service=get_rag_service())
+    return ChatService(
+        rag_service=get_rag_service(),
+        tools_service=get_maintainer_tools_service(),
+    )
 
 
 def get_classifier_service() -> ClassifierService:
     return ClassifierService(model_server_url=settings.model_server_url)
+
+
+def get_maintainer_tools_service() -> MaintainerToolsService:
+    return MaintainerToolsService(model_server_url=settings.model_server_url)
 
 
 def get_memory_service() -> MemoryService:

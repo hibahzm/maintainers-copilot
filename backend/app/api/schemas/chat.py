@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import Field
 
 from app.api.schemas.common import APIModel
@@ -10,6 +12,14 @@ class ChatRequest(APIModel):
     messages: list[Message] = Field(min_length=1)
     use_rag: bool = True
     top_k: int = Field(default=5, ge=1, le=10)
+    allow_summarizer: bool = False
+    tools: list[Literal["auto", "rag", "classifier", "ner", "summarizer"]] = Field(
+        default_factory=lambda: ["auto"],
+        description=(
+            "Tool policy for this turn. 'auto' routes from the message; summarizer only runs "
+            "when allow_summarizer is true because it may call an LLM."
+        ),
+    )
 
 
 class ChatToolResult(APIModel):

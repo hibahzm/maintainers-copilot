@@ -1,6 +1,7 @@
 import pytest
 
 from app.api.schemas.rag import RagQueryResponse
+from app.api.schemas.classifier import ClassifyIssueResponse
 from app.domain.chat import Message
 from app.services.chat_service import ChatService
 
@@ -15,6 +16,24 @@ class FakeRagService:
             embedding_model="intfloat/e5-small-v2",
             answer_provider="retrieval-only",
         )
+
+
+class FakeToolsService:
+    async def classify_issue(self, *, title, body):
+        return ClassifyIssueResponse(
+            label="bug",
+            confidence=0.91,
+            scores={"bug": 0.91, "docs": 0.03, "feature": 0.04, "question": 0.02},
+            model_name="fake",
+        )
+
+    async def extract_entities(self, *, title, body, text=None):
+        return {
+            "entities": [],
+            "grouped": {"function": ["read_csv"]},
+            "extractor": "fake",
+            "tokenizer_backend": "regex",
+        }
 
 
 @pytest.mark.asyncio
@@ -32,6 +51,29 @@ async def test_chat_service_uses_rag_for_latest_user_message():
     assert response.message.content == "Grounded answer for: Which embedding model did we choose?"
     assert response.citations == ["project-doc:docs/DECISIONS.md"]
     assert response.tool_results[0].name == "rag.query"
+
+
+@pytest.mark.asyncio
+async def test_chat_service_routes_explicit_issue_tools_before_rag():
+    service = ChatService(rag_service=FakeRagService(), tools_service=FakeToolsService())
+
+    response = await service.respond(
+        conversation_id="conv-1",
+        messages=[
+            Message(
+                role="user",
+                content="Classify and extract entities:\nread_csv crashes on empty CSV",
+            )
+        ],
+        top_k=3,
+    )
+
+    assert "Classification" in response.message.content
+    assert "Extracted entities" in response.message.content
+    assert [tool.name for tool in response.tool_results] == [
+        "classifier.classify",
+        "ner.extract",
+    ]
 
 
 @pytest.mark.asyncio

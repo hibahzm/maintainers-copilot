@@ -16,4 +16,6 @@ async def create_chat_response(
         conversation_id=payload.conversation_id,
         use_rag=payload.use_rag,
         top_k=payload.top_k,
+        allow_summarizer=payload.allow_summarizer,
+        tools=payload.tools,
     )

@@ -8,6 +8,13 @@ API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000").rstrip("/")
 st.title("Chat")
 st.caption("Ask project or maintainer questions. The backend will use RAG when available.")
 
+use_rag = st.sidebar.checkbox("Use RAG retrieval", value=True)
+allow_summarizer = st.sidebar.checkbox(
+    "Allow LLM summarizer",
+    value=False,
+    help="Off by default because this can call OpenAI.",
+)
+
 if "conversation_id" not in st.session_state:
     st.session_state.conversation_id = None
 if "messages" not in st.session_state:
@@ -29,8 +36,10 @@ if prompt:
     payload = {
         "conversation_id": st.session_state.conversation_id,
         "messages": [{"role": item["role"], "content": item["content"]} for item in st.session_state.messages],
-        "use_rag": True,
+        "use_rag": use_rag,
         "top_k": 5,
+        "allow_summarizer": allow_summarizer,
+        "tools": ["auto"],
     }
 
     with st.chat_message("assistant"):
