@@ -270,7 +270,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - tuned hybrid weighting ✅ best true hybrid dense `0.25` / sparse `0.75`, recall@10 `1.0000`, MRR@10 `0.9533`
 - cross-encoder reranking
 - one query transformation technique
-- metadata filtering
+- metadata filtering ✅ reliable filters preserve best-hybrid recall@10 `1.0000`, MRR@10 `0.9533`
 
 **Done when**
 - every move beyond fixed-size dense retrieval is justified by a metric

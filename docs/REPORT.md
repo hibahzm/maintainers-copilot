@@ -2,6 +2,27 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG metadata filtering evaluated
+
+### Added
+- `evals/rag_hybrid_metadata_filter_results.json`
+
+### Updated
+- `evals/golden_rag.json`
+
+### Evidence
+- retrieval stack: parent-child chunks + BM25/hash-dense hybrid
+- metadata fields used: `source_type` and issue `label`
+- best true hybrid with filters: dense `0.25` / sparse `0.75`
+- filtered recall@10: `1.0000`
+- filtered MRR@10: `0.9533`
+- filtered nDCG@10: `0.9355`
+
+### Design notes
+- Metadata filtering is implemented and measured as an optional retrieval constraint.
+- Two issue golden-set filters were corrected to match the actual corpus label metadata rather than inferring labels from issue title prefixes.
+- On the current dev corpus, reliable metadata filters preserve the best unfiltered hybrid score. This means filtering is safe when metadata is reliable, but it should not be forced when the query does not carry trustworthy metadata.
+
 ## 2026-05-20 — BM25 and hybrid RAG tuning evaluated
 
 ### Added

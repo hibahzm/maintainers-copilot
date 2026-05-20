@@ -1,202 +1,326 @@
 [
   {
+    "ground_truth_source_ids": [
+      "project-doc:docs/ARCH.md"
+    ],
     "id": "rag-golden-001",
-    "question": "What services are part of the full Maintainers Copilot compose stack?",
     "ideal_answer": "The compose stack includes the backend API, chatbot, widget, demo host, model-server, migration job, PostgreSQL/pgvector, Redis, MinIO, and Vault.",
-    "ground_truth_source_ids": ["project-doc:docs/ARCH.md"],
-    "metadata_filter": {"source_type": "project_doc"},
-    "judge_sample": true
+    "judge_sample": true,
+    "metadata_filter": {
+      "source_type": "project_doc"
+    },
+    "question": "What services are part of the full Maintainers Copilot compose stack?"
   },
   {
+    "ground_truth_source_ids": [
+      "project-doc:docs/SECURITY.md",
+      "project-doc:docs/RUNBOOK.md"
+    ],
     "id": "rag-golden-002",
-    "question": "Where should production runtime secrets live in this project?",
     "ideal_answer": "Production runtime secrets should live in Vault, not in .env files, notebooks, committed docs, manifests, or logs.",
-    "ground_truth_source_ids": ["project-doc:docs/SECURITY.md", "project-doc:docs/RUNBOOK.md"],
-    "metadata_filter": {"source_type": "project_doc"},
-    "judge_sample": true
+    "judge_sample": true,
+    "metadata_filter": {
+      "source_type": "project_doc"
+    },
+    "question": "Where should production runtime secrets live in this project?"
   },
   {
+    "ground_truth_source_ids": [
+      "project-doc:docs/DECISIONS.md",
+      "project-doc:docs/REPORT.md"
+    ],
     "id": "rag-golden-003",
-    "question": "What model was selected for issue classification and why?",
     "ideal_answer": "The selected classifier is the DistilBERT run first-distilbert-freeze4 because it tied the OpenAI baseline closely while avoiding per-call API cost, rate limits, and production secret handling for classification.",
-    "ground_truth_source_ids": ["project-doc:docs/DECISIONS.md", "project-doc:docs/REPORT.md"],
-    "metadata_filter": {"source_type": "project_doc"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "source_type": "project_doc"
+    },
+    "question": "What model was selected for issue classification and why?"
   },
   {
+    "ground_truth_source_ids": [
+      "project-doc:docs/DATASET_STRATEGY.md",
+      "project-doc:docs/SECURITY.md",
+      "project-doc:docs/REPORT.md"
+    ],
     "id": "rag-golden-004",
-    "question": "What is the rule for keeping row-level JSONL dataset files in Git?",
     "ideal_answer": "Row-level JSONL dataset files should not be tracked in Git because issue bodies can contain user-pasted secrets or secret-like examples; keep them in Drive, MinIO, or ignored local files.",
-    "ground_truth_source_ids": ["project-doc:docs/DATASET_STRATEGY.md", "project-doc:docs/SECURITY.md", "project-doc:docs/REPORT.md"],
-    "metadata_filter": {"source_type": "project_doc"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "source_type": "project_doc"
+    },
+    "question": "What is the rule for keeping row-level JSONL dataset files in Git?"
   },
   {
+    "ground_truth_source_ids": [
+      "project-doc:docs/BUILD_PLAN.md"
+    ],
     "id": "rag-golden-005",
-    "question": "What must Step 3 advanced RAG prove beyond the naive baseline?",
     "ideal_answer": "It must beat naive fixed-size dense retrieval and justify non-naive chunking, hybrid sparse+dense retrieval, tuned weighting, cross-encoder reranking, query transformation, and metadata filtering with metrics on the golden set.",
-    "ground_truth_source_ids": ["project-doc:docs/BUILD_PLAN.md"],
-    "metadata_filter": {"source_type": "project_doc"},
-    "judge_sample": true
+    "judge_sample": true,
+    "metadata_filter": {
+      "source_type": "project_doc"
+    },
+    "question": "What must Step 3 advanced RAG prove beyond the naive baseline?"
   },
   {
+    "ground_truth_source_ids": [
+      "project-doc:docs/COLAB_TRAINING.md",
+      "project-doc:docs/RUNBOOK.md",
+      "project-doc:docs/REPORT.md"
+    ],
     "id": "rag-golden-006",
-    "question": "What should happen to large model artifacts before MinIO is wired?",
     "ideal_answer": "Large model artifacts should stay outside Git, temporarily in Drive or ignored local artifacts, with only small manifests, hashes, reports, and metrics committed.",
-    "ground_truth_source_ids": ["project-doc:docs/COLAB_TRAINING.md", "project-doc:docs/RUNBOOK.md", "project-doc:docs/REPORT.md"],
-    "metadata_filter": {"source_type": "project_doc"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "source_type": "project_doc"
+    },
+    "question": "What should happen to large model artifacts before MinIO is wired?"
   },
   {
+    "ground_truth_source_ids": [
+      "project-doc:docs/REPORT.md"
+    ],
     "id": "rag-golden-007",
-    "question": "What is the classifier model artifact SHA recorded for the selected DistilBERT model?",
     "ideal_answer": "The selected DistilBERT model directory SHA-256 is 45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a.",
-    "ground_truth_source_ids": ["project-doc:docs/REPORT.md"],
-    "metadata_filter": {"source_type": "project_doc"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "source_type": "project_doc"
+    },
+    "question": "What is the classifier model artifact SHA recorded for the selected DistilBERT model?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#53560"
+    ],
     "id": "rag-golden-008",
-    "question": "Which issue asks about converting a string[pyarrow] column to boolean?",
     "ideal_answer": "Issue pandas-dev/pandas#53560 asks about the canonical way to convert a string[pyarrow] column to boolean within a pandas DataFrame.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#53560"],
-    "metadata_filter": {"source_type": "github_issue", "label": "question"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "question",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue asks about converting a string[pyarrow] column to boolean?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#53733"
+    ],
     "id": "rag-golden-009",
-    "question": "Which issue reports MultiIndex.levels returning extra values after filtering rows?",
     "ideal_answer": "Issue pandas-dev/pandas#53733 reports that MultiIndex.levels returns extra values after filtering rows.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#53733"],
-    "metadata_filter": {"source_type": "github_issue", "label": "bug"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "bug",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue reports MultiIndex.levels returning extra values after filtering rows?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#53665"
+    ],
     "id": "rag-golden-010",
-    "question": "Which issue asks for Python 3.12 support?",
     "ideal_answer": "Issue pandas-dev/pandas#53665 is the enhancement request for Python 3.12 support.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#53665"],
-    "metadata_filter": {"source_type": "github_issue", "label": "feature"},
-    "judge_sample": true
+    "judge_sample": true,
+    "metadata_filter": {
+      "label": "feature",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue asks for Python 3.12 support?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#53763"
+    ],
     "id": "rag-golden-011",
-    "question": "Which issue discusses discrepancies in the read_csv docstring?",
     "ideal_answer": "Issue pandas-dev/pandas#53763 discusses discrepancies in the read_csv docstring between the docstring guide and type hints.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#53763"],
-    "metadata_filter": {"source_type": "github_issue", "label": "docs"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "docs",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue discusses discrepancies in the read_csv docstring?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#53900"
+    ],
     "id": "rag-golden-012",
-    "question": "Which issue proposes adding an inplace parameter to DataFrame.melt?",
     "ideal_answer": "Issue pandas-dev/pandas#53900 proposes adding an optional inplace parameter to DataFrame.melt().",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#53900"],
-    "metadata_filter": {"source_type": "github_issue", "label": "feature"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "feature",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue proposes adding an inplace parameter to DataFrame.melt?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#54022"
+    ],
     "id": "rag-golden-013",
-    "question": "Which issue asks for documentation improvements around SettingWithCopyWarning?",
     "ideal_answer": "Issue pandas-dev/pandas#54022 asks to improve the SettingWithCopyWarning documentation.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#54022"],
-    "metadata_filter": {"source_type": "github_issue", "label": "docs"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "docs",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue asks for documentation improvements around SettingWithCopyWarning?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#54033"
+    ],
     "id": "rag-golden-014",
-    "question": "Which issue requests a series.is_constant feature?",
     "ideal_answer": "Issue pandas-dev/pandas#54033 requests a series.is_constant enhancement.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#54033"],
-    "metadata_filter": {"source_type": "github_issue", "label": "feature"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "feature",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue requests a series.is_constant feature?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#54069"
+    ],
     "id": "rag-golden-015",
-    "question": "Which issue reports an error when using Series.pow with fill_value?",
     "ideal_answer": "Issue pandas-dev/pandas#54069 reports an error when using Series.pow with fill_value.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#54069"],
-    "metadata_filter": {"source_type": "github_issue", "label": "bug"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "bug",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue reports an error when using Series.pow with fill_value?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#54212"
+    ],
     "id": "rag-golden-016",
-    "question": "Which issue is about a local doc build failing because of an rstjinja problem?",
     "ideal_answer": "Issue pandas-dev/pandas#54212 is about the local docs build failing due to an rstjinja issue with a notebook conversion path.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#54212"],
-    "metadata_filter": {"source_type": "github_issue", "label": "bug"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "bug",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue is about a local doc build failing because of an rstjinja problem?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#54284"
+    ],
     "id": "rag-golden-017",
-    "question": "Which issue asks whether xls supports style?",
     "ideal_answer": "Issue pandas-dev/pandas#54284 asks whether XLS supports style.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#54284"],
-    "metadata_filter": {"source_type": "github_issue", "label": "question"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "question",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue asks whether xls supports style?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#54627"
+    ],
     "id": "rag-golden-018",
-    "question": "Which issue says groupby.var does not return Arrow types with Arrow-backed input?",
     "ideal_answer": "Issue pandas-dev/pandas#54627 reports that groupby.var() does not return Arrow types with an Arrow-backed Series as input.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#54627"],
-    "metadata_filter": {"source_type": "github_issue", "label": "bug"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "bug",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue says groupby.var does not return Arrow types with Arrow-backed input?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#54748"
+    ],
     "id": "rag-golden-019",
-    "question": "Which issue proposes replacing oldest-supported-numpy with numpy 1.25.x?",
     "ideal_answer": "Issue pandas-dev/pandas#54748 proposes replacing oldest-supported-numpy with numpy 1.25.x because NumPy guarantees ABI/API compatibility since that line.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#54748"],
-    "metadata_filter": {"source_type": "github_issue", "label": "feature"},
-    "judge_sample": true
+    "judge_sample": true,
+    "metadata_filter": {
+      "label": "feature",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue proposes replacing oldest-supported-numpy with numpy 1.25.x?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#54981"
+    ],
     "id": "rag-golden-020",
-    "question": "Which issue says FutureWarning on pct_change suggests a solution that does not always work?",
     "ideal_answer": "Issue pandas-dev/pandas#54981 reports that the pct_change() FutureWarning suggests a solution that does not always work.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#54981"],
-    "metadata_filter": {"source_type": "github_issue", "label": "bug"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "bug",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue says FutureWarning on pct_change suggests a solution that does not always work?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#55060"
+    ],
     "id": "rag-golden-021",
-    "question": "Which issue requests column nicknames or shorthands?",
     "ideal_answer": "Issue pandas-dev/pandas#55060 requests column nicknames or shorthand names.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#55060"],
-    "metadata_filter": {"source_type": "github_issue", "label": "feature"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "question",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue requests column nicknames or shorthands?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#55069"
+    ],
     "id": "rag-golden-022",
-    "question": "Which issue reports that pandas integer extension dtypes have no byteorder attribute?",
     "ideal_answer": "Issue pandas-dev/pandas#55069 reports that pandas int extension dtypes have no byteorder attribute.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#55069"],
-    "metadata_filter": {"source_type": "github_issue", "label": "bug"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "bug",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue reports that pandas integer extension dtypes have no byteorder attribute?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#55121"
+    ],
     "id": "rag-golden-023",
-    "question": "Which issue asks to add a name parameter to value_counts?",
     "ideal_answer": "Issue pandas-dev/pandas#55121 asks to add a name parameter to value_counts().",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#55121"],
-    "metadata_filter": {"source_type": "github_issue", "label": "feature"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "feature",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue asks to add a name parameter to value_counts?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#55181"
+    ],
     "id": "rag-golden-024",
-    "question": "Which issue reports that DataFrame.mode fails on sparse integer DataFrames?",
     "ideal_answer": "Issue pandas-dev/pandas#55181 reports that DataFrame.mode() fails on sparse integer DataFrames.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#55181"],
-    "metadata_filter": {"source_type": "github_issue", "label": "bug"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "bug",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue reports that DataFrame.mode fails on sparse integer DataFrames?"
   },
   {
+    "ground_truth_source_ids": [
+      "github-issue:pandas-dev/pandas#55452"
+    ],
     "id": "rag-golden-025",
-    "question": "Which issue says hash_pandas_object(obj).sum changed value with pandas 2.1.0?",
     "ideal_answer": "Issue pandas-dev/pandas#55452 reports that hash_pandas_object(obj).sum() changed value with pandas 2.1.0.",
-    "ground_truth_source_ids": ["github-issue:pandas-dev/pandas#55452"],
-    "metadata_filter": {"source_type": "github_issue", "label": "bug"},
-    "judge_sample": false
+    "judge_sample": false,
+    "metadata_filter": {
+      "label": "question",
+      "source_type": "github_issue"
+    },
+    "question": "Which issue says hash_pandas_object(obj).sum changed value with pandas 2.1.0?"
   }
 ]

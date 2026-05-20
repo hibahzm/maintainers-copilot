@@ -42,3 +42,4 @@ evals/*_results.json
 !evals/rag_naive_dense_baseline_results.json
 !evals/rag_parent_child_dense_results.json
 !evals/rag_hybrid_tuning_results.json
+!evals/rag_hybrid_metadata_filter_results.json

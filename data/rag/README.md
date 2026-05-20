@@ -124,3 +124,21 @@ evals/rag_hybrid_tuning_results.json
 ```
 
 The tuning output records both `best_overall` and `best_hybrid`. On the current dev corpus, pure BM25 is strongest overall, while the best true hybrid uses dense weight `0.25` and sparse weight `0.75`.
+
+## Metadata filtering
+
+Evaluate the same hybrid grid with golden-set metadata filters enabled:
+
+```bash
+python -m scripts.rag.evaluate_hybrid_retrieval \
+  --use-metadata-filter \
+  --output-path evals/rag_hybrid_metadata_filter_results.json
+```
+
+Tracked evidence:
+
+```text
+evals/rag_hybrid_metadata_filter_results.json
+```
+
+On the current dev corpus, reliable metadata filters are neutral versus the unfiltered tuned hybrid: they preserve recall@10 `1.0000` and MRR@10 `0.9533` for the best true hybrid.
