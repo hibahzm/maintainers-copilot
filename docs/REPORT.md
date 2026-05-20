@@ -2,6 +2,16 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG ingest pins CPU Torch
+
+### Updated
+- `scripts/rag/ingest_pgvector.sh`
+- `data/rag/README.md`
+
+### Design notes
+- The ingest wrapper now pins `torch==2.5.1+cpu` from the PyTorch CPU wheel index.
+- This prevents `uv` from resolving CUDA/NVIDIA packages during local pgvector ingestion.
+
 ## 2026-05-20 — RAG pgvector ingest wrapper added
 
 ### Added

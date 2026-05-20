@@ -148,7 +148,7 @@ After the database migration runs, index the generated parent-child chunks into 
 scripts/rag/ingest_pgvector.sh
 ```
 
-The ingest wrapper uses `uv`, CPU-only PyTorch wheels, `sentence-transformers`, and `asyncpg` without adding those heavy packages to the committed service dependencies. Override defaults with environment variables if needed:
+The ingest wrapper uses `uv`, pins CPU-only `torch==2.5.1+cpu`, and installs `sentence-transformers` plus `asyncpg` without adding those heavy packages to the committed service dependencies. Override defaults with environment variables if needed:
 
 ```bash
 DEVICE=cpu BATCH_SIZE=32 DATABASE_URL=postgresql://copilot:copilot-dev-only@localhost:5432/copilot \

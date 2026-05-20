@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Ingest generated RAG chunks into PostgreSQL/pgvector using the selected local
-# embedding model. Defaults are safe for local development and avoid CUDA wheels.
+# embedding model. Defaults are safe for local development and pin CPU Torch.
 
 CHUNKS_PATH="${CHUNKS_PATH:-data/rag/chunks/parent_child_chunks.jsonl}"
 DATABASE_URL="${DATABASE_URL:-postgresql://copilot:copilot-dev-only@localhost:5432/copilot}"
@@ -20,7 +20,7 @@ fi
 uv run \
   --index-url https://download.pytorch.org/whl/cpu \
   --extra-index-url https://pypi.org/simple \
-  --with torch \
+  --with "torch==2.5.1+cpu" \
   --with sentence-transformers \
   --with asyncpg \
   python -m scripts.rag.ingest_pgvector \
