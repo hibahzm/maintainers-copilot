@@ -164,3 +164,27 @@ evals/rag_query_transform_unfiltered_results.json
 
 The transform expands maintainer-shaped queries with issue numbers, code symbols, project-service terms, and common pandas API terms. On the current dev corpus, it changes 17 of 25 golden queries and preserves recall@10 `1.0000`, but its MRR@10 `0.9400` is slightly below the untransformed best hybrid MRR@10 `0.9533`. Treat this as an optional/gated query rewrite, not the default path.
 
+## Cross-encoder reranking
+
+The cross-encoder is an experiment dependency, not a model-server dependency. Run it in Colab or another experiment runtime after the parent-child chunks exist:
+
+```bash
+pip install -q torch transformers
+
+python -m scripts.rag.evaluate_cross_encoder_rerank \
+  --chunks-path data/rag/chunks/parent_child_chunks.jsonl \
+  --golden-path evals/golden_rag.json \
+  --output-path evals/rag_cross_encoder_rerank_results.json \
+  --reranker-model cross-encoder/ms-marco-MiniLM-L-6-v2 \
+  --candidate-k 25 \
+  --top-k 10
+```
+
+Bring this file back into the repo after Colab finishes:
+
+```text
+evals/rag_cross_encoder_rerank_results.json
+```
+
+The script reranks the top 25 candidates from the tuned hybrid retriever using a true query-document cross-encoder, then reports the same recall@k, MRR@10, and nDCG@10 metrics as the earlier retrieval experiments.
+

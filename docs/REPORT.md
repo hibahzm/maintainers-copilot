@@ -2,6 +2,21 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Cross-encoder RAG rerank evaluator added
+
+### Added
+- `scripts/rag/evaluate_cross_encoder_rerank.py`
+
+### Updated
+- `data/rag/README.md`
+- `docs/BUILD_PLAN.md`
+- `.gitignore`
+
+### Design notes
+- Cross-encoder reranking is kept in the experiment path, not the Docker model-server dependency set, because it downloads a separate transformer reranker.
+- The evaluator reranks the top 25 candidates from the tuned hybrid retriever and writes `evals/rag_cross_encoder_rerank_results.json`.
+- This step is ready for Colab execution; the metric evidence becomes complete once the small JSON result file is brought back into the repo.
+
 ## 2026-05-20 — RAG query transformation evaluated
 
 ### Added
