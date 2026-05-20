@@ -10,8 +10,8 @@ class FakeRepository:
     def __init__(self):
         self.calls = []
 
-    async def search_dense(self, *, query_embedding, embedding_model, top_k, source_type=None):
-        self.calls.append((query_embedding, embedding_model, top_k, source_type))
+    async def search_hybrid(self, *, query_text, query_embedding, embedding_model, top_k, source_type=None):
+        self.calls.append((query_text, query_embedding, embedding_model, top_k, source_type))
         return [
             RetrievedChunk(
                 chunk_id="chunk-1",
@@ -21,6 +21,8 @@ class FakeRepository:
                 text="Use intfloat/e5-small-v2 as the first dense embedding model for RAG.",
                 source_type="project_doc",
                 score=0.99,
+                dense_score=0.88,
+                sparse_score=0.77,
                 metadata={"path": "docs/DECISIONS.md"},
             )
         ]
@@ -62,9 +64,12 @@ async def test_rag_service_embeds_query_and_searches_pgvector(monkeypatch):
 
     result = await service.query(question="Which embedding model?", top_k=3, source_type="project_doc")
 
-    assert repository.calls == [([0.1, 0.2, 0.3], "intfloat/e5-small-v2", 3, "project_doc")]
+    assert repository.calls == [("Which embedding model?", [0.1, 0.2, 0.3], "intfloat/e5-small-v2", 3, "project_doc")]
     assert result.embedding_model == "intfloat/e5-small-v2"
     assert result.citations == ["project-doc:docs/DECISIONS.md"]
+    assert result.retrieval_mode == "pgvector_hybrid_dense_sparse_e5"
+    assert result.chunks[0].dense_score == 0.88
+    assert result.chunks[0].sparse_score == 0.77
     assert result.chunks[0].text_preview.startswith("Use intfloat/e5-small-v2")
 
 

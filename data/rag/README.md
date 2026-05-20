@@ -174,11 +174,12 @@ The runtime query path is split across services:
 ```text
 API /rag/query
   -> model-server /embed with input_type=query
-  -> PostgreSQL/pgvector dense search over rag_chunks
+  -> PostgreSQL/pgvector dense search + PostgreSQL sparse text search over rag_chunks
+  -> hybrid merge with tuned dense `0.25` / sparse `0.75` weighting
   -> citations + retrieved chunks returned to caller
 ```
 
-The embedding model is configured with `RAG_EMBEDDING_MODEL` and defaults to `intfloat/e5-small-v2`. The first model-server query downloads the model if it is not already cached; later queries reuse the cache.
+The embedding model is configured with `RAG_EMBEDDING_MODEL` and defaults to `intfloat/e5-small-v2`. Sparse search uses the generated `rag_chunks.search_vector` column from migration `20260520_0003`. The first model-server query downloads the model if it is not already cached; later queries reuse the cache.
 
 LLM answer generation over retrieved chunks is intentionally the next layer. The current API returns grounded retrieval context first so pgvector can be tested independently.
 

@@ -30,18 +30,19 @@ async def query(args: argparse.Namespace) -> list[dict[str, Any]]:
 
     embedder = E5Embedder(args.embedding_model, device=args.device, batch_size=1)
     vector = embedder.encode([args.question], kind="query")[0]
-    where = "embedding IS NOT NULL AND embedding_model = $2"
+    where = "c.embedding IS NOT NULL AND c.embedding_model = $2"
     params: list[Any] = [vector_literal(vector), args.embedding_model, args.top_k]
     if args.source_type:
-        where += " AND source_type = $4"
+        where += " AND s.source_type = $4"
         params.append(args.source_type)
 
     sql = f"""
-        SELECT id, source_id, title, parent_title, text, source_type, metadata,
-               1 - (embedding <=> $1::vector) AS score
-        FROM rag_chunks
+        SELECT c.id, c.source_id, c.title, c.parent_title, c.text, s.source_type, c.metadata,
+               1 - (c.embedding <=> $1::vector) AS score
+        FROM rag_chunks c
+        JOIN rag_sources s ON s.id = c.source_id
         WHERE {where}
-        ORDER BY embedding <=> $1::vector
+        ORDER BY c.embedding <=> $1::vector
         LIMIT $3
     """
 

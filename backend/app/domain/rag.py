@@ -13,4 +13,6 @@ class RetrievedChunk:
     text: str
     source_type: str
     score: float
+    dense_score: float = 0.0
+    sparse_score: float = 0.0
     metadata: dict[str, Any] = field(default_factory=dict)

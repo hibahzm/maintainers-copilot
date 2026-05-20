@@ -18,6 +18,8 @@ class RagRetrievedChunk(APIModel):
     parent_title: str | None = None
     source_type: str
     score: float
+    dense_score: float = 0.0
+    sparse_score: float = 0.0
     text_preview: str
     metadata: dict = Field(default_factory=dict)
 

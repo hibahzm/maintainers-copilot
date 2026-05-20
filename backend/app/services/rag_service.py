@@ -40,7 +40,8 @@ class RagService:
         embedding_payload = await self._embed_query(question)
         embedding = embedding_payload["embedding"]
         embedding_model = embedding_payload["model_name"]
-        chunks = await self.repository.search_dense(
+        chunks = await self.repository.search_hybrid(
+            query_text=question,
             query_embedding=embedding,
             embedding_model=embedding_model,
             top_k=top_k,
@@ -51,7 +52,7 @@ class RagService:
             answer=self._retrieval_answer(chunks),
             citations=citations,
             chunks=[self._chunk_schema(chunk) for chunk in chunks],
-            retrieval_mode="pgvector_dense_e5",
+            retrieval_mode="pgvector_hybrid_dense_sparse_e5",
             embedding_model=embedding_model,
         )
 
@@ -92,6 +93,8 @@ class RagService:
             parent_title=chunk.parent_title,
             source_type=chunk.source_type,
             score=chunk.score,
+            dense_score=chunk.dense_score,
+            sparse_score=chunk.sparse_score,
             text_preview=chunk.text[:500],
             metadata=chunk.metadata,
         )

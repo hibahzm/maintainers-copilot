@@ -2,6 +2,27 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Runtime RAG hybrid retrieval added
+
+### Added
+- `migrations/versions/20260520_0003_rag_sparse_search.py`
+- `backend/tests/repositories/test_rag_repo.py`
+
+### Updated
+- `backend/app/repositories/rag_repo.py`
+- `backend/app/services/rag_service.py`
+- `backend/app/api/schemas/rag.py`
+- `backend/app/domain/rag.py`
+- `backend/tests/services/test_rag_service.py`
+- `data/rag/README.md`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- Runtime `/rag/query` now uses hybrid retrieval, not dense-only retrieval.
+- Dense candidates come from pgvector cosine search over `rag_chunks.embedding`.
+- Sparse candidates come from PostgreSQL full-text search over generated `rag_chunks.search_vector`.
+- Results are merged with the measured dense `0.25` / sparse `0.75` weighting and expose both dense and sparse raw scores for debugging.
+
 ## 2026-05-20 — Runtime RAG retrieval path added
 
 ### Added
