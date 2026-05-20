@@ -137,6 +137,8 @@ evals/rag_embedding_model_comparison_results.json
 
 The comparison is dense-only cosine retrieval with metadata filters disabled so the embedding choice is measured directly, not hidden by BM25 or label filters. If the corpus is missing any golden-set source IDs, the evaluator fails instead of writing misleading metrics. A lightweight helper notebook is available at `notebooks/rag_embedding_model_comparison_colab.ipynb`.
 
+Committed result: `intfloat/e5-small-v2` is the selected first RAG embedding model with recall@10 `1.0000`, MRR@10 `1.0000`, and nDCG@10 `0.9636`, beating `all-MiniLM-L6-v2` on ranking quality.
+
 ## BM25 + hybrid tuning
 
 Evaluate sparse BM25, dense, and hybrid sparse+dense weights over the parent-child chunks:

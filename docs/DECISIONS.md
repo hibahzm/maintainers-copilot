@@ -26,6 +26,20 @@ Every durable architectural decision should eventually be backed by a measurable
 | D-020 | Use OpenAI `gpt-4o-mini` as the LLM classifier baseline | accepted for comparison | 200-row macro-F1 `0.8671`; estimated run cost `$0.0179`; 95,571 total tokens |
 | D-021 | Use a deterministic 200-row balanced comparison subset for the three-way classifier comparison | accepted | 50 examples per class; SHA-256 `a14faed71a97718cd421fbd84f2ed4d584c3b13f275971fd2b1945429be88f2a` |
 | D-022 | Deploy DistilBERT as the project issue classifier | accepted | chosen over OpenAI because macro-F1 is effectively tied while avoiding per-call cost and external API dependency |
+| D-023 | Use `intfloat/e5-small-v2` as the first RAG dense embedding model | accepted | dense-only golden-set recall@10 `1.0000`, MRR@10 `1.0000`, nDCG@10 `0.9636`; beats `all-MiniLM-L6-v2` MRR@10 `0.9267` |
+
+## RAG embedding model choice
+
+Use `intfloat/e5-small-v2` as the first dense embedding model for RAG.
+
+The embedding comparison was run on the 25-question RAG golden set using parent-child chunks and dense-only cosine retrieval with metadata filters disabled. This isolates embedding quality rather than letting BM25 or label filters dominate the result.
+
+| Embedding model | Recall@10 | MRR@10 | nDCG@10 |
+| --- | ---: | ---: | ---: |
+| `intfloat/e5-small-v2` | `1.0000` | `1.0000` | `0.9636` |
+| `sentence-transformers/all-MiniLM-L6-v2` | `1.0000` | `0.9267` | `0.9332` |
+
+`e5-small-v2` is the better initial choice because it retrieves the relevant source at rank 1 for every golden question while staying small enough for the project stack. This decision is for RAG retrieval, not for the issue classifier.
 
 ## Classifier target vocabulary
 

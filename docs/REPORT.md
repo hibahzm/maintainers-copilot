@@ -2,6 +2,29 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — RAG embedding model selected
+
+### Added
+- `evals/rag_embedding_model_comparison_results.json`
+
+### Updated
+- `docs/DECISIONS.md`
+- `docs/BUILD_PLAN.md`
+- `data/rag/README.md`
+
+### Evidence
+- compared models: `sentence-transformers/all-MiniLM-L6-v2`, `intfloat/e5-small-v2`
+- evaluation mode: dense-only cosine retrieval, metadata filters disabled
+- golden examples: `25`
+- selected model: `intfloat/e5-small-v2`
+- selected recall@10: `1.0000`
+- selected MRR@10: `1.0000`
+- selected nDCG@10: `0.9636`
+
+### Design notes
+- `e5-small-v2` beats `all-MiniLM-L6-v2` on ranking quality while both reach recall@10 `1.0000`.
+- This closes the embedding-choice requirement for the dev RAG stack; pgvector wiring can now use the selected embedding dimension/model.
+
 ## 2026-05-20 — Embedding eval metadata filter disabled
 
 ### Updated
