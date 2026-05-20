@@ -2,6 +2,19 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Model-server Docker dependency install hardened
+
+### Updated
+- `model_server/Dockerfile`
+- `model_server/pyproject.toml`
+- `model_server/services/ner.py`
+
+### Design notes
+- Removed `spacy` from runtime dependencies because the implemented NER tool is deterministic regex/rules and does not need spaCy.
+- This avoids pulling spaCy's dependency chain during Docker builds, including the `wasabi` wheel that timed out in WSL.
+- Added Docker BuildKit cache mounts for pip and uv so repeated dependency installs can reuse downloaded wheels after rebuilds/retries.
+- Increased `UV_HTTP_TIMEOUT` to make slow package downloads less brittle.
+
 ## 2026-05-19 — Model-server Docker build avoids GHCR uv image
 
 ### Updated

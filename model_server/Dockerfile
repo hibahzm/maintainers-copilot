@@ -4,12 +4,16 @@ WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
+    UV_HTTP_TIMEOUT=120 \
+    UV_LINK_MODE=copy \
     PATH="/app/.venv/bin:$PATH"
 
-RUN pip install --no-cache-dir uv==0.11.11
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install uv==0.11.11
 
 COPY model_server/pyproject.toml ./pyproject.toml
-RUN uv sync --no-dev --no-install-project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --no-dev --no-install-project
 
 COPY model_server ./model_server
 

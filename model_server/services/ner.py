@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from functools import lru_cache
 
 from model_server.schemas.ner import CodeEntity, NERRequest, NERResponse
 
@@ -86,16 +85,9 @@ class _Candidate:
     end: int
 
 
-@lru_cache(maxsize=1)
 def tokenizer_backend() -> str:
-    """Initialize spaCy when available, but keep extraction deterministic/rule-based."""
-    try:
-        import spacy
-
-        spacy.blank("en")
-        return "spacy.blank(en)+regex"
-    except Exception:  # pragma: no cover - only depends on runtime image deps
-        return "regex"
+    """Report the deterministic extraction backend."""
+    return "regex"
 
 
 def compose_ner_text(payload: NERRequest) -> str:
