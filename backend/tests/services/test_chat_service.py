@@ -77,10 +77,28 @@ async def test_chat_service_routes_explicit_issue_tools_before_rag():
 
 
 @pytest.mark.asyncio
+async def test_chat_service_blocks_memory_write_without_explicit_permission():
+    service = ChatService(rag_service=FakeRagService())
+
+    response = await service.respond(
+        conversation_id="conv-1",
+        messages=[Message(role="user", content="Remember that I prefer concise answers")],
+        tools=["write_memory"],
+    )
+
+    assert "Memory was not saved" in response.message.content
+    assert response.tool_results[0].name == "memory.write"
+    assert response.tool_results[0].status == "blocked"
+
+
+@pytest.mark.asyncio
 async def test_chat_service_handles_missing_user_message():
     service = ChatService(rag_service=FakeRagService())
 
-    response = await service.respond(conversation_id=None, messages=[Message(role="assistant", content="hi")])
+    response = await service.respond(
+        conversation_id=None,
+        messages=[Message(role="assistant", content="hi")],
+    )
 
     assert response.message.content.startswith("Send me")
     assert response.conversation_id

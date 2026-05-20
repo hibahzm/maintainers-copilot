@@ -317,7 +317,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - NER ✅ routed through `/chat` when the user asks to extract entities
 - summarize ✅ routed through `/chat` only when the UI/API explicitly allows the LLM summarizer
 - RAG search ✅ initial `/chat` orchestration uses RAG and returns citations/tool metadata
-- explicit `write_memory`
+- explicit `write_memory` ✅ guarded by `allow_memory_write` and backed by pgvector memory records/audit log
 
 **Rule**
 - one tool-calling LLM, not a workflow and not a multi-agent system
@@ -330,9 +330,9 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - explicit TTL with justification
 
 **Long-term**
-- pgvector-backed memory
-- choose one of episodic / semantic / procedural
-- every write creates an audit-log row
+- pgvector-backed memory ✅ explicit memory writes embed content as passages
+- choose one of episodic / semantic / procedural ✅ API supports all three; chat defaults to semantic
+- every write creates an audit-log row ✅ repository writes `memory.write`
 
 ### 4.4 Build the maintainer UI
 

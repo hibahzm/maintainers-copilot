@@ -25,6 +25,7 @@ def get_chat_service() -> ChatService:
     return ChatService(
         rag_service=get_rag_service(),
         tools_service=get_maintainer_tools_service(),
+        memory_service=get_memory_service(),
     )
 
 
@@ -37,7 +38,10 @@ def get_maintainer_tools_service() -> MaintainerToolsService:
 
 
 def get_memory_service() -> MemoryService:
-    return MemoryService()
+    return MemoryService(
+        database_url=settings.database_url,
+        model_server_url=settings.model_server_url,
+    )
 
 
 def get_rag_service() -> RagService:

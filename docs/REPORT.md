@@ -2,6 +2,29 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Explicit long-term memory path added
+
+### Added
+- `migrations/versions/20260520_0004_memory_vector_index.py`
+
+### Updated
+- `backend/app/api/chat.py`
+- `backend/app/api/dependencies.py`
+- `backend/app/api/memory.py`
+- `backend/app/api/schemas/chat.py`
+- `backend/app/api/schemas/memory.py`
+- `backend/app/repositories/memory_repo.py`
+- `backend/app/services/chat_service.py`
+- `backend/app/services/memory_service.py`
+- `backend/tests/services/test_chat_service.py`
+- `chatbot/pages/chat.py`
+- `docs/BUILD_PLAN.md`
+
+### Design notes
+- Long-term memory writes are explicit only; normal chat turns are not automatically saved.
+- Memory content is embedded through the model-server `/embed` endpoint as `passage` text and stored in pgvector.
+- Each memory write creates a `memory.write` audit-log row. Until auth is finished, memory calls require an explicit `user_id`.
+
 ## 2026-05-20 — Chatbot NLP tool routing added
 
 ### Added

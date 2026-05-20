@@ -12,10 +12,12 @@ async def create_chat_response(
     service: ChatServiceDep,
 ) -> ChatResponse:
     return await service.respond(
+        user_id=payload.user_id,
         messages=payload.messages,
         conversation_id=payload.conversation_id,
         use_rag=payload.use_rag,
         top_k=payload.top_k,
         allow_summarizer=payload.allow_summarizer,
+        allow_memory_write=payload.allow_memory_write,
         tools=payload.tools,
     )

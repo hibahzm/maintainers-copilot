@@ -14,6 +14,16 @@ allow_summarizer = st.sidebar.checkbox(
     value=False,
     help="Off by default because this can call OpenAI.",
 )
+allow_memory_write = st.sidebar.checkbox(
+    "Allow explicit memory writes",
+    value=False,
+    help="Only used when your message asks the assistant to remember something.",
+)
+user_id = st.sidebar.text_input(
+    "User ID for memory",
+    value="",
+    help="Temporary until auth is wired into the UI.",
+)
 
 if "conversation_id" not in st.session_state:
     st.session_state.conversation_id = None
@@ -34,11 +44,16 @@ if prompt:
         st.markdown(prompt)
 
     payload = {
+        "user_id": user_id or None,
         "conversation_id": st.session_state.conversation_id,
-        "messages": [{"role": item["role"], "content": item["content"]} for item in st.session_state.messages],
+        "messages": [
+            {"role": item["role"], "content": item["content"]}
+            for item in st.session_state.messages
+        ],
         "use_rag": use_rag,
         "top_k": 5,
         "allow_summarizer": allow_summarizer,
+        "allow_memory_write": allow_memory_write,
         "tools": ["auto"],
     }
 

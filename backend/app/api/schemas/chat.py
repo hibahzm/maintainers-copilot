@@ -1,4 +1,5 @@
 from typing import Literal
+from uuid import UUID
 
 from pydantic import Field
 
@@ -8,12 +9,14 @@ from app.domain.chat import Message
 
 
 class ChatRequest(APIModel):
+    user_id: UUID | None = None
     conversation_id: str | None = None
     messages: list[Message] = Field(min_length=1)
     use_rag: bool = True
     top_k: int = Field(default=5, ge=1, le=10)
     allow_summarizer: bool = False
-    tools: list[Literal["auto", "rag", "classifier", "ner", "summarizer"]] = Field(
+    allow_memory_write: bool = False
+    tools: list[Literal["auto", "rag", "classifier", "ner", "summarizer", "write_memory"]] = Field(
         default_factory=lambda: ["auto"],
         description=(
             "Tool policy for this turn. 'auto' routes from the message; summarizer only runs "
