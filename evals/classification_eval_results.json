@@ -1,0 +1,218 @@
+{
+  "endpoint": "http://localhost:8001/classify",
+  "golden_path": "evals/golden_classification.json",
+  "metrics": {
+    "accuracy": 0.96,
+    "examples": 25,
+    "label_counts": {
+      "bug": 7,
+      "docs": 6,
+      "feature": 6,
+      "question": 6
+    },
+    "macro_f1": 0.958041958041958,
+    "per_label": {
+      "bug": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "support": 7
+      },
+      "docs": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "support": 6
+      },
+      "feature": {
+        "f1": 0.923076923076923,
+        "precision": 0.8571428571428571,
+        "recall": 1.0,
+        "support": 6
+      },
+      "question": {
+        "f1": 0.9090909090909091,
+        "precision": 1.0,
+        "recall": 0.8333333333333334,
+        "support": 6
+      }
+    }
+  },
+  "predictions": [
+    {
+      "confidence": 0.9652506113052368,
+      "correct": true,
+      "expected_label": "bug",
+      "id": "golden-classification-001",
+      "predicted_label": "bug"
+    },
+    {
+      "confidence": 0.9528993368148804,
+      "correct": true,
+      "expected_label": "bug",
+      "id": "golden-classification-002",
+      "predicted_label": "bug"
+    },
+    {
+      "confidence": 0.9641785621643066,
+      "correct": true,
+      "expected_label": "bug",
+      "id": "golden-classification-003",
+      "predicted_label": "bug"
+    },
+    {
+      "confidence": 0.9669671058654785,
+      "correct": true,
+      "expected_label": "bug",
+      "id": "golden-classification-004",
+      "predicted_label": "bug"
+    },
+    {
+      "confidence": 0.9671237468719482,
+      "correct": true,
+      "expected_label": "bug",
+      "id": "golden-classification-005",
+      "predicted_label": "bug"
+    },
+    {
+      "confidence": 0.9689134955406189,
+      "correct": true,
+      "expected_label": "bug",
+      "id": "golden-classification-006",
+      "predicted_label": "bug"
+    },
+    {
+      "confidence": 0.9602295756340027,
+      "correct": true,
+      "expected_label": "bug",
+      "id": "golden-classification-007",
+      "predicted_label": "bug"
+    },
+    {
+      "confidence": 0.9823534488677979,
+      "correct": true,
+      "expected_label": "feature",
+      "id": "golden-classification-008",
+      "predicted_label": "feature"
+    },
+    {
+      "confidence": 0.9854792356491089,
+      "correct": true,
+      "expected_label": "feature",
+      "id": "golden-classification-009",
+      "predicted_label": "feature"
+    },
+    {
+      "confidence": 0.984243631362915,
+      "correct": true,
+      "expected_label": "feature",
+      "id": "golden-classification-010",
+      "predicted_label": "feature"
+    },
+    {
+      "confidence": 0.9747357368469238,
+      "correct": true,
+      "expected_label": "feature",
+      "id": "golden-classification-011",
+      "predicted_label": "feature"
+    },
+    {
+      "confidence": 0.9799741506576538,
+      "correct": true,
+      "expected_label": "feature",
+      "id": "golden-classification-012",
+      "predicted_label": "feature"
+    },
+    {
+      "confidence": 0.9792118072509766,
+      "correct": true,
+      "expected_label": "feature",
+      "id": "golden-classification-013",
+      "predicted_label": "feature"
+    },
+    {
+      "confidence": 0.9940117001533508,
+      "correct": true,
+      "expected_label": "docs",
+      "id": "golden-classification-014",
+      "predicted_label": "docs"
+    },
+    {
+      "confidence": 0.9926475286483765,
+      "correct": true,
+      "expected_label": "docs",
+      "id": "golden-classification-015",
+      "predicted_label": "docs"
+    },
+    {
+      "confidence": 0.9925464987754822,
+      "correct": true,
+      "expected_label": "docs",
+      "id": "golden-classification-016",
+      "predicted_label": "docs"
+    },
+    {
+      "confidence": 0.9911479949951172,
+      "correct": true,
+      "expected_label": "docs",
+      "id": "golden-classification-017",
+      "predicted_label": "docs"
+    },
+    {
+      "confidence": 0.9933784604072571,
+      "correct": true,
+      "expected_label": "docs",
+      "id": "golden-classification-018",
+      "predicted_label": "docs"
+    },
+    {
+      "confidence": 0.9894250631332397,
+      "correct": true,
+      "expected_label": "docs",
+      "id": "golden-classification-019",
+      "predicted_label": "docs"
+    },
+    {
+      "confidence": 0.9328103065490723,
+      "correct": true,
+      "expected_label": "question",
+      "id": "golden-classification-020",
+      "predicted_label": "question"
+    },
+    {
+      "confidence": 0.8807329535484314,
+      "correct": true,
+      "expected_label": "question",
+      "id": "golden-classification-021",
+      "predicted_label": "question"
+    },
+    {
+      "confidence": 0.9258064031600952,
+      "correct": true,
+      "expected_label": "question",
+      "id": "golden-classification-022",
+      "predicted_label": "question"
+    },
+    {
+      "confidence": 0.48770856857299805,
+      "correct": false,
+      "expected_label": "question",
+      "id": "golden-classification-023",
+      "predicted_label": "feature"
+    },
+    {
+      "confidence": 0.8744741082191467,
+      "correct": true,
+      "expected_label": "question",
+      "id": "golden-classification-024",
+      "predicted_label": "question"
+    },
+    {
+      "confidence": 0.6893431544303894,
+      "correct": true,
+      "expected_label": "question",
+      "id": "golden-classification-025",
+      "predicted_label": "question"
+    }
+  ]
+}

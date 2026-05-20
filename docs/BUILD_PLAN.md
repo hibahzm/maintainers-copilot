@@ -226,7 +226,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - `evals/golden_classification.json` ✅
 - 25 hand-curated examples ✅
 - classifier eval script ✅
-- metrics outputs ⏳ after local model smoke test
+- metrics outputs ✅ Docker classifier golden eval: accuracy `0.9600`, macro-F1 `0.9580`
 
 **Done when**
 - golden classification examples are separate from the train/test split and from `test_200_balanced.jsonl` ✅

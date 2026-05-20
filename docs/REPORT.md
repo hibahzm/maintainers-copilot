@@ -2,6 +2,22 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-20 — Golden classification eval completed
+
+### Added
+- `evals/classification_eval_results.json`
+
+### Evidence
+- endpoint: `http://localhost:8001/classify`
+- examples: `25`
+- accuracy: `0.9600`
+- macro-F1: `0.9580`
+- label supports: bug `7`, feature `6`, docs `6`, question `6`
+
+### Error analysis
+- One miss: `golden-classification-023` expected `question`, predicted `feature` with confidence `0.4877`.
+- Bug and docs classes were perfect on this golden set; the remaining ambiguity is between question/help-seeking and feature/request language.
+
 ## 2026-05-20 — NLP tool smoke tests recorded
 
 ### Verified
