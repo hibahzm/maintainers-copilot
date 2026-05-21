@@ -75,8 +75,9 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 
 **Done when**
 - every real secret is expected from Vault ✅ `vault-init` seeds the required KV bundle before API/model-server startup
-- `.env` is only for the Vault bootstrap token, non-secret ports, and non-secret model names ✅
-- the API refuses to boot if Vault is unreachable
+- `.env` is only for the Vault bootstrap token and ports ✅
+- the API refuses to boot if Vault is unreachable ✅
+- the API refuses to boot if Vault returns empty required secrets ✅
 
 ### 1.3 Wire tracing from the beginning
 
@@ -90,6 +91,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 **Done when**
 - later LLM, tool, and retrieval spans have a place to attach ✅
 - logs and traces can share a trace ID from the start ✅
+- LLM spans include model, latency, and provider usage/token fields when returned ✅
 
 ### 1.4 Establish the database baseline
 

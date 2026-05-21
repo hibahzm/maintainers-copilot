@@ -23,7 +23,7 @@ llm_api_key
 tracing_api_key
 ```
 
-`vault-init` seeds the bundle from runtime environment variables. Keep `.env` limited to the Vault bootstrap token, non-secret ports, and non-secret model names. For real LLM smoke tests, export the key only for the command that starts/updates Vault:
+`vault-init` seeds the bundle from runtime environment variables. Keep `.env` limited to the Vault bootstrap token and ports. For real LLM smoke tests, export the key only for the command that starts/updates Vault:
 
 ```bash
 export OPENAI_API_KEY="..."
@@ -38,6 +38,8 @@ At startup the API:
 4. refuses to boot if any of those steps fail.
 
 The backend uses `jwt_signing_key` and `llm_api_key` from this validated runtime bundle. The model-server still accepts direct `OPENAI_API_KEY` / `LLM_API_KEY` for notebooks and one-off smoke tests, but in Compose it can read `llm_api_key` from the same Vault bundle.
+
+The API refuses to boot if any required Vault secret is empty. The model-server refuses to boot if the classifier artifact directory is missing, if its SHA-256 differs from the expected fingerprint, or if no LLM key is available for the LLM-backed summarization/RAG-answer tools.
 
 Inspect the seeded bundle:
 

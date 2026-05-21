@@ -4,7 +4,7 @@
 
 - secrets should come from Vault, not application env files
 - logs and traces should pass through redaction first
-- only the Vault development bootstrap token, ports, and non-secret model names are allowed in `.env.example`
+- only the Vault development bootstrap token and ports are allowed in `.env.example`
 
 ## Startup secret contract
 
@@ -22,7 +22,7 @@ That bundle must contain:
 - `llm_api_key`
 - `tracing_api_key`
 
-The local Compose stack initializes this bundle through the one-shot `vault-init` container. If Vault is unreachable, the bundle is missing, or the payload is malformed, the API refuses to boot.
+The local Compose stack initializes this bundle through the one-shot `vault-init` container. If Vault is unreachable, the bundle is missing, the payload is malformed, or any required value is empty, the API refuses to boot.
 
 ## Notebook secret hygiene
 

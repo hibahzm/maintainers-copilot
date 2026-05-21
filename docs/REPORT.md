@@ -2,6 +2,31 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-21 — Startup guardrails tightened
+
+### Added
+- `backend/app/infra/startup_checks.py`
+- `backend/tests/infra/test_startup_checks.py`
+- `model_server/services/startup_checks.py`
+- `model_server/tests/test_startup_checks.py`
+
+### Updated
+- `.env.example`
+- `backend/Dockerfile`
+- `backend/app/core/config.py`
+- `backend/app/main.py`
+- `docker-compose.yml`
+- `model_server/main.py`
+- `docs/BUILD_PLAN.md`
+- `docs/RUNBOOK.md`
+- `docs/SECURITY.md`
+
+### Design notes
+- The API now refuses to boot if required Vault secrets are empty, if the tracing backend config is missing, or if committed eval thresholds are missing/zero.
+- The backend image now includes `evals/eval_thresholds.yaml` so this threshold check works inside Docker.
+- The model-server now refuses to boot if classifier weights are missing, if the classifier artifact SHA-256 does not match the expected fingerprint, or if no LLM key is available for LLM-backed tools.
+- `.env.example` now stays within the stricter rule: Vault bootstrap token plus exposed ports only.
+
 ## 2026-05-21 — Safe structured trace events added
 
 ### Added

@@ -1,10 +1,16 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import auth, chat, classifier, memory, rag, widget
 from app.core.config import settings
+from app.infra.startup_checks import (
+    assert_eval_thresholds_enabled,
+    assert_runtime_secrets_non_empty,
+    assert_tracing_configured,
+)
 from app.infra.tracing import RequestTracingMiddleware
 from app.infra.vault import VaultClient
 
@@ -15,6 +21,9 @@ async def lifespan(app: FastAPI):
     try:
         await vault.assert_reachable()
         app.state.runtime_secrets = await vault.load_runtime_secrets()
+        assert_runtime_secrets_non_empty(app.state.runtime_secrets)
+        assert_tracing_configured(settings, app.state.runtime_secrets)
+        assert_eval_thresholds_enabled(Path(settings.eval_thresholds_path))
         yield
     finally:
         await vault.aclose()

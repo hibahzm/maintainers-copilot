@@ -6,7 +6,7 @@ import httpx
 
 from app.api.schemas.classifier import ClassifyIssueResponse
 from app.infra.exceptions import ToolFailure
-from app.infra.tracing import trace_span
+from app.infra.tracing import trace_event, trace_span
 
 
 class MaintainerToolsService:
@@ -39,7 +39,12 @@ class MaintainerToolsService:
         return await self._post("/summarize", {"title": title, "body": body, "text": text})
 
     async def _post(self, path: str, payload: dict[str, Any]) -> dict[str, Any]:
-        with trace_span("model_server.tool", path=path, payload_keys=sorted(payload.keys())):
+        with trace_span(
+            "model_server.tool",
+            path=path,
+            payload=payload,
+            payload_keys=sorted(payload.keys()),
+        ):
             try:
                 async with httpx.AsyncClient(timeout=self.timeout_seconds) as client:
                     response = await client.post(f"{self.model_server_url}{path}", json=payload)
@@ -51,4 +56,5 @@ class MaintainerToolsService:
                 raise ToolFailure(f"Model server tool {path} request failed.") from exc
 
             data: dict[str, Any] = response.json()
+            trace_event("model_server.tool.output", path=path, output=data)
             return data

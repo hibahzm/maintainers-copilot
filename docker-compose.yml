@@ -104,6 +104,7 @@ services:
     container_name: maintainers-copilot-model-server
     environment:
       CLASSIFIER_MODEL_DIR: "/app/artifacts/classifier/first-distilbert-freeze4/model"
+      CLASSIFIER_EXPECTED_SHA256: "45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a"
       OPENAI_SUMMARIZER_MODEL: "${OPENAI_SUMMARIZER_MODEL:-gpt-4o-mini}"
       OPENAI_RAG_ANSWER_MODEL: "${OPENAI_RAG_ANSWER_MODEL:-gpt-4o-mini}"
       RAG_EMBEDDING_MODEL: "${RAG_EMBEDDING_MODEL:-intfloat/e5-small-v2}"

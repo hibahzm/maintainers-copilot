@@ -34,6 +34,7 @@ class Settings(BaseSettings):
     widget_public_url: str = "http://localhost:4173"
     tracing_backend: str = "langfuse"
     tracing_host: str = "https://cloud.langfuse.com"
+    eval_thresholds_path: str = "evals/eval_thresholds.yaml"
 
 
 class RuntimeSecrets(BaseModel):

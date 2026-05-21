@@ -13,6 +13,7 @@ RUN uv sync --no-dev --no-install-project
 
 COPY backend/app ./app
 COPY prompts ./prompts
+COPY evals/eval_thresholds.yaml ./evals/eval_thresholds.yaml
 
 EXPOSE 8000
 

@@ -173,11 +173,11 @@ class OpenAIChatAgentService:
         allow_memory_write: bool,
     ) -> tuple[dict[str, Any], ChatToolResult | None]:
         name = str(call.get("name", ""))
-        trace_event("agent.tool.start", tool=name)
         try:
             args = json.loads(call.get("arguments") or "{}")
         except (TypeError, json.JSONDecodeError):
             return {"status": "error", "error": "Invalid JSON tool arguments."}, None
+        trace_event("agent.tool.start", tool=name, input=args)
 
         if name == "rag_search":
             return await self._run_rag_search(args, default_top_k=default_top_k)
@@ -206,6 +206,7 @@ class OpenAIChatAgentService:
 
         result = results[0]
         output = {"status": result.status, "tool": result.name, "data": result.metadata}
+        trace_event("agent.tool.output", tool=name, output=output)
         return output, result
 
     async def _run_rag_search(
@@ -242,6 +243,7 @@ class OpenAIChatAgentService:
             "retrieval_mode": rag_response.retrieval_mode,
             "embedding_model": rag_response.embedding_model,
         }
+        trace_event("agent.tool.output", tool="rag_search", output=output)
         return output, ChatToolResult(
             name="rag.query",
             status="ok",
@@ -300,7 +302,12 @@ class OpenAIChatAgentService:
                     response = await client.post("/responses", headers=headers, json=payload)
                     response.raise_for_status()
                     data: dict[str, Any] = response.json()
-                    trace_event("llm.response", response_id=data.get("id"))
+                    trace_event(
+                        "llm.response",
+                        response_id=data.get("id"),
+                        model=self.model,
+                        usage=data.get("usage") or {},
+                    )
                     return data
         except httpx.HTTPError as exc:
             raise ToolFailure("OpenAI chat agent request failed.") from exc
