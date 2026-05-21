@@ -75,6 +75,14 @@ class RagService:
                 answer_response_id=answer_payload.get("response_id") if answer_payload else None,
             )
 
+    async def status(self) -> dict[str, Any]:
+        stats = await self.repository.index_stats()
+        return {
+            **stats,
+            "retrieval_mode": "pgvector_hybrid_dense_sparse_e5",
+            "ready": bool(stats.get("embedded_chunks")),
+        }
+
     async def _embed_query(self, question: str) -> dict[str, Any]:
         with trace_span("rag.embed", question_chars=len(question)):
             try:

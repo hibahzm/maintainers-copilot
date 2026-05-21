@@ -50,6 +50,26 @@ class RagRepository:
             dense_weight=dense_weight,
         )
 
+    async def index_stats(self) -> dict[str, Any]:
+        sql = """
+            SELECT
+                COUNT(*)::int AS chunks,
+                COUNT(*) FILTER (WHERE embedding IS NOT NULL)::int AS embedded_chunks,
+                COUNT(DISTINCT source_id)::int AS sources,
+                array_remove(array_agg(DISTINCT embedding_model), NULL) AS embedding_models
+            FROM rag_chunks
+        """
+        rows = await self._fetch(sql)
+        if not rows:
+            return {"chunks": 0, "embedded_chunks": 0, "sources": 0, "embedding_models": []}
+        row = rows[0]
+        return {
+            "chunks": row["chunks"],
+            "embedded_chunks": row["embedded_chunks"],
+            "sources": row["sources"],
+            "embedding_models": list(row["embedding_models"] or []),
+        }
+
     async def search_dense(
         self,
         *,
@@ -74,7 +94,37 @@ class RagRepository:
             LIMIT $3
         """
         rows = await self._fetch(sql, *params)
+        if not rows:
+            rows = await self._search_dense_any_model(
+                query_embedding=query_embedding,
+                top_k=top_k,
+                source_type=source_type,
+            )
         return [self._row_to_chunk(row, score_field="dense") for row in rows]
+
+    async def _search_dense_any_model(
+        self,
+        *,
+        query_embedding: list[float],
+        top_k: int,
+        source_type: str | None = None,
+    ) -> list[asyncpg.Record]:
+        where = "c.embedding IS NOT NULL"
+        params: list[Any] = [vector_literal(query_embedding), top_k]
+        if source_type is not None:
+            where += " AND s.source_type = $3"
+            params.append(source_type)
+
+        sql = f"""
+            SELECT c.id, c.source_id, c.title, c.parent_title, c.text, s.source_type, c.metadata,
+                   1 - (c.embedding <=> $1::vector) AS score
+            FROM rag_chunks c
+            JOIN rag_sources s ON s.id = c.source_id
+            WHERE {where}
+            ORDER BY c.embedding <=> $1::vector
+            LIMIT $2
+        """
+        return await self._fetch(sql, *params)
 
     async def search_sparse(
         self,

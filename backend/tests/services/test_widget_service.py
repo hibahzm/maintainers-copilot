@@ -106,4 +106,33 @@ def test_widget_loader_passes_host_origin_to_iframe():
     script = service.loader_script(widget_public_url="http://localhost:4173")
 
     assert "hostOrigin = window.location.origin" in script
-    assert "hostOrigin=${encodeURIComponent(hostOrigin)}" in script
+    assert "/widget/frame/${encodeURIComponent(widgetId)}" in script
+    assert 'frameUrl.searchParams.set("hostOrigin", hostOrigin)' in script
+
+
+@pytest.mark.asyncio
+async def test_widget_frame_uses_allowed_origins_for_csp():
+    service = WidgetService(repository=FakeWidgetRepository())
+
+    await service.upsert_config(
+        payload=WidgetConfigUpsertRequest(
+            widget_id="docs-helper",
+            allowed_origins=["https://allowed.example"],
+            theme={"mode": "light"},
+            greeting="Hello",
+            enabled_tools=["rag_search"],
+        ),
+        actor_user_id=uuid4(),
+    )
+
+    html, frame_ancestors = await service.get_frame_html(
+        "docs-helper",
+        request_origin="https://allowed.example",
+        widget_public_url="http://localhost:4173",
+        api_base="http://localhost:8000",
+        host_origin="https://allowed.example",
+    )
+
+    assert "http://localhost:4173/" in html
+    assert "hostOrigin=https%3A//allowed.example" in html
+    assert frame_ancestors == "frame-ancestors https://allowed.example"

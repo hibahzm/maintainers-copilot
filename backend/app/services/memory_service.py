@@ -7,6 +7,7 @@ import httpx
 
 from app.api.schemas.memory import MemoryCreateRequest, MemoryRecordResponse
 from app.infra.exceptions import ToolFailure
+from app.infra.redaction import redact
 from app.repositories.memory_repo import MemoryRecord, MemoryRepository
 
 
@@ -36,11 +37,12 @@ class MemoryService:
         user_id: UUID,
         payload: MemoryCreateRequest,
     ) -> MemoryRecordResponse:
-        embedding = await self._embed_memory(payload.content)
+        redacted_content = redact(payload.content)
+        embedding = await self._embed_memory(redacted_content)
         record = await self.repository.create_memory(
             user_id=user_id,
             memory_type=payload.memory_type,
-            content=payload.content,
+            content=redacted_content,
             embedding=embedding,
         )
         return self._record_response(record)

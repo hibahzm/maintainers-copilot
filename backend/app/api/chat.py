@@ -1,7 +1,9 @@
 from fastapi import APIRouter, status
+from fastapi.responses import StreamingResponse
 
 from app.api.dependencies import ChatServiceDep, CurrentUserDep, OptionalCurrentUserDep
 from app.api.schemas.chat import ChatRequest, ChatResponse
+from app.api.streaming import chat_sse_events
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 
@@ -21,6 +23,23 @@ async def create_chat_response(
         allow_summarizer=payload.allow_summarizer,
         allow_memory_write=payload.allow_memory_write,
         tools=payload.tools,
+    )
+
+
+@router.post("/stream")
+async def stream_chat_response(
+    payload: ChatRequest,
+    service: ChatServiceDep,
+    current_user: OptionalCurrentUserDep,
+) -> StreamingResponse:
+    return StreamingResponse(
+        chat_sse_events(
+            payload=payload,
+            service=service,
+            user_id=current_user.id if current_user else None,
+        ),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
 
 

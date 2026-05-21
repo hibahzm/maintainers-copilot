@@ -32,6 +32,14 @@ class Settings(BaseSettings):
     )
     chat_agent_model: str = "gpt-4o-mini"
     chat_agent_max_tool_rounds: int = 3
+    bootstrap_dev_data: bool = True
+    bootstrap_rag_index: bool = True
+    rag_bootstrap_chunks_path: str = "data/rag/chunks/parent_child_chunks.jsonl"
+    rag_bootstrap_batch_size: int = 16
+    rag_bootstrap_timeout_seconds: float = 180.0
+    dev_admin_email: str = "admin@maintainers.local"
+    dev_admin_password: SecretStr = SecretStr("admin-password")
+    default_widget_id: str = "maintainers-copilot"
     cors_allowed_origins: list[str] = [
         "http://localhost:4173",
         "http://localhost:5173",
@@ -40,7 +48,10 @@ class Settings(BaseSettings):
     ]
     widget_public_url: str = "http://localhost:4173"
     tracing_backend: str = "langfuse"
-    tracing_host: str = "https://cloud.langfuse.com"
+    tracing_host: str = Field(
+        default="https://cloud.langfuse.com",
+        validation_alias=AliasChoices("TRACING_HOST", "LANGFUSE_BASE_URL"),
+    )
     eval_thresholds_path: str = "evals/eval_thresholds.yaml"
 
 

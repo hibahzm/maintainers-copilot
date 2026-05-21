@@ -16,6 +16,7 @@ from app.api.schemas.chat import ChatToolResult
 from app.infra.exceptions import ToolFailure
 from app.infra.tracing import trace_event, trace_span
 from app.services.chat_tools.runner import ChatToolRunner
+from app.services.chat_tools.types import ChatToolName
 from app.services.rag_service import RagService
 
 _PROMPT_PATH = Path(__file__).with_name("prompts") / "agent_system.txt"
@@ -72,6 +73,7 @@ class OpenAIChatAgentService:
         top_k: int,
         allow_summarizer: bool,
         allow_memory_write: bool,
+        tools: list[ChatToolName] | None = None,
     ) -> AgentRunResult:
         if not self.is_configured:
             raise ToolFailure("OpenAI chat agent is not configured.")
@@ -89,6 +91,7 @@ class OpenAIChatAgentService:
             use_rag=use_rag,
             allow_summarizer=allow_summarizer,
             allow_memory_write=allow_memory_write,
+            tools=tools,
         )
         response = await self._create_response(
             input_payload=self._conversation_input(messages),
@@ -347,10 +350,12 @@ class OpenAIChatAgentService:
         use_rag: bool,
         allow_summarizer: bool,
         allow_memory_write: bool,
+        tools: list[ChatToolName] | None,
     ) -> list[dict[str, Any]]:
-        tools = []
-        if use_rag:
-            tools.append(
+        allowed_tools = self._allowed_tool_names(tools)
+        tool_schemas = []
+        if use_rag and "rag_search" in allowed_tools:
+            tool_schemas.append(
                 _function_tool(
                     "rag_search",
                     "Search the project RAG corpus and return grounded chunks/citations.",
@@ -365,8 +370,8 @@ class OpenAIChatAgentService:
                     ["query", "top_k", "source_type"],
                 )
             )
-        tools.extend(
-            [
+        if "classify_issue" in allowed_tools:
+            tool_schemas.append(
                 _function_tool(
                     "classify_issue",
                     "Classify an issue as bug, feature, docs, or question.",
@@ -375,7 +380,10 @@ class OpenAIChatAgentService:
                         "body": {"type": "string"},
                     },
                     ["title", "body"],
-                ),
+                )
+            )
+        if "extract_entities" in allowed_tools:
+            tool_schemas.append(
                 _function_tool(
                     "extract_entities",
                     "Extract code-shaped entities from issue text.",
@@ -385,11 +393,10 @@ class OpenAIChatAgentService:
                         "text": {"type": "string"},
                     },
                     ["title", "body", "text"],
-                ),
-            ]
-        )
-        if allow_summarizer:
-            tools.append(
+                )
+            )
+        if allow_summarizer and "summarize_issue" in allowed_tools:
+            tool_schemas.append(
                 _function_tool(
                     "summarize_issue",
                     "Summarize issue text for maintainer triage.",
@@ -401,8 +408,8 @@ class OpenAIChatAgentService:
                     ["title", "body", "text"],
                 )
             )
-        if allow_memory_write:
-            tools.append(
+        if allow_memory_write and "write_memory" in allowed_tools:
+            tool_schemas.append(
                 _function_tool(
                     "write_memory",
                     "Explicitly save a user-approved long-term memory.",
@@ -416,7 +423,32 @@ class OpenAIChatAgentService:
                     ["content", "memory_type"],
                 )
             )
-        return tools
+        return tool_schemas
+
+    def _allowed_tool_names(self, tools: list[ChatToolName] | None) -> set[str]:
+        default = {
+            "rag_search",
+            "classify_issue",
+            "extract_entities",
+            "summarize_issue",
+            "write_memory",
+        }
+        if tools is None or tools == ["auto"]:
+            return default
+        if not tools:
+            return set()
+
+        tool_name_map = {
+            "rag": "rag_search",
+            "classifier": "classify_issue",
+            "ner": "extract_entities",
+            "summarizer": "summarize_issue",
+            "write_memory": "write_memory",
+        }
+        explicit = {tool for tool in tools if tool != "auto"}
+        if not explicit:
+            return default
+        return {tool_name_map[tool] for tool in explicit if tool in tool_name_map}
 
 
 def _function_tool(

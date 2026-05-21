@@ -58,6 +58,7 @@ class ChatService:
         allow_memory_write: bool = False,
         tools: list[ChatToolName] | None = None,
     ) -> ChatResponse:
+        tool_policy = tools if tools is not None else ["auto"]
         response_conversation_id = conversation_id or str(uuid4())
         stored_messages = await self._load_short_term_messages(conversation_id)
         conversation_messages = self._merge_short_term_messages(stored_messages, messages)
@@ -97,6 +98,7 @@ class ChatService:
             top_k=top_k,
             allow_summarizer=allow_summarizer,
             allow_memory_write=allow_memory_write,
+            tools=tool_policy,
         )
         if agent_response is not None:
             response = ChatResponse(
@@ -122,7 +124,7 @@ class ChatService:
         tool_results = await self._run_chat_tools(
             latest_user_message.content,
             user_id=user_id,
-            tools=tools or ["auto"],
+            tools=tool_policy,
             use_rag=use_rag,
             allow_summarizer=allow_summarizer,
             allow_memory_write=allow_memory_write,
@@ -231,6 +233,7 @@ class ChatService:
         top_k: int,
         allow_summarizer: bool,
         allow_memory_write: bool,
+        tools: list[ChatToolName],
     ) -> AgentRunResult | None:
         if self.agent_service is None or not self.agent_service.is_configured:
             return None
@@ -242,6 +245,7 @@ class ChatService:
                 top_k=top_k,
                 allow_summarizer=allow_summarizer,
                 allow_memory_write=allow_memory_write,
+                tools=tools,
             )
         except ToolFailure:
             return None

@@ -11,8 +11,12 @@ def select_tools(
     allow_summarizer: bool,
     allow_memory_write: bool,
 ) -> set[str]:
+    if not tools:
+        return set()
+
+    auto_requested = "auto" in tools
     explicit = {tool for tool in tools if tool != "auto"}
-    if explicit:
+    if explicit and not auto_requested:
         return {tool for tool in explicit if tool != "rag"}
 
     lowered = text.lower()
@@ -28,6 +32,9 @@ def select_tools(
         phrase in lowered for phrase in ("remember", "save this memory", "write memory")
     ):
         selected.add("write_memory")
+
+    if explicit:
+        selected = selected.intersection(explicit)
 
     if selected:
         return selected
