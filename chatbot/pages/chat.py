@@ -74,11 +74,11 @@ st.markdown(
     <div class="mc-page-header">
       <div>
         <h1>Copilot chat</h1>
-        <p>Ask a maintainer question, then inspect the tools, citations, and retrieved chunks.</p>
+        <p>Internal version of the same copilot used by the public widget, with login, citations, and tool evidence.</p>
       </div>
       <div class="mc-header-actions">
         <span class="mc-pill">Authenticated</span>
-        <span class="mc-pill info">Tool-calling chat</span>
+        <span class="mc-pill info">Same backend as widget</span>
       </div>
     </div>
     """,

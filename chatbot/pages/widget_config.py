@@ -34,8 +34,6 @@ st.write("")
 
 default_origins = "\n".join(
     [
-        "http://localhost:8080",
-        "http://127.0.0.1:8080",
         "http://localhost:8501",
         "http://127.0.0.1:8501",
         "http://localhost:5173",
@@ -54,7 +52,7 @@ with st.form("widget-config-form"):
         "Allowed origins",
         value=default_origins,
         height=170,
-        help="One origin per line. The demo host is http://localhost:8080.",
+        help="One origin per line. Add the real host origin here before embedding the widget.",
     )
     greeting = st.text_area(
         "Greeting",
@@ -64,7 +62,7 @@ with st.form("widget-config-form"):
 
     theme_cols = st.columns(2)
     with theme_cols[0]:
-        accent_color = st.color_picker("Accent color", value="#16a34a")
+        accent_color = st.color_picker("Accent color", value="#0891b2")
     with theme_cols[1]:
         mode = st.selectbox("Theme mode", ["light", "dark"], index=0)
 
@@ -83,15 +81,11 @@ st.markdown(
     <div class="mc-port-grid">
       <div class="mc-port">
         <code>8501</code>
-        <p class="mc-caption">Authenticated Streamlit workspace.</p>
+        <p class="mc-caption">Internal logged-in workspace.</p>
       </div>
       <div class="mc-port">
         <code>4173</code>
-        <p class="mc-caption">Standalone React widget bundle.</p>
-      </div>
-      <div class="mc-port">
-        <code>8080</code>
-        <p class="mc-caption">Static host app embedding the widget.</p>
+        <p class="mc-caption">Public React widget surface.</p>
       </div>
     </div>
     """,

@@ -230,7 +230,7 @@ function App() {
   }
 
   const theme = config?.theme || {};
-  const accentColor = theme.accent_color || "#16a34a";
+  const accentColor = theme.accent_color || "#0891b2";
   const themeMode = theme.mode === "dark" ? "dark" : "light";
   const tools = enabledTools(config);
   const canSend = Boolean(config) && tools.length > 0 && !isSending;

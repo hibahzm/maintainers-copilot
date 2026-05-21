@@ -28,17 +28,17 @@ def inject_app_styles() -> None:
         """
         <style>
           :root {
-            --mc-bg: #f7f8fc;
-            --mc-ink: #171236;
+            --mc-bg: #f3f8fb;
+            --mc-ink: #164e63;
             --mc-panel: #ffffff;
             --mc-panel-soft: #f6f7fb;
             --mc-text: #111827;
             --mc-muted: #667085;
             --mc-line: #dde2eb;
             --mc-line-strong: #b9c2d0;
-            --mc-accent: #4f46e5;
-            --mc-accent-strong: #3730a3;
-            --mc-accent-soft: #eef2ff;
+            --mc-accent: #0891b2;
+            --mc-accent-strong: #0e7490;
+            --mc-accent-soft: #ecfeff;
             --mc-info: #0f766e;
             --mc-warning: #b45309;
             --mc-danger: #be123c;
@@ -114,7 +114,7 @@ def inject_app_styles() -> None:
             border-radius: var(--mc-radius);
             padding: 1.1rem 1.2rem;
             background: var(--mc-panel);
-            box-shadow: 0 12px 34px rgba(15, 23, 42, 0.06);
+            box-shadow: none;
           }
 
           .mc-page-header > div {
@@ -148,7 +148,7 @@ def inject_app_styles() -> None:
             border-radius: var(--mc-radius);
             padding: 1rem;
             background: var(--mc-panel);
-            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+            box-shadow: none;
           }
 
           .mc-card h3 {
@@ -175,10 +175,8 @@ def inject_app_styles() -> None:
             border: 1px solid var(--mc-line);
             border-radius: var(--mc-radius);
             padding: clamp(1rem, 2vw, 1.45rem);
-            background:
-              linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(5, 150, 105, 0.06)),
-              var(--mc-panel);
-            box-shadow: 0 16px 40px rgba(23, 18, 54, 0.08);
+            background: var(--mc-panel);
+            box-shadow: none;
           }
 
           .mc-auth-brand {
@@ -387,7 +385,7 @@ def inject_app_styles() -> None:
             border: 1px solid var(--mc-line);
             border-radius: var(--mc-radius);
             background: #ffffff;
-            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+            box-shadow: none;
           }
 
           [data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] p,

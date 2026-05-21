@@ -22,9 +22,9 @@ backend/app/services/   -> business workflows
 
 - `backend/` owns user-facing HTTP APIs, orchestration, persistence access, and security policy.
 - `model_server/` owns ML inference APIs so model runtime concerns do not pollute the main API process.
-- `chatbot/` is a maintainer-facing UI.
-- `widget/` is a public-facing embeddable client.
-- `demo/host/` proves the widget can live inside a plain host page.
+- `chatbot/` is the logged-in internal workspace for maintainers and admins.
+- `widget/` is the public-facing embeddable client.
+- Both frontends call the same backend chat/retrieval/tool services; they differ by authentication and permissions, not by core answer logic.
 
 ## Full compose stack
 
@@ -33,7 +33,6 @@ api           backend FastAPI service
 chatbot       Streamlit internal UI
 widget        built React widget bundle + loader surface
 model-server  classifier / NER / summarizer inference API
-host          demo host page for embedding
 migrate       Alembic one-shot migration job
 db            PostgreSQL 16 + pgvector
 redis         short-term memory and cache
@@ -79,7 +78,7 @@ product surfaces
   ├── auth
   ├── chatbot + memory
   ├── Streamlit admin
-  └── React widget + host
+  └── React widget
         ↓
 release hardening
   ├── CI gates

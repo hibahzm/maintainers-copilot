@@ -13,7 +13,6 @@ This repository is currently in **Step 1: build the foundation**. The structure 
 - `chatbot/` — Streamlit maintainer UI
 - `migrate/` — one-shot Alembic migration runner
 - `widget/` — embeddable React widget
-- `demo/host/` — tiny host page for widget demos
 - infrastructure via Docker Compose — PostgreSQL + pgvector, Redis, MinIO, Vault
 
 ## Start here

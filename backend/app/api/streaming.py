@@ -48,7 +48,7 @@ async def chat_sse_events(
 
     for chunk in _text_chunks(response.message.content):
         yield sse_event("delta", {"content": chunk})
-        await asyncio.sleep(0)
+        await asyncio.sleep(0.025)
 
     yield sse_event("final", response.model_dump(mode="json"))
     yield sse_event("done", {})
@@ -58,7 +58,7 @@ def sse_event(event: str, data: dict) -> str:
     return f"event: {event}\ndata: {json.dumps(data, separators=(',', ':'))}\n\n"
 
 
-def _text_chunks(text: str, *, size: int = 48) -> list[str]:
+def _text_chunks(text: str, *, size: int = 18) -> list[str]:
     if not text:
         return [""]
     return [text[index : index + size] for index in range(0, len(text), size)]

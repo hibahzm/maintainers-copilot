@@ -34,6 +34,7 @@ button {
   --line: #d8e0ea;
   --line-strong: #b8c4d3;
   --danger: #be123c;
+  --accent-fallback: #0891b2;
   --radius: 8px;
 
   display: flex;
@@ -44,7 +45,7 @@ button {
   border-radius: var(--radius);
   background: var(--shell);
   color: var(--text);
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
 }
 
 .widget-shell.dark {
@@ -83,7 +84,7 @@ button {
   flex: 0 0 auto;
   place-items: center;
   border-radius: var(--radius);
-  background: var(--accent-color, #16a34a);
+  background: var(--accent-color, var(--accent-fallback));
   color: #ffffff;
   font-size: 13px;
   font-weight: 900;
@@ -133,11 +134,11 @@ button {
 .tool-strip span,
 .citation-list span {
   flex: 0 0 auto;
-  border: 1px solid color-mix(in srgb, var(--accent-color, #16a34a) 35%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--accent-color, var(--accent-fallback)) 35%, var(--line));
   border-radius: 999px;
   padding: 5px 9px;
-  background: color-mix(in srgb, var(--accent-color, #16a34a) 10%, transparent);
-  color: color-mix(in srgb, var(--accent-color, #16a34a) 82%, #0b1220);
+  background: color-mix(in srgb, var(--accent-color, var(--accent-fallback)) 10%, transparent);
+  color: color-mix(in srgb, var(--accent-color, var(--accent-fallback)) 82%, #0b1220);
   font-size: 12px;
   font-weight: 800;
 }
@@ -155,7 +156,7 @@ button {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
-  background: linear-gradient(180deg, var(--surface), var(--shell));
+  background: var(--surface);
   scroll-behavior: smooth;
 }
 
@@ -214,9 +215,9 @@ button {
 }
 
 .prompt-grid button:hover {
-  border-color: var(--accent-color, #16a34a);
-  background: color-mix(in srgb, var(--accent-color, #16a34a) 9%, var(--shell));
-  color: color-mix(in srgb, var(--accent-color, #16a34a) 78%, var(--ink));
+  border-color: var(--accent-color, var(--accent-fallback));
+  background: color-mix(in srgb, var(--accent-color, var(--accent-fallback)) 9%, var(--shell));
+  color: color-mix(in srgb, var(--accent-color, var(--accent-fallback)) 78%, var(--ink));
 }
 
 .message {
@@ -245,7 +246,7 @@ button {
 
 .message.user {
   margin-left: auto;
-  background: var(--accent-color, #16a34a);
+  background: var(--accent-color, var(--accent-fallback));
   color: #ffffff;
   font-weight: 650;
 }
@@ -412,8 +413,8 @@ button {
 }
 
 .widget-form textarea:focus {
-  border-color: var(--accent-color, #16a34a);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, #16a34a) 16%, transparent);
+  border-color: var(--accent-color, var(--accent-fallback));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, var(--accent-fallback)) 16%, transparent);
   background: var(--shell);
 }
 
@@ -428,7 +429,7 @@ button {
   min-height: 44px;
   border: 0;
   border-radius: var(--radius);
-  background: var(--accent-color, #16a34a);
+  background: var(--accent-color, var(--accent-fallback));
   color: #ffffff;
   font-weight: 850;
   font-size: 14px;

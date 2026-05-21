@@ -1,4 +1,4 @@
-"""Development bootstrap records for the local Docker demo."""
+"""Development bootstrap records for the local Docker stack."""
 
 from __future__ import annotations
 
@@ -12,8 +12,6 @@ from app.infra.tracing import trace_event
 from app.services.auth_service import hash_password
 
 _DEFAULT_WIDGET_ORIGINS = [
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
     "http://localhost:8501",
     "http://127.0.0.1:8501",
     "http://localhost:5173",
@@ -26,7 +24,7 @@ _DEFAULT_WIDGET_ORIGINS = [
 
 _DEFAULT_WIDGET_THEME = {
     "mode": "light",
-    "accent_color": "#16a34a",
+    "accent_color": "#0891b2",
 }
 
 _DEFAULT_WIDGET_TOOLS = [
@@ -37,10 +35,10 @@ _DEFAULT_WIDGET_TOOLS = [
 
 
 async def bootstrap_dev_data(settings: Settings) -> None:
-    """Create a predictable admin and demo widget for local Compose runs.
+    """Create a predictable admin and widget config for local Compose runs.
 
     The bootstrap is intentionally narrow: it only touches the configured dev
-    admin email and only adds required local demo origins to an existing widget,
+    admin email and only adds required local origins to an existing widget,
     so admin edits to greeting, theme, and tools are preserved across restarts.
     """
 

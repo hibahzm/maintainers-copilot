@@ -43,7 +43,6 @@ class Settings(BaseSettings):
     cors_allowed_origins: list[str] = [
         "http://localhost:4173",
         "http://localhost:5173",
-        "http://localhost:8080",
         "http://localhost:8501",
     ]
     widget_public_url: str = "http://localhost:4173"
