@@ -1,42 +1,118 @@
 import json
-import os
 
 import httpx
 import streamlit as st
 
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000").rstrip("/")
+from ui import (
+    API_BASE_URL,
+    PUBLIC_API_BASE_URL,
+    TOOL_OPTIONS,
+    auth_headers,
+    render_user_sidebar,
+    require_admin,
+)
 
-st.title("Widget Config")
-st.caption("Admin-only widget configuration surface.")
+admin = require_admin()
+render_user_sidebar()
 
-access_token = st.session_state.get("access_token", "")
-current_user = st.session_state.get("current_user")
+st.markdown(
+    """
+    <div class="mc-page-header">
+      <div>
+        <h1>Widget config</h1>
+        <p>Control the public React widget: origins, theme, greeting, and allowed tools.</p>
+      </div>
+      <div class="mc-header-actions">
+        <span class="mc-pill">Admin only</span>
+        <span class="mc-pill neutral">Runtime config</span>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+st.write("")
 
-if not access_token:
-    st.warning("Log in with an admin account first.")
-    st.stop()
-if current_user:
-    st.info(f"Signed in: {current_user['email']} ({current_user['role']})")
-    if current_user.get("role") != "admin":
-        st.warning("This page requires an admin token.")
+default_origins = "\n".join(
+    [
+        "http://localhost:8080",
+        "http://127.0.0.1:8080",
+        "http://localhost:8501",
+        "http://127.0.0.1:8501",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:4173",
+        "http://127.0.0.1:4173",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ]
+)
 
-headers = {"Authorization": f"Bearer {access_token}"}
+form_col, preview_col = st.columns([0.62, 0.38], gap="large")
 
-with st.form("widget-config-form"):
-    widget_id = st.text_input("Widget ID", value="maintainers-copilot")
-    allowed_origins_text = st.text_area(
-        "Allowed origins, one per line",
-        value="http://localhost:5173\nhttp://localhost:8080\nhttp://localhost:8501",
+with form_col:
+    with st.form("widget-config-form"):
+        st.markdown("### Public widget")
+        widget_id = st.text_input("Widget ID", value="maintainers-copilot")
+        allowed_origins_text = st.text_area(
+            "Allowed origins",
+            value=default_origins,
+            height=190,
+            help="One origin per line. The demo host is http://localhost:8080.",
+        )
+        greeting = st.text_area(
+            "Greeting",
+            value="Ask about triage, project context, or an issue you are trying to route.",
+            height=100,
+        )
+
+        theme_cols = st.columns(2)
+        with theme_cols[0]:
+            accent_color = st.color_picker("Accent color", value="#16a34a")
+        with theme_cols[1]:
+            mode = st.selectbox("Theme mode", ["light", "dark"], index=0)
+
+        selected_tool_labels = st.multiselect(
+            "Tools widget visitors can use",
+            list(TOOL_OPTIONS.keys()),
+            default=["RAG search", "Issue classifier", "Entity extractor"],
+            help="Disabling a tool prevents the public widget endpoint from requesting it.",
+        )
+
+        submitted = st.form_submit_button("Save widget config", type="primary")
+
+with preview_col:
+    st.markdown("### Surface map")
+    st.markdown(
+        """
+        <div class="mc-port-grid">
+          <div class="mc-port">
+            <code>8501</code>
+            <p class="mc-caption">Authenticated Streamlit workspace.</p>
+          </div>
+          <div class="mc-port">
+            <code>4173</code>
+            <p class="mc-caption">Standalone React widget bundle.</p>
+          </div>
+          <div class="mc-port">
+            <code>8080</code>
+            <p class="mc-caption">Static host app embedding the widget.</p>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
-    greeting = st.text_area("Greeting", value="How can I help maintainers today?")
-    accent_color = st.text_input("Accent color", value="#2563eb")
-    mode = st.selectbox("Theme mode", ["light", "dark"], index=0)
-    enabled_tools = st.multiselect(
-        "Enabled tools",
-        ["rag_search", "classify_issue", "extract_entities", "summarize_issue"],
-        default=["rag_search"],
+    st.write("")
+    st.markdown("### Install snippet")
+    st.code(
+        f"""<script
+  src="{PUBLIC_API_BASE_URL}/widget.js"
+  data-widget-id="maintainers-copilot"
+  data-widget-url="http://localhost:4173"
+  data-api-base="{PUBLIC_API_BASE_URL}"
+  data-label="Ask copilot"
+></script>""",
+        language="html",
     )
-    submitted = st.form_submit_button("Save widget config", type="primary")
 
 if submitted:
     payload = {
@@ -46,18 +122,17 @@ if submitted:
         ],
         "theme": {"mode": mode, "accent_color": accent_color},
         "greeting": greeting,
-        "enabled_tools": enabled_tools,
+        "enabled_tools": [TOOL_OPTIONS[label] for label in selected_tool_labels],
     }
     try:
         response = httpx.put(
             f"{API_BASE_URL}/widget/admin/config/{widget_id}",
             json=payload,
-            headers=headers,
+            headers=auth_headers(),
             timeout=20.0,
         )
         response.raise_for_status()
         st.success("Widget config saved.")
-        st.json(response.json())
     except httpx.HTTPStatusError as exc:
         detail = exc.response.json().get("detail", exc.response.text)
         st.error(f"Could not save widget config: {detail}")
@@ -65,25 +140,28 @@ if submitted:
         st.error(f"Widget config request failed: {exc}")
 
 st.divider()
-st.subheader("Existing configs")
+st.markdown("### Existing configs")
+try:
+    response = httpx.get(
+        f"{API_BASE_URL}/widget/admin/configs",
+        headers=auth_headers(),
+        timeout=20.0,
+    )
+    response.raise_for_status()
+    configs = response.json()
+except httpx.HTTPStatusError as exc:
+    detail = exc.response.json().get("detail", exc.response.text)
+    st.error(f"Could not load widget configs: {detail}")
+    st.stop()
+except httpx.HTTPError as exc:
+    st.error(f"Widget config request failed: {exc}")
+    st.stop()
 
-if st.button("Load configs"):
-    try:
-        response = httpx.get(
-            f"{API_BASE_URL}/widget/admin/configs",
-            headers=headers,
-            timeout=20.0,
-        )
-        response.raise_for_status()
-        configs = response.json()
-        if configs:
-            for config in configs:
-                with st.expander(config["widget_id"]):
-                    st.code(json.dumps(config, indent=2), language="json")
-        else:
-            st.info("No widget configs saved yet.")
-    except httpx.HTTPStatusError as exc:
-        detail = exc.response.json().get("detail", exc.response.text)
-        st.error(f"Could not load widget configs: {detail}")
-    except httpx.HTTPError as exc:
-        st.error(f"Widget config request failed: {exc}")
+if not configs:
+    st.info("No widget configs saved yet.")
+else:
+    for config in configs:
+        with st.expander(config["widget_id"], expanded=config["widget_id"] == "maintainers-copilot"):
+            st.code(json.dumps(config, indent=2), language="json")
+
+st.caption(f"Admin: {admin['email']}")

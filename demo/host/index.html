@@ -2,23 +2,607 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Maintainers Copilot Demo Host</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Repository Console - Maintainers Copilot Demo</title>
     <style>
+      :root {
+        color-scheme: light;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        --bg: #f4f7fb;
+        --shell: #ffffff;
+        --ink: #0b1220;
+        --text: #172033;
+        --muted: #64748b;
+        --line: #d8e0ea;
+        --accent: #16a34a;
+        --accent-strong: #15803d;
+        --info: #0f766e;
+        --warning: #b45309;
+        --danger: #be123c;
+        --radius: 8px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: system-ui, sans-serif;
-        margin: 48px;
-        color: #0f172a;
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button,
+      .issue,
+      nav a {
+        cursor: pointer;
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+
+      .app-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        padding: 22px;
+        background: #0b1220;
+        color: #e5edf7;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .mark {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: var(--radius);
+        background: var(--accent);
+        color: #ffffff;
+        font-weight: 900;
+      }
+
+      .brand strong,
+      .brand span {
+        display: block;
+      }
+
+      .brand strong {
+        color: #ffffff;
+        font-size: 15px;
+      }
+
+      .brand span {
+        color: #9aa8bb;
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      nav {
+        display: grid;
+        gap: 6px;
+      }
+
+      nav a {
+        border: 1px solid transparent;
+        border-radius: var(--radius);
+        padding: 10px 11px;
+        color: #cbd5e1;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      nav a:hover,
+      nav a.active {
+        border-color: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+      }
+
+      .sidebar-note {
+        margin-top: auto;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius);
+        padding: 13px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .sidebar-note strong {
+        display: block;
+        margin-bottom: 6px;
+        color: #ffffff;
+      }
+
+      .sidebar-note p {
+        margin: 0;
+        color: #b8c4d3;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      main {
+        display: grid;
+        gap: 22px;
+        align-content: start;
+        padding: 26px;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--shell);
+        padding: 18px;
+        box-shadow: 0 12px 34px rgba(15, 23, 42, 0.06);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        color: var(--ink);
+        font-size: 30px;
+        line-height: 1.1;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        color: var(--ink);
+        font-size: 19px;
+        letter-spacing: 0;
+      }
+
+      header p,
+      .muted {
+        margin-top: 8px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 9px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        border: 1px solid #bbf7d0;
+        border-radius: 999px;
+        padding: 5px 11px;
+        background: #f0fdf4;
+        color: #166534;
+        font-size: 12px;
+        font-weight: 850;
+      }
+
+      .button {
+        min-height: 42px;
+        border: 1px solid var(--accent);
+        border-radius: var(--radius);
+        padding: 0 15px;
+        background: var(--accent);
+        color: #ffffff;
+        font-weight: 850;
+      }
+
+      .button.secondary {
+        border-color: var(--line);
+        background: #ffffff;
+        color: var(--ink);
+      }
+
+      .button:hover {
+        filter: brightness(0.96);
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .metric,
+      .panel,
+      .issue {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--shell);
+      }
+
+      .metric {
+        padding: 15px;
+      }
+
+      .metric strong,
+      .metric span {
+        display: block;
+      }
+
+      .metric strong {
+        color: var(--ink);
+        font-size: 28px;
+        line-height: 1;
+      }
+
+      .metric span {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 18px;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+
+      .panel-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 13px;
+      }
+
+      .search {
+        min-height: 38px;
+        width: 100%;
+        max-width: 280px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 0 12px;
+        color: var(--text);
+        background: #f8fafc;
+      }
+
+      .issue-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .issue {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: start;
+        padding: 14px;
+        transition:
+          border-color 0.18s ease,
+          background 0.18s ease;
+      }
+
+      .issue:hover,
+      .issue.selected {
+        border-color: var(--accent);
+        background: #fbfefc;
+      }
+
+      .issue strong {
+        display: block;
+        color: var(--ink);
+        font-size: 15px;
+        line-height: 1.35;
+      }
+
+      .issue p {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .tag {
+        border-radius: 999px;
+        padding: 5px 9px;
+        font-size: 11px;
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+
+      .bug {
+        background: #fff1f2;
+        color: var(--danger);
+      }
+
+      .docs {
+        background: #f0fdfa;
+        color: var(--info);
+      }
+
+      .feature {
+        background: #eff6ff;
+        color: #1d4ed8;
+      }
+
+      .question {
+        background: #fffbeb;
+        color: var(--warning);
+      }
+
+      .detail-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .detail {
+        border-left: 3px solid var(--accent);
+        border-radius: 0 var(--radius) var(--radius) 0;
+        padding: 10px 12px;
+        background: #f8fafc;
+      }
+
+      .detail strong {
+        display: block;
+        color: var(--ink);
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+
+      .detail span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      @media (max-width: 1080px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .app-sidebar {
+          position: static;
+        }
+
+        .metrics,
+        .content-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        main {
+          padding: 14px;
+        }
+
+        header,
+        .panel-head {
+          display: block;
+        }
+
+        .header-actions {
+          justify-content: flex-start;
+          margin-top: 14px;
+        }
+
+        .metrics,
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .issue {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
   <body>
-    <h1>Demo Host</h1>
-    <p>This page embeds the Maintainers Copilot widget through the backend loader.</p>
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <div class="brand">
+          <span class="mark">RC</span>
+          <div>
+            <strong>Repository Console</strong>
+            <span>Host application</span>
+          </div>
+        </div>
+
+        <nav aria-label="Demo navigation">
+          <a href="#" class="active">Issue queue</a>
+          <a href="#">Triage board</a>
+          <a href="#">Docs signals</a>
+          <a href="#">Release watch</a>
+        </nav>
+
+        <div class="sidebar-note">
+          <strong>Embedded widget</strong>
+          <p>
+            This page proves the public widget can run inside a normal host app while
+            admins manage configuration in the authenticated workspace.
+          </p>
+        </div>
+      </aside>
+
+      <main>
+        <header>
+          <div>
+            <h1>Repository support queue</h1>
+            <p>
+              A realistic host surface for the Maintainers Copilot widget. Select an
+              issue, then open the copilot to ask for retrieval context, classification,
+              entities, or triage help.
+            </p>
+          </div>
+          <div class="header-actions">
+            <span class="pill">Widget allowed</span>
+            <button class="button secondary" type="button" id="copy-prompt">Copy selected prompt</button>
+            <button class="button" type="button" onclick="window.MaintainersCopilot?.open?.()">
+              Open copilot
+            </button>
+          </div>
+        </header>
+
+        <section class="metrics" aria-label="Queue metrics">
+          <div class="metric">
+            <strong>24</strong>
+            <span>open issues</span>
+          </div>
+          <div class="metric">
+            <strong>8</strong>
+            <span>need maintainer review</span>
+          </div>
+          <div class="metric">
+            <strong>5</strong>
+            <span>docs signals</span>
+          </div>
+          <div class="metric">
+            <strong>3</strong>
+            <span>blocked releases</span>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Recent issues</h2>
+                <p class="muted">The widget can use this context when you paste or ask about an issue.</p>
+              </div>
+              <input class="search" type="search" placeholder="Filter issues" aria-label="Filter issues" />
+            </div>
+
+            <div class="issue-list" aria-label="Example issues">
+              <article
+                class="issue selected"
+                data-prompt="Use RAG to explain context for pandas read_csv empty-file crashes, then classify this issue."
+              >
+                <div>
+                  <strong>read_csv crashes when the input file is empty</strong>
+                  <p>Reporter included a traceback on Python 3.12 and pandas 2.2. Needs routing and prior-context lookup.</p>
+                </div>
+                <span class="tag bug">Bug</span>
+              </article>
+
+              <article
+                class="issue"
+                data-prompt="Classify this issue and extract entities: Document timezone behavior for rolling windows."
+              >
+                <div>
+                  <strong>Document timezone behavior for rolling windows</strong>
+                  <p>Multiple linked discussions point to the same confusion around UTC handling.</p>
+                </div>
+                <span class="tag docs">Docs</span>
+              </article>
+
+              <article
+                class="issue"
+                data-prompt="Find related context for a faster path for nullable integer joins and summarize the triage risk."
+              >
+                <div>
+                  <strong>Add a faster path for nullable integer joins</strong>
+                  <p>Performance regression on large joins with nullable Int64 dtype.</p>
+                </div>
+                <span class="tag feature">Feature</span>
+              </article>
+
+              <article
+                class="issue"
+                data-prompt="Classify this support question: How do I handle missing values in custom aggregations?"
+              >
+                <div>
+                  <strong>How do I handle missing values in custom aggregations?</strong>
+                  <p>User is confused about skipna and a custom aggregation function.</p>
+                </div>
+                <span class="tag question">Question</span>
+              </article>
+            </div>
+          </div>
+
+          <aside class="panel" aria-label="Selected issue">
+            <h2>Demo flow</h2>
+            <p class="muted">
+              Use this host page during the demo to show the production-shaped widget
+              running outside Streamlit.
+            </p>
+            <div class="detail-list">
+              <div class="detail">
+                <strong>1. Login</strong>
+                <span>Open localhost:8501 and sign in as the seeded admin.</span>
+              </div>
+              <div class="detail">
+                <strong>2. Configure</strong>
+                <span>Save the widget config and confirm localhost:8080 is allowed.</span>
+              </div>
+              <div class="detail">
+                <strong>3. Ask</strong>
+                <span>Open the widget here and ask the selected prompt.</span>
+              </div>
+              <div class="detail">
+                <strong>4. Inspect</strong>
+                <span>Return to the chat workspace for tools and citations, then open the tracing backend for spans.</span>
+              </div>
+            </div>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const issues = document.querySelectorAll(".issue");
+      const copyButton = document.querySelector("#copy-prompt");
+      let selectedPrompt = document.querySelector(".issue.selected")?.dataset.prompt || "";
+
+      issues.forEach((issue) => {
+        issue.addEventListener("click", () => {
+          issues.forEach((item) => item.classList.remove("selected"));
+          issue.classList.add("selected");
+          selectedPrompt = issue.dataset.prompt || "";
+        });
+      });
+
+      copyButton.addEventListener("click", async () => {
+        if (!selectedPrompt) return;
+        try {
+          await navigator.clipboard.writeText(selectedPrompt);
+          copyButton.textContent = "Prompt copied";
+          setTimeout(() => {
+            copyButton.textContent = "Copy selected prompt";
+          }, 1400);
+        } catch {
+          window.prompt("Copy this prompt", selectedPrompt);
+        }
+      });
+    </script>
+
     <script
-      src="http://localhost:8000/widget/widget.js"
+      src="http://localhost:8000/widget.js"
       data-widget-id="maintainers-copilot"
       data-widget-url="http://localhost:4173"
       data-api-base="http://localhost:8000"
+      data-label="Ask copilot"
     ></script>
   </body>
 </html>

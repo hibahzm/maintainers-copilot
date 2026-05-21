@@ -12,6 +12,7 @@ COPY chatbot/pyproject.toml ./pyproject.toml
 RUN uv sync --no-dev --no-install-project
 
 COPY chatbot/app.py ./app.py
+COPY chatbot/ui.py ./ui.py
 COPY chatbot/pages ./pages
 
 EXPOSE 8501

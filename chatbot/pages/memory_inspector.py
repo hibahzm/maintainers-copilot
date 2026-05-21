@@ -1,31 +1,42 @@
-import os
+from html import escape
 
 import httpx
 import streamlit as st
 
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000").rstrip("/")
+from ui import API_BASE_URL, auth_headers, render_user_sidebar, require_login
 
-st.title("Memory Inspector")
-st.caption("Review long-term memories saved for the signed-in user.")
+require_login()
+render_user_sidebar()
 
-access_token = st.session_state.get("access_token", "")
-current_user = st.session_state.get("current_user")
+st.markdown(
+    """
+    <div class="mc-page-header">
+      <div>
+        <h1>Memory</h1>
+        <p>Review long-term memories created through explicit chat requests.</p>
+      </div>
+      <div class="mc-header-actions">
+        <span class="mc-pill neutral">Explicit writes only</span>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+st.write("")
 
-if not access_token:
-    st.warning("Log in first to inspect your memories.")
-    st.stop()
+left, right = st.columns([0.7, 0.3], gap="large")
 
-if current_user:
-    st.success(f"Signed in: {current_user['email']} ({current_user['role']})")
+with right:
+    st.markdown("### Controls")
+    limit = st.slider("Memories to load", min_value=1, max_value=100, value=50)
+    refresh = st.button("Refresh memories", type="primary", use_container_width=True)
 
-limit = st.slider("Memories to load", min_value=1, max_value=100, value=50)
-
-if st.button("Refresh memories", type="primary") or "memory_items" not in st.session_state:
+if refresh or "memory_items" not in st.session_state:
     try:
         response = httpx.get(
             f"{API_BASE_URL}/memory",
             params={"limit": limit},
-            headers={"Authorization": f"Bearer {access_token}"},
+            headers=auth_headers(),
             timeout=20.0,
         )
         response.raise_for_status()
@@ -39,11 +50,28 @@ if st.button("Refresh memories", type="primary") or "memory_items" not in st.ses
         st.stop()
 
 items = st.session_state.get("memory_items", [])
-if not items:
-    st.info("No long-term memories saved yet.")
-    st.stop()
 
-for item in items:
-    with st.expander(f"{item['memory_type']} · {item['created_at']}"):
-        st.write(item["content"])
-        st.caption(f"Memory ID: {item['id']}")
+with left:
+    if not items:
+        st.info("No long-term memories saved yet.")
+        st.stop()
+
+    for item in items:
+        content = escape(str(item["content"]))
+        memory_id = escape(str(item["id"]))
+        memory_type = escape(str(item["memory_type"]))
+        created_at = escape(str(item["created_at"]))
+        st.markdown(
+            f"""
+            <div class="mc-card">
+              <div class="mc-pill-row">
+                <span class="mc-pill">{memory_type}</span>
+                <span class="mc-pill neutral">{created_at}</span>
+              </div>
+              <p style="margin-top:.75rem">{content}</p>
+              <p class="mc-caption">Memory ID: {memory_id}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.write("")
