@@ -14,6 +14,7 @@ from pydantic import SecretStr
 
 from app.api.schemas.chat import ChatToolResult
 from app.infra.exceptions import ToolFailure
+from app.infra.tracing import trace_event, trace_span
 from app.services.chat_tools.runner import ChatToolRunner
 from app.services.rag_service import RagService
 
@@ -75,6 +76,15 @@ class OpenAIChatAgentService:
         if not self.is_configured:
             raise ToolFailure("OpenAI chat agent is not configured.")
 
+        trace_event(
+            "agent.respond.start",
+            model=self.model,
+            message_count=len(messages),
+            max_tool_rounds=self.max_tool_rounds,
+            use_rag=use_rag,
+            allow_summarizer=allow_summarizer,
+            allow_memory_write=allow_memory_write,
+        )
         tool_schemas = self._tool_schemas(
             use_rag=use_rag,
             allow_summarizer=allow_summarizer,
@@ -89,7 +99,18 @@ class OpenAIChatAgentService:
 
         for _round in range(self.max_tool_rounds):
             calls = self._function_calls(response)
+            trace_event(
+                "agent.tool_calls",
+                round=_round + 1,
+                calls=[call.get("name") for call in calls],
+            )
             if not calls:
+                trace_event(
+                    "agent.respond.end",
+                    route="final_answer",
+                    tool_results=len(tool_results),
+                    citations=len(citations),
+                )
                 return AgentRunResult(
                     answer=self._extract_text(response),
                     citations=citations,
@@ -129,6 +150,12 @@ class OpenAIChatAgentService:
                 "I reached the tool-call limit before a final answer. "
                 "Here are the tool results I found."
             )
+        trace_event(
+            "agent.respond.end",
+            route="tool_limit",
+            tool_results=len(tool_results),
+            citations=len(citations),
+        )
         return AgentRunResult(
             answer=final_text,
             citations=list(dict.fromkeys(citations)),
@@ -146,6 +173,7 @@ class OpenAIChatAgentService:
         allow_memory_write: bool,
     ) -> tuple[dict[str, Any], ChatToolResult | None]:
         name = str(call.get("name", ""))
+        trace_event("agent.tool.start", tool=name)
         try:
             args = json.loads(call.get("arguments") or "{}")
         except (TypeError, json.JSONDecodeError):
@@ -258,15 +286,22 @@ class OpenAIChatAgentService:
             "Content-Type": "application/json",
         }
         try:
-            async with httpx.AsyncClient(
-                base_url=self.base_url,
-                timeout=self.timeout_seconds,
-                transport=self.transport,
-            ) as client:
-                response = await client.post("/responses", headers=headers, json=payload)
-                response.raise_for_status()
-                data: dict[str, Any] = response.json()
-                return data
+            with trace_span(
+                "llm.responses",
+                model=self.model,
+                tools=len(tools),
+                has_previous_response=bool(previous_response_id),
+            ):
+                async with httpx.AsyncClient(
+                    base_url=self.base_url,
+                    timeout=self.timeout_seconds,
+                    transport=self.transport,
+                ) as client:
+                    response = await client.post("/responses", headers=headers, json=payload)
+                    response.raise_for_status()
+                    data: dict[str, Any] = response.json()
+                    trace_event("llm.response", response_id=data.get("id"))
+                    return data
         except httpx.HTTPError as exc:
             raise ToolFailure("OpenAI chat agent request failed.") from exc
         except ValueError as exc:

@@ -81,14 +81,15 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 ### 1.3 Wire tracing from the beginning
 
 **Add / complete**
-- `backend/app/infra/tracing.py`
-- trace settings in Vault-backed config
-- first request-level trace / request ID plumbing
-- tracing choice recorded in `docs/DECISIONS.md`
+- `backend/app/infra/tracing.py` ✅
+- trace settings in Vault-backed config ✅
+- first request-level trace / request ID plumbing ✅
+- safe structured trace events for chat, tool, RAG, and LLM paths ✅
+- tracing choice recorded in `docs/DECISIONS.md` ✅
 
 **Done when**
-- later LLM, tool, and retrieval spans have a place to attach
-- logs and traces can share a trace ID from the start
+- later LLM, tool, and retrieval spans have a place to attach ✅
+- logs and traces can share a trace ID from the start ✅
 
 ### 1.4 Establish the database baseline
 

@@ -6,6 +6,7 @@ import httpx
 
 from app.api.schemas.classifier import ClassifyIssueResponse
 from app.infra.exceptions import ToolFailure
+from app.infra.tracing import trace_span
 
 
 class MaintainerToolsService:
@@ -38,15 +39,16 @@ class MaintainerToolsService:
         return await self._post("/summarize", {"title": title, "body": body, "text": text})
 
     async def _post(self, path: str, payload: dict[str, Any]) -> dict[str, Any]:
-        try:
-            async with httpx.AsyncClient(timeout=self.timeout_seconds) as client:
-                response = await client.post(f"{self.model_server_url}{path}", json=payload)
-                response.raise_for_status()
-        except httpx.HTTPStatusError as exc:
-            detail = exc.response.text if exc.response is not None else ""
-            raise ToolFailure(f"Model server tool {path} failed: {detail}") from exc
-        except httpx.HTTPError as exc:
-            raise ToolFailure(f"Model server tool {path} request failed.") from exc
+        with trace_span("model_server.tool", path=path, payload_keys=sorted(payload.keys())):
+            try:
+                async with httpx.AsyncClient(timeout=self.timeout_seconds) as client:
+                    response = await client.post(f"{self.model_server_url}{path}", json=payload)
+                    response.raise_for_status()
+            except httpx.HTTPStatusError as exc:
+                detail = exc.response.text if exc.response is not None else ""
+                raise ToolFailure(f"Model server tool {path} failed: {detail}") from exc
+            except httpx.HTTPError as exc:
+                raise ToolFailure(f"Model server tool {path} request failed.") from exc
 
-        data: dict[str, Any] = response.json()
-        return data
+            data: dict[str, Any] = response.json()
+            return data

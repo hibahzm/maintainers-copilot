@@ -5,6 +5,7 @@ from uuid import UUID, uuid4
 from app.api.schemas.chat import ChatResponse, ChatToolResult
 from app.domain.chat import Message
 from app.infra.exceptions import ToolFailure
+from app.infra.tracing import trace_event
 from app.services.chat_agent.openai_agent import AgentRunResult, OpenAIChatAgentService
 from app.services.chat_tools.renderer import render_tool_answer
 from app.services.chat_tools.runner import ChatToolRunner
@@ -50,6 +51,17 @@ class ChatService:
         stored_messages = await self._load_short_term_messages(conversation_id)
         conversation_messages = self._merge_short_term_messages(stored_messages, messages)
         latest_user_message = self._latest_user_message(messages)
+        trace_event(
+            "chat.respond.start",
+            conversation_id=response_conversation_id,
+            incoming_messages=len(messages),
+            stored_messages=len(stored_messages),
+            use_rag=use_rag,
+            top_k=top_k,
+            allow_summarizer=allow_summarizer,
+            allow_memory_write=allow_memory_write,
+            authenticated=bool(user_id),
+        )
 
         if latest_user_message is None:
             response = ChatResponse(
@@ -64,6 +76,7 @@ class ChatService:
                 conversation_messages,
                 response,
             )
+            trace_event("chat.respond.end", route="empty_prompt")
             return response
 
         agent_response = await self._run_agent(
@@ -85,6 +98,12 @@ class ChatService:
                 response_conversation_id,
                 conversation_messages,
                 response,
+            )
+            trace_event(
+                "chat.respond.end",
+                route="openai_agent",
+                tool_results=len(agent_response.tool_results),
+                citations=len(agent_response.citations),
             )
             return response
 
@@ -110,6 +129,11 @@ class ChatService:
                 conversation_messages,
                 response,
             )
+            trace_event(
+                "chat.respond.end",
+                route="deterministic_tools",
+                tool_results=[result.name for result in tool_results],
+            )
             return response
 
         if not use_rag:
@@ -128,6 +152,7 @@ class ChatService:
                 conversation_messages,
                 response,
             )
+            trace_event("chat.respond.end", route="rag_disabled")
             return response
 
         try:
@@ -153,6 +178,7 @@ class ChatService:
                 conversation_messages,
                 response,
             )
+            trace_event("chat.respond.end", route="rag_failed")
             return response
 
         response = ChatResponse(
@@ -179,6 +205,7 @@ class ChatService:
             conversation_messages,
             response,
         )
+        trace_event("chat.respond.end", route="rag_direct", citations=len(rag_response.citations))
         return response
 
     async def _run_agent(

@@ -1,12 +1,20 @@
 """Trace/span helpers for request and tool execution trees."""
 
+import json
+from collections.abc import Mapping, Sequence
+from contextlib import contextmanager
 from contextvars import ContextVar, Token
 from dataclasses import dataclass
+from datetime import UTC, datetime
+from time import perf_counter
+from typing import Any
 from uuid import uuid4
 
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import Response
+
+from app.infra.redaction import redact
 
 
 REQUEST_ID_HEADER = "X-Request-ID"
@@ -78,5 +86,52 @@ def current_trace_context() -> TraceContext | None:
     return TraceContext(request_id=request_id, trace_id=trace_id)
 
 
+def trace_event(event: str, **attributes: Any) -> None:
+    """Emit one redacted structured trace event to stdout."""
+    context = current_trace_context()
+    record = {
+        "timestamp": datetime.now(UTC).isoformat(),
+        "event": event,
+        "request_id": context.request_id if context else None,
+        "trace_id": context.trace_id if context else None,
+        "attributes": _redact_value(attributes),
+    }
+    print(json.dumps(record, sort_keys=True, default=str), flush=True)
+
+
+@contextmanager
+def trace_span(name: str, **attributes: Any):
+    """Emit start/end/error events around a synchronous or async-awaited block."""
+    start = perf_counter()
+    trace_event(f"{name}.start", **attributes)
+    try:
+        yield
+    except Exception as exc:
+        trace_event(
+            f"{name}.error",
+            duration_ms=round((perf_counter() - start) * 1000, 2),
+            error_type=type(exc).__name__,
+            error=str(exc),
+            **attributes,
+        )
+        raise
+    else:
+        trace_event(
+            f"{name}.end",
+            duration_ms=round((perf_counter() - start) * 1000, 2),
+            **attributes,
+        )
+
+
 def _new_id() -> str:
     return uuid4().hex
+
+
+def _redact_value(value: Any) -> Any:
+    if isinstance(value, str):
+        return redact(value)
+    if isinstance(value, Mapping):
+        return {str(key): _redact_value(item) for key, item in value.items()}
+    if isinstance(value, Sequence) and not isinstance(value, bytes | bytearray | str):
+        return [_redact_value(item) for item in value]
+    return value

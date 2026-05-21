@@ -2,6 +2,28 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-21 — Safe structured trace events added
+
+### Added
+- `backend/tests/infra/test_tracing.py`
+
+### Updated
+- `backend/app/infra/redaction.py`
+- `backend/app/infra/tracing.py`
+- `backend/app/services/chat_agent/openai_agent.py`
+- `backend/app/services/chat_service.py`
+- `backend/app/services/chat_tools/model_server_tools.py`
+- `backend/app/services/chat_tools/runner.py`
+- `backend/app/services/rag_service.py`
+- `docs/BUILD_PLAN.md`
+- `docs/RUNBOOK.md`
+- `docs/SECURITY.md`
+
+### Design notes
+- The backend now emits redacted JSON trace events for chat routing, OpenAI agent calls, tool selection, model-server tool calls, RAG embedding/retrieval/answering, and LLM Responses API calls.
+- Trace events carry the existing `X-Request-ID` and `X-Trace-ID`, so Docker logs can reconstruct a request tree even before a hosted trace UI is connected.
+- The redaction helper now preserves the safe key prefix while masking the secret value, and tests cover API-key/bearer redaction plus trace-event context binding.
+
 ## 2026-05-21 — Vault init container adopted
 
 ### Added

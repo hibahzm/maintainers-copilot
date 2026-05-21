@@ -46,6 +46,8 @@ Initial patterns live in `backend/app/infra/redaction.py` and currently cover:
 
 This list is deliberately small for now; each new pattern should be justified by a real leak path or test case.
 
+Trace events must avoid raw issue/user text where possible and log metadata instead, such as character counts, route names, tool names, model names, durations, and citation counts. When a string is emitted, it passes through the redaction helper first.
+
 
 ## Model-server summarizer secret
 

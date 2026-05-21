@@ -10,5 +10,5 @@ def redact(text: str) -> str:
     """Mask obvious secrets before logs or traces are emitted."""
     redacted = text
     for pattern in SECRET_PATTERNS:
-        redacted = pattern.sub(r"[REDACTED]", redacted)
+        redacted = pattern.sub(lambda match: f"{match.group(1)}[REDACTED]", redacted)
     return redacted

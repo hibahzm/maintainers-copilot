@@ -5,6 +5,7 @@ from uuid import UUID
 from app.api.schemas.chat import ChatToolResult
 from app.api.schemas.memory import MemoryCreateRequest
 from app.infra.exceptions import ToolFailure
+from app.infra.tracing import trace_event, trace_span
 from app.services.chat_tools.model_server_tools import MaintainerToolsService
 from app.services.chat_tools.selector import select_tools
 from app.services.chat_tools.text import memory_content, split_issue_text
@@ -34,26 +35,28 @@ class ChatToolRunner:
         allow_summarizer: bool,
         allow_memory_write: bool,
     ) -> list[ChatToolResult]:
-        selected_tools = select_tools(
-            text,
-            tools=tools,
-            use_rag=use_rag,
-            allow_summarizer=allow_summarizer,
-            allow_memory_write=allow_memory_write,
-        )
-        memory_result = await self._run_memory_tool(
-            text,
-            user_id=user_id,
-            selected_tools=selected_tools,
-            allow_memory_write=allow_memory_write,
-        )
-        if memory_result is not None:
-            return [memory_result]
-        return await self._run_issue_tools(
-            text,
-            selected_tools=selected_tools,
-            allow_summarizer=allow_summarizer,
-        )
+        with trace_span("chat_tools.run", requested_tools=tools, text_chars=len(text)):
+            selected_tools = select_tools(
+                text,
+                tools=tools,
+                use_rag=use_rag,
+                allow_summarizer=allow_summarizer,
+                allow_memory_write=allow_memory_write,
+            )
+            trace_event("chat_tools.selected", selected_tools=sorted(selected_tools))
+            memory_result = await self._run_memory_tool(
+                text,
+                user_id=user_id,
+                selected_tools=selected_tools,
+                allow_memory_write=allow_memory_write,
+            )
+            if memory_result is not None:
+                return [memory_result]
+            return await self._run_issue_tools(
+                text,
+                selected_tools=selected_tools,
+                allow_summarizer=allow_summarizer,
+            )
 
     async def _run_issue_tools(
         self,

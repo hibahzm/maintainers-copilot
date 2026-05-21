@@ -54,6 +54,23 @@ The API owns two request-level identifiers from the first user-facing hop:
 
 If a caller does not provide them, the API creates both and returns them in the response headers. Later LLM, tool, and retrieval spans attach beneath the same trace ID.
 
+The backend also emits redacted JSON trace events to stdout for the main product path:
+
+- `chat.respond.*`
+- `agent.*`
+- `llm.responses.*`
+- `chat_tools.*`
+- `model_server.tool.*`
+- `rag.*`
+
+Inspect them through Docker logs:
+
+```bash
+docker compose logs -f api
+```
+
+These local trace events are provider-neutral. The accepted external trace UI choice remains Langfuse, but the shipped code does not require a Langfuse SDK to boot.
+
 ## Future sections
 
 - local startup
