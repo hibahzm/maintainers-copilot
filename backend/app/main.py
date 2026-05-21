@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+import os
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -23,6 +24,7 @@ async def lifespan(app: FastAPI):
         app.state.runtime_secrets = await vault.load_runtime_secrets()
         assert_runtime_secrets_non_empty(app.state.runtime_secrets)
         assert_tracing_configured(settings, app.state.runtime_secrets)
+        _configure_langfuse_environment(app.state.runtime_secrets)
         assert_eval_thresholds_enabled(Path(settings.eval_thresholds_path))
         yield
     finally:
@@ -50,3 +52,9 @@ app.include_router(widget.router)
 @app.get("/health", tags=["system"])
 async def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+def _configure_langfuse_environment(runtime_secrets) -> None:
+    os.environ["LANGFUSE_PUBLIC_KEY"] = runtime_secrets.langfuse_public_key.get_secret_value()
+    os.environ["LANGFUSE_SECRET_KEY"] = runtime_secrets.langfuse_secret_key.get_secret_value()
+    os.environ["LANGFUSE_BASE_URL"] = settings.tracing_host

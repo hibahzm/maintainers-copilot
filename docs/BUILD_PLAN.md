@@ -62,6 +62,7 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - the compose file declares the whole production-shaped stack, not just infra
 - `migrate` runs before `api`
 - the service names match the architecture and runbook
+- MinIO has concrete buckets for artifacts, evals, RAG blobs, and conversation snapshots ✅
 
 ### 1.2 Wire secrets and startup checks
 

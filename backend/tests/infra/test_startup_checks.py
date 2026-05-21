@@ -20,6 +20,8 @@ def runtime_secrets(*, tracing_key: str = "trace-key") -> RuntimeSecrets:
         minio_secret_key=SecretStr("minio-secret"),
         llm_api_key=SecretStr("llm"),
         tracing_api_key=SecretStr(tracing_key),
+        langfuse_public_key=SecretStr("pk-lf-test"),
+        langfuse_secret_key=SecretStr("sk-lf-test"),
     )
 
 

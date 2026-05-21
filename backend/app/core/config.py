@@ -17,6 +17,13 @@ class Settings(BaseSettings):
     database_url: str = "postgresql://copilot:copilot-dev-only@localhost:5432/copilot"
     redis_url: str = "redis://localhost:6379/0"
     conversation_ttl_seconds: int = 7200
+    minio_endpoint: str = "localhost:9000"
+    minio_secure: bool = False
+    minio_artifact_bucket: str = "artifacts"
+    minio_eval_bucket: str = "evals"
+    minio_rag_bucket: str = "rag"
+    minio_conversation_bucket: str = "conversation-snapshots"
+    conversation_snapshot_retention: int = 25
     jwt_signing_key: SecretStr = SecretStr("dev-only-jwt-signing-key")
     access_token_ttl_minutes: int = 60
     openai_api_key: SecretStr | None = Field(
@@ -46,6 +53,8 @@ class RuntimeSecrets(BaseModel):
     minio_secret_key: SecretStr
     llm_api_key: SecretStr
     tracing_api_key: SecretStr
+    langfuse_public_key: SecretStr
+    langfuse_secret_key: SecretStr
 
 
 settings = Settings()

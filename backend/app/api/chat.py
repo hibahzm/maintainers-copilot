@@ -1,6 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 
-from app.api.dependencies import ChatServiceDep, OptionalCurrentUserDep
+from app.api.dependencies import ChatServiceDep, CurrentUserDep, OptionalCurrentUserDep
 from app.api.schemas.chat import ChatRequest, ChatResponse
 
 router = APIRouter(prefix="/chat", tags=["chat"])
@@ -21,4 +21,16 @@ async def create_chat_response(
         allow_summarizer=payload.allow_summarizer,
         allow_memory_write=payload.allow_memory_write,
         tools=payload.tools,
+    )
+
+
+@router.delete("/{conversation_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_conversation(
+    conversation_id: str,
+    service: ChatServiceDep,
+    current_user: CurrentUserDep,
+) -> None:
+    await service.delete_conversation(
+        actor_user_id=current_user.id,
+        conversation_id=conversation_id,
     )

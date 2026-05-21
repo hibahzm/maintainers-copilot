@@ -74,6 +74,23 @@ class WidgetRepository:
                 enabled_tools,
                 created_by_user_id,
             )
+            await conn.execute(
+                """
+                INSERT INTO audit_log (id, actor_user_id, action, target_type, target_id, metadata)
+                VALUES ($1, $2, $3, $4, $5, $6::jsonb)
+                """,
+                uuid4(),
+                created_by_user_id,
+                "widget.config.upsert",
+                "widget",
+                widget_id,
+                json.dumps(
+                    {
+                        "allowed_origins_count": len(allowed_origins),
+                        "enabled_tools": enabled_tools,
+                    }
+                ),
+            )
         finally:
             await conn.close()
 

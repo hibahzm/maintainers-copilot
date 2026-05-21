@@ -26,6 +26,10 @@ class UserResponse(APIModel):
     is_active: bool
 
 
+class UserRoleUpdateRequest(APIModel):
+    role: str = Field(pattern="^(user|admin)$")
+
+
 class AuthTokenResponse(APIModel):
     access_token: str
     token_type: Literal["bearer"] = "bearer"

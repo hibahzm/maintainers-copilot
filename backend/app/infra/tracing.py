@@ -104,9 +104,16 @@ def trace_span(name: str, **attributes: Any):
     """Emit start/end/error events around a synchronous or async-awaited block."""
     start = perf_counter()
     trace_event(f"{name}.start", **attributes)
+    langfuse_observation = _start_langfuse_observation(name=name, attributes=attributes)
     try:
         yield
     except Exception as exc:
+        if langfuse_observation is not None:
+            _update_langfuse_observation(
+                langfuse_observation,
+                output={"error_type": type(exc).__name__, "error": str(exc)},
+                level="ERROR",
+            )
         trace_event(
             f"{name}.error",
             duration_ms=round((perf_counter() - start) * 1000, 2),
@@ -116,11 +123,19 @@ def trace_span(name: str, **attributes: Any):
         )
         raise
     else:
+        if langfuse_observation is not None:
+            _update_langfuse_observation(
+                langfuse_observation,
+                output={"status": "ok", "duration_ms": round((perf_counter() - start) * 1000, 2)},
+            )
         trace_event(
             f"{name}.end",
             duration_ms=round((perf_counter() - start) * 1000, 2),
             **attributes,
         )
+    finally:
+        if langfuse_observation is not None:
+            _close_langfuse_observation(langfuse_observation)
 
 
 def _new_id() -> str:
@@ -135,3 +150,53 @@ def _redact_value(value: Any) -> Any:
     if isinstance(value, Sequence) and not isinstance(value, bytes | bytearray | str):
         return [_redact_value(item) for item in value]
     return value
+
+
+def _start_langfuse_observation(name: str, attributes: dict[str, Any]):
+    try:
+        from langfuse import get_client
+
+        langfuse = get_client()
+        manager = langfuse.start_as_current_observation(
+            as_type=_langfuse_observation_type(name),
+            name=name,
+            input=_redact_value(attributes),
+            metadata={
+                "request_id": current_request_id(),
+                "trace_id": current_trace_id(),
+            },
+            model=attributes.get("model") if name.startswith("llm.") else None,
+            usage_details=attributes.get("usage") if isinstance(attributes.get("usage"), dict) else None,
+        )
+        observation = manager.__enter__()
+        return manager, observation
+    except Exception:
+        return None
+
+
+def _update_langfuse_observation(observation_pair, *, output: Any, level: str = "DEFAULT") -> None:
+    try:
+        _manager, observation = observation_pair
+        observation.update(output=_redact_value(output), level=level)
+    except Exception:
+        return
+
+
+def _close_langfuse_observation(observation_pair) -> None:
+    try:
+        manager, _observation = observation_pair
+        manager.__exit__(None, None, None)
+    except Exception:
+        return
+
+
+def _langfuse_observation_type(name: str) -> str:
+    if name.startswith("llm."):
+        return "generation"
+    if "tool" in name:
+        return "tool"
+    if name.startswith("rag.retrieve") or name.startswith("rag.query"):
+        return "retriever"
+    if name.startswith("agent."):
+        return "agent"
+    return "span"

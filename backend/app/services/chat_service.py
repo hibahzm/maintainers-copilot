@@ -1,11 +1,14 @@
 """Chat orchestration over the project's tools."""
 
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 from app.api.schemas.chat import ChatResponse, ChatToolResult
 from app.domain.chat import Message
 from app.infra.exceptions import ToolFailure
+from app.infra.minio import MinioBlobStore
 from app.infra.tracing import trace_event
+from app.repositories.audit_repo import AuditRepository
 from app.services.chat_agent.openai_agent import AgentRunResult, OpenAIChatAgentService
 from app.services.chat_tools.renderer import render_tool_answer
 from app.services.chat_tools.runner import ChatToolRunner
@@ -29,11 +32,19 @@ class ChatService:
         tool_runner: ChatToolRunner | None = None,
         agent_service: OpenAIChatAgentService | None = None,
         conversation_state_service: ConversationStateService | None = None,
+        blob_store: MinioBlobStore | None = None,
+        conversation_snapshot_bucket: str = "conversation-snapshots",
+        conversation_snapshot_retention: int = 25,
+        audit_repository: AuditRepository | None = None,
     ) -> None:
         self.rag_service = rag_service
         self.tool_runner = tool_runner
         self.agent_service = agent_service
         self.conversation_state_service = conversation_state_service
+        self.blob_store = blob_store
+        self.conversation_snapshot_bucket = conversation_snapshot_bucket
+        self.conversation_snapshot_retention = conversation_snapshot_retention
+        self.audit_repository = audit_repository
 
     async def respond(
         self,
@@ -99,6 +110,7 @@ class ChatService:
                 conversation_messages,
                 response,
             )
+            self._snapshot_retrieved_chunks(response_conversation_id, response)
             trace_event(
                 "chat.respond.end",
                 route="openai_agent",
@@ -129,6 +141,7 @@ class ChatService:
                 conversation_messages,
                 response,
             )
+            self._snapshot_retrieved_chunks(response_conversation_id, response)
             trace_event(
                 "chat.respond.end",
                 route="deterministic_tools",
@@ -205,6 +218,7 @@ class ChatService:
             conversation_messages,
             response,
         )
+        self._snapshot_retrieved_chunks(response_conversation_id, response)
         trace_event("chat.respond.end", route="rag_direct", citations=len(rag_response.citations))
         return response
 
@@ -280,6 +294,54 @@ class ChatService:
             await self.conversation_state_service.save_messages(conversation_id, messages_to_save)
         except ToolFailure:
             return
+
+    async def delete_conversation(self, *, actor_user_id: UUID, conversation_id: str) -> None:
+        if self.conversation_state_service is None:
+            raise ToolFailure("Short-term conversation memory is unavailable.")
+        await self.conversation_state_service.delete_conversation(conversation_id)
+        if self.audit_repository is not None:
+            await self.audit_repository.record(
+                actor_user_id=actor_user_id,
+                action="conversation.delete",
+                target_type="conversation",
+                target_id=conversation_id,
+                metadata={"source": "chat_api"},
+            )
+        trace_event("conversation.deleted", conversation_id=conversation_id)
+
+    def _snapshot_retrieved_chunks(self, conversation_id: str, response: ChatResponse) -> None:
+        if self.blob_store is None:
+            return
+        chunks = [
+            chunk.model_dump(mode="json")
+            for result in response.tool_results
+            for chunk in result.chunks
+        ]
+        if not chunks:
+            return
+        timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
+        prefix = f"conversation_id={conversation_id}/"
+        object_name = f"{prefix}{timestamp}.json"
+        payload = {
+            "conversation_id": conversation_id,
+            "created_at": datetime.now(UTC).isoformat(),
+            "citations": response.citations,
+            "chunks": chunks,
+        }
+        try:
+            uri = self.blob_store.put_json(
+                bucket=self.conversation_snapshot_bucket,
+                object_name=object_name,
+                payload=payload,
+            )
+            self.blob_store.prune_prefix(
+                bucket=self.conversation_snapshot_bucket,
+                prefix=prefix,
+                keep=self.conversation_snapshot_retention,
+            )
+            trace_event("conversation.snapshot.saved", uri=uri, chunks=len(chunks))
+        except ToolFailure as exc:
+            trace_event("conversation.snapshot.failed", error=str(exc))
 
     def _merge_short_term_messages(
         self,

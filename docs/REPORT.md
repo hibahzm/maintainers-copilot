@@ -2,6 +2,30 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-21 — MinIO blob contract wired
+
+### Added
+- `scripts/storage/bootstrap_minio.py`
+- `scripts/storage/bootstrap_minio.sh`
+- `scripts/storage/__init__.py`
+
+### Updated
+- `backend/pyproject.toml`
+- `backend/app/core/config.py`
+- `backend/app/infra/minio.py`
+- `backend/app/api/dependencies.py`
+- `backend/app/services/chat_service.py`
+- `docker/vault-init.sh`
+- `docker-compose.yml`
+- `docs/BUILD_PLAN.md`
+- `docs/RUNBOOK.md`
+
+### Design notes
+- MinIO now has explicit buckets for model artifacts/manifests, eval reports, RAG parent-child corpus/chunk blobs, and per-conversation retrieved-chunk snapshots.
+- The API writes retrieved-chunk snapshots to MinIO whenever a chat response returns RAG chunks, retaining only the latest configured snapshots per conversation prefix.
+- The bootstrap script uploads classifier model evidence, eval reports, and RAG corpus/chunk files into MinIO so blob storage is part of the reproducible run, not just an unused container.
+- Vault now carries Langfuse public/secret keys separately, and the API configures the Langfuse SDK environment from Vault at startup.
+
 ## 2026-05-21 — Startup guardrails tightened
 
 ### Added

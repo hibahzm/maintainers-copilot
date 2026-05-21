@@ -41,6 +41,23 @@ The backend uses `jwt_signing_key` and `llm_api_key` from this validated runtime
 
 The API refuses to boot if any required Vault secret is empty. The model-server refuses to boot if the classifier artifact directory is missing, if its SHA-256 differs from the expected fingerprint, or if no LLM key is available for the LLM-backed summarization/RAG-answer tools.
 
+## Blob storage contract
+
+MinIO is the blob store for model/eval/RAG/conversation evidence:
+
+- `artifacts` bucket: classifier model card, run manifest, artifact fingerprint, metrics
+- `evals` bucket: committed eval reports and thresholds
+- `rag` bucket: raw dev corpus, parent-child chunk JSONL, corpus/chunk manifests
+- `conversation-snapshots` bucket: retrieved chunks for recent conversations
+
+Seed the required artifact/eval/RAG blobs after MinIO is up:
+
+```bash
+scripts/storage/bootstrap_minio.sh
+```
+
+Conversation snapshots are written by the API automatically whenever a chat response returns retrieved chunks.
+
 Inspect the seeded bundle:
 
 ```bash
@@ -72,6 +89,20 @@ docker compose logs -f api
 ```
 
 These local trace events are provider-neutral. The accepted external trace UI choice remains Langfuse, but the shipped code does not require a Langfuse SDK to boot.
+
+For the Friday tracing UI:
+
+1. Create/open a Langfuse project.
+2. In Langfuse, go to Project Settings → API Keys and create/copy the project keys.
+3. Export them before running `vault-init`:
+
+```bash
+export LANGFUSE_PUBLIC_KEY="pk-lf-..."
+export LANGFUSE_SECRET_KEY="sk-lf-..."
+export TRACING_API_KEY="$LANGFUSE_SECRET_KEY"
+```
+
+The API copies those Vault-backed values into the Langfuse SDK environment at startup. Docker logs remain joinable by `trace_id`; Langfuse gives the UI trace tree.
 
 ## Future sections
 

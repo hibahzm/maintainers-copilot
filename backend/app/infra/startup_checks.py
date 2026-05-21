@@ -29,6 +29,8 @@ def assert_runtime_secrets_non_empty(secrets: RuntimeSecrets) -> None:
         "minio_secret_key",
         "llm_api_key",
         "tracing_api_key",
+        "langfuse_public_key",
+        "langfuse_secret_key",
     ):
         value = getattr(secrets, field_name).get_secret_value()
         if not value.strip():

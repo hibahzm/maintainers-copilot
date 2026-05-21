@@ -7,6 +7,8 @@ from pydantic import SecretStr
 from app.api.schemas.auth import UserResponse
 from app.core.config import Settings, settings
 from app.infra.exceptions import PermissionDenied
+from app.infra.minio import MinioBlobStore
+from app.repositories.audit_repo import AuditRepository
 from app.repositories.user_repo import UserRepository
 from app.repositories.widget_repo import WidgetRepository
 from app.services.auth_service import AuthService
@@ -52,12 +54,17 @@ def get_auth_service(request: Request) -> AuthService:
         )
         or SecretStr("dev-only-jwt-signing-key"),
         repository=get_user_repository(),
+        audit_repository=get_audit_repository(),
         access_token_ttl_minutes=settings.access_token_ttl_minutes,
     )
 
 
 def get_user_repository() -> UserRepository:
     return UserRepository(database_url=settings.database_url)
+
+
+def get_audit_repository() -> AuditRepository:
+    return AuditRepository(database_url=settings.database_url)
 
 
 async def get_optional_current_user(
@@ -103,6 +110,10 @@ def get_chat_service(request: Request) -> ChatService:
         tool_runner=get_chat_tool_runner(),
         agent_service=get_openai_chat_agent_service(request),
         conversation_state_service=get_conversation_state_service(),
+        blob_store=get_blob_store(request),
+        conversation_snapshot_bucket=settings.minio_conversation_bucket,
+        conversation_snapshot_retention=settings.conversation_snapshot_retention,
+        audit_repository=get_audit_repository(),
     )
 
 
@@ -149,6 +160,18 @@ def get_rag_service() -> RagService:
     return RagService(
         model_server_url=settings.model_server_url,
         database_url=settings.database_url,
+    )
+
+
+def get_blob_store(request: Request) -> MinioBlobStore | None:
+    runtime_secrets = getattr(request.app.state, "runtime_secrets", None)
+    if runtime_secrets is None:
+        return None
+    return MinioBlobStore(
+        endpoint=settings.minio_endpoint,
+        access_key=runtime_secrets.minio_access_key,
+        secret_key=runtime_secrets.minio_secret_key,
+        secure=settings.minio_secure,
     )
 
 

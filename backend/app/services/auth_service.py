@@ -14,7 +14,8 @@ from uuid import UUID
 from pydantic import SecretStr
 
 from app.api.schemas.auth import AuthTokenResponse, RegisterRequest, UserResponse
-from app.infra.exceptions import PermissionDenied
+from app.infra.exceptions import NotFoundError, PermissionDenied
+from app.repositories.audit_repo import AuditRepository
 from app.repositories.user_repo import DuplicateUserError, UserRecord, UserRepository
 
 _PASSWORD_ALGORITHM = "pbkdf2_sha256"
@@ -37,10 +38,12 @@ class AuthService:
         *,
         jwt_signing_key: SecretStr,
         repository: UserRepository,
+        audit_repository: AuditRepository | None = None,
         access_token_ttl_minutes: int = 60,
     ) -> None:
         self.jwt_signing_key = jwt_signing_key
         self.repository = repository
+        self.audit_repository = audit_repository
         self.access_token_ttl_minutes = access_token_ttl_minutes
 
     async def register(self, payload: RegisterRequest) -> AuthTokenResponse:
@@ -69,6 +72,20 @@ class AuthService:
         user = await self.repository.get_user_by_id(claims.sub)
         if user is None or not user.is_active:
             raise PermissionDenied("User is inactive or no longer exists.")
+        return UserResponse(id=user.id, email=user.email, role=user.role, is_active=user.is_active)
+
+    async def update_role(self, *, actor_user_id: UUID, user_id: UUID, role: str) -> UserResponse:
+        user = await self.repository.update_role(user_id=user_id, role=role)
+        if user is None:
+            raise NotFoundError("User not found.")
+        if self.audit_repository is not None:
+            await self.audit_repository.record(
+                actor_user_id=actor_user_id,
+                action="user.role.change",
+                target_type="user",
+                target_id=str(user_id),
+                metadata={"new_role": role},
+            )
         return UserResponse(id=user.id, email=user.email, role=user.role, is_active=user.is_active)
 
     def _token_response(self, user: UserRecord) -> AuthTokenResponse:

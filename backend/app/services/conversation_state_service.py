@@ -60,5 +60,11 @@ class ConversationStateService:
         except RedisError as exc:
             raise ToolFailure("Short-term conversation memory could not be saved.") from exc
 
+    async def delete_conversation(self, conversation_id: str) -> None:
+        try:
+            await self.redis.delete(self._key(conversation_id))
+        except RedisError as exc:
+            raise ToolFailure("Short-term conversation memory could not be deleted.") from exc
+
     def _key(self, conversation_id: str) -> str:
         return f"{self.namespace}:{conversation_id}"

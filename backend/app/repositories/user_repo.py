@@ -61,6 +61,23 @@ class UserRepository:
         row = await self._fetch_user("id = $1", user_id)
         return UserRecord.model_validate(dict(row)) if row else None
 
+    async def update_role(self, *, user_id: UUID, role: str) -> UserRecord | None:
+        conn = await asyncpg.connect(self.database_url)
+        try:
+            row = await conn.fetchrow(
+                """
+                UPDATE users
+                SET role = $2
+                WHERE id = $1
+                RETURNING id, email, hashed_password, role, is_active, created_at
+                """,
+                user_id,
+                role,
+            )
+        finally:
+            await conn.close()
+        return UserRecord.model_validate(dict(row)) if row else None
+
     async def _fetch_user(self, predicate: str, value) -> asyncpg.Record | None:
         conn = await asyncpg.connect(self.database_url)
         try:
