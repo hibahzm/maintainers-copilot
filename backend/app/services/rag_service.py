@@ -65,7 +65,7 @@ class RagService:
                 else None
             )
             return RagQueryResponse(
-                answer=answer_payload["answer"] if answer_payload else self._retrieval_answer(chunks),
+                answer=answer_payload["answer"] if answer_payload else self._retrieval_answer(question, chunks),
                 citations=answer_payload["citations"] if answer_payload else citations,
                 chunks=[self._chunk_schema(chunk) for chunk in chunks],
                 retrieval_mode="pgvector_hybrid_dense_sparse_e5",
@@ -126,10 +126,25 @@ class RagService:
         data: dict[str, Any] = response.json()
         return data
 
-    def _retrieval_answer(self, chunks: list[RetrievedChunk]) -> str:
+    def _retrieval_answer(self, question: str, chunks: list[RetrievedChunk]) -> str:
         if not chunks:
             return "I could not find matching project context yet."
-        return "I found relevant project context. Use the returned citations/chunks for the grounded answer."
+
+        lines = [
+            "I found matching project context, but the LLM answer generator is not available, "
+            "so this is an extractive RAG answer from the retrieved chunks.",
+            "",
+            f"Question: {question}",
+            "",
+            "Most relevant context:",
+        ]
+        for index, chunk in enumerate(chunks[:3], start=1):
+            title = chunk.parent_title or chunk.title or chunk.source_id
+            preview = " ".join(chunk.text.split())[:280]
+            lines.append(f"{index}. {title}: {preview}")
+        lines.append("")
+        lines.append("Sources: " + ", ".join(self._citations(chunks[:3])))
+        return "\n".join(lines)
 
     def _citations(self, chunks: list[RetrievedChunk]) -> list[str]:
         citations: list[str] = []
