@@ -19,9 +19,13 @@ This repository is currently in **Step 1: build the foundation**. The structure 
 ## Start here
 
 1. Read `docs/ARCH.md` for boundaries.
-2. Read `docs/BUILD_PLAN.md` for the card-by-card build path.
-3. Read `docs/REPORT.md` for the running change log.
-4. Open `notebooks/maintainers_copilot_week7_colab.ipynb` in Colab for the standalone notebook workflow.
+2. Read `docs/DECISIONS.md` for accepted model, RAG, tracing, and architecture decisions.
+3. Read `docs/RUNBOOK.md` for local startup and demo operations.
+4. Read `docs/EVALS.md` for evaluation suites and evidence files.
+5. Read `docs/SECURITY.md` for secrets, redaction, auth, and widget safety notes.
+6. Read `docs/BUILD_PLAN.md` for the card-by-card build path.
+7. Read `docs/REPORT.md` for the running change log.
+8. Open `notebooks/maintainers_copilot_week7_colab.ipynb` in Colab for the standalone notebook workflow.
 
 ## Engineering conventions
 

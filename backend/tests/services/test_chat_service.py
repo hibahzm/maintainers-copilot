@@ -44,12 +44,16 @@ class FakeConversationStateService:
         self.messages = messages or []
         self.saved_conversation_id = None
         self.saved_messages = []
+        self.loaded_owner_key = None
+        self.saved_owner_key = None
 
-    async def load_messages(self, conversation_id):
+    async def load_messages(self, conversation_id, *, owner_key):
+        self.loaded_owner_key = owner_key
         return self.messages
 
-    async def save_messages(self, conversation_id, messages):
+    async def save_messages(self, conversation_id, messages, *, owner_key):
         self.saved_conversation_id = conversation_id
+        self.saved_owner_key = owner_key
         self.saved_messages = messages
 
 
@@ -117,6 +121,8 @@ async def test_chat_service_saves_short_term_conversation_state():
 
     assert response.conversation_id == "conv-1"
     assert state.saved_conversation_id == "conv-1"
+    assert state.loaded_owner_key == "anonymous"
+    assert state.saved_owner_key == "anonymous"
     assert [message.content for message in state.saved_messages] == [
         "first turn",
         "first answer",

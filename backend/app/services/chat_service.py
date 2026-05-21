@@ -59,8 +59,12 @@ class ChatService:
         tools: list[ChatToolName] | None = None,
     ) -> ChatResponse:
         tool_policy = tools if tools is not None else ["auto"]
+        owner_key = self._conversation_owner_key(user_id)
         response_conversation_id = conversation_id or str(uuid4())
-        stored_messages = await self._load_short_term_messages(conversation_id)
+        stored_messages = await self._load_short_term_messages(
+            conversation_id,
+            owner_key=owner_key,
+        )
         conversation_messages = self._merge_short_term_messages(stored_messages, messages)
         latest_user_message = self._latest_user_message(messages)
         trace_event(
@@ -87,6 +91,7 @@ class ChatService:
                 response_conversation_id,
                 conversation_messages,
                 response,
+                owner_key=owner_key,
             )
             trace_event("chat.respond.end", route="empty_prompt")
             return response
@@ -111,6 +116,7 @@ class ChatService:
                 response_conversation_id,
                 conversation_messages,
                 response,
+                owner_key=owner_key,
             )
             self._snapshot_retrieved_chunks(response_conversation_id, response)
             trace_event(
@@ -142,6 +148,7 @@ class ChatService:
                 response_conversation_id,
                 conversation_messages,
                 response,
+                owner_key=owner_key,
             )
             self._snapshot_retrieved_chunks(response_conversation_id, response)
             trace_event(
@@ -166,6 +173,7 @@ class ChatService:
                 response_conversation_id,
                 conversation_messages,
                 response,
+                owner_key=owner_key,
             )
             trace_event("chat.respond.end", route="rag_disabled")
             return response
@@ -192,6 +200,7 @@ class ChatService:
                 response_conversation_id,
                 conversation_messages,
                 response,
+                owner_key=owner_key,
             )
             trace_event("chat.respond.end", route="rag_failed")
             return response
@@ -219,6 +228,7 @@ class ChatService:
             response_conversation_id,
             conversation_messages,
             response,
+            owner_key=owner_key,
         )
         self._snapshot_retrieved_chunks(response_conversation_id, response)
         trace_event("chat.respond.end", route="rag_direct", citations=len(rag_response.citations))
@@ -277,11 +287,19 @@ class ChatService:
                 return message
         return None
 
-    async def _load_short_term_messages(self, conversation_id: str | None) -> list[Message]:
+    async def _load_short_term_messages(
+        self,
+        conversation_id: str | None,
+        *,
+        owner_key: str,
+    ) -> list[Message]:
         if conversation_id is None or self.conversation_state_service is None:
             return []
         try:
-            return await self.conversation_state_service.load_messages(conversation_id)
+            return await self.conversation_state_service.load_messages(
+                conversation_id,
+                owner_key=owner_key,
+            )
         except ToolFailure:
             return []
 
@@ -290,19 +308,28 @@ class ChatService:
         conversation_id: str,
         conversation_messages: list[Message],
         response: ChatResponse,
+        *,
+        owner_key: str,
     ) -> None:
         if self.conversation_state_service is None:
             return
         messages_to_save = [*conversation_messages, response.message]
         try:
-            await self.conversation_state_service.save_messages(conversation_id, messages_to_save)
+            await self.conversation_state_service.save_messages(
+                conversation_id,
+                messages_to_save,
+                owner_key=owner_key,
+            )
         except ToolFailure:
             return
 
     async def delete_conversation(self, *, actor_user_id: UUID, conversation_id: str) -> None:
         if self.conversation_state_service is None:
             raise ToolFailure("Short-term conversation memory is unavailable.")
-        await self.conversation_state_service.delete_conversation(conversation_id)
+        await self.conversation_state_service.delete_conversation(
+            conversation_id,
+            owner_key=self._conversation_owner_key(actor_user_id),
+        )
         if self.audit_repository is not None:
             await self.audit_repository.record(
                 actor_user_id=actor_user_id,
@@ -355,3 +382,8 @@ class ChatService:
         if len(incoming_messages) > 1 or not stored_messages:
             return incoming_messages
         return [*stored_messages, *incoming_messages]
+
+    def _conversation_owner_key(self, user_id: UUID | None) -> str:
+        if user_id is None:
+            return "anonymous"
+        return f"user:{user_id}"

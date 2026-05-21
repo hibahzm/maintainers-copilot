@@ -42,7 +42,7 @@
 
       button,
       .issue,
-      nav a,
+      .nav-link,
       .metric {
         cursor: pointer;
       }
@@ -100,7 +100,11 @@
         gap: 6px;
       }
 
-      nav a {
+      .nav-link {
+        appearance: none;
+        width: 100%;
+        text-align: left;
+        background: transparent;
         border: 1px solid transparent;
         border-radius: var(--radius);
         padding: 10px 11px;
@@ -110,8 +114,8 @@
         font-weight: 700;
       }
 
-      nav a:hover,
-      nav a.active {
+      .nav-link:hover,
+      .nav-link.active {
         border-color: rgba(255, 255, 255, 0.1);
         background: rgba(255, 255, 255, 0.08);
         color: #ffffff;
@@ -476,10 +480,10 @@
         </div>
 
         <nav aria-label="Demo navigation">
-          <a href="#" class="active" data-view="queue">Issue queue</a>
-          <a href="#" data-view="triage">Triage board</a>
-          <a href="#" data-view="docs">Docs signals</a>
-          <a href="#" data-view="release">Release watch</a>
+          <button type="button" class="nav-link active" data-view="queue">Issue queue</button>
+          <button type="button" class="nav-link" data-view="triage">Triage board</button>
+          <button type="button" class="nav-link" data-view="docs">Docs signals</button>
+          <button type="button" class="nav-link" data-view="release">Release watch</button>
         </nav>
 
         <div class="sidebar-note">
@@ -651,7 +655,7 @@
       const viewTitle = document.querySelector("#view-title");
       const viewCopy = document.querySelector("#view-copy");
       const metrics = document.querySelectorAll(".metric");
-      const navLinks = document.querySelectorAll("nav a[data-view]");
+      const navLinks = document.querySelectorAll(".nav-link[data-view]");
       let selectedPrompt = document.querySelector(".issue.selected")?.dataset.prompt || "";
       let selectedIssue = document.querySelector(".issue.selected");
       let activeFilter = "all";
@@ -744,8 +748,7 @@
       });
 
       navLinks.forEach((link) => {
-        link.addEventListener("click", (event) => {
-          event.preventDefault();
+        link.addEventListener("click", () => {
           switchView(link.dataset.view);
         });
       });

@@ -28,19 +28,21 @@ def inject_app_styles() -> None:
         """
         <style>
           :root {
-            --mc-bg: #f4f7fb;
-            --mc-ink: #0b1220;
+            --mc-bg: #f7f8fc;
+            --mc-ink: #171236;
             --mc-panel: #ffffff;
-            --mc-panel-soft: #f8fafc;
+            --mc-panel-soft: #f6f7fb;
             --mc-text: #111827;
-            --mc-muted: #64748b;
-            --mc-line: #d8e0ea;
-            --mc-line-strong: #b8c4d3;
-            --mc-accent: #16a34a;
-            --mc-accent-strong: #15803d;
+            --mc-muted: #667085;
+            --mc-line: #dde2eb;
+            --mc-line-strong: #b9c2d0;
+            --mc-accent: #4f46e5;
+            --mc-accent-strong: #3730a3;
+            --mc-accent-soft: #eef2ff;
             --mc-info: #0f766e;
             --mc-warning: #b45309;
             --mc-danger: #be123c;
+            --mc-success: #059669;
             --mc-radius: 8px;
           }
 
@@ -58,7 +60,7 @@ def inject_app_styles() -> None:
           }
 
           [data-testid="stSidebar"] {
-            background: #0b1220;
+            background: #111827;
             border-right: 1px solid rgba(255, 255, 255, 0.08);
           }
 
@@ -68,6 +70,22 @@ def inject_app_styles() -> None:
 
           [data-testid="stSidebar"] div[role="separator"] {
             border-color: rgba(226, 232, 240, 0.14);
+          }
+
+          [data-testid="stSidebar"] div.stButton > button {
+            border-color: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff !important;
+          }
+
+          [data-testid="stSidebar"] div.stButton > button *,
+          [data-testid="stSidebar"] div.stButton > button p {
+            color: #ffffff !important;
+          }
+
+          [data-testid="stSidebar"] div.stButton > button:hover {
+            border-color: rgba(255, 255, 255, 0.34);
+            background: rgba(255, 255, 255, 0.14);
           }
 
           h1, h2, h3, h4, h5, h6, p, label, span, div {
@@ -156,9 +174,11 @@ def inject_app_styles() -> None:
           .mc-auth-panel {
             border: 1px solid var(--mc-line);
             border-radius: var(--mc-radius);
-            padding: 1.35rem;
-            background: var(--mc-panel);
-            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+            padding: clamp(1rem, 2vw, 1.45rem);
+            background:
+              linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(5, 150, 105, 0.06)),
+              var(--mc-panel);
+            box-shadow: 0 16px 40px rgba(23, 18, 54, 0.08);
           }
 
           .mc-auth-brand {
@@ -174,7 +194,7 @@ def inject_app_styles() -> None:
             height: 42px;
             place-items: center;
             border-radius: var(--mc-radius);
-            background: #0b1220;
+            background: var(--mc-accent);
             color: #ffffff !important;
             font-weight: 900;
           }
@@ -190,6 +210,16 @@ def inject_app_styles() -> None:
             color: var(--mc-muted);
             line-height: 1.65;
             max-width: 42rem;
+          }
+
+          .mc-auth-helper {
+            border: 1px solid var(--mc-line);
+            border-radius: var(--mc-radius);
+            padding: .85rem;
+            background: #ffffff;
+            color: var(--mc-muted);
+            line-height: 1.5;
+            font-size: .92rem;
           }
 
           .mc-surface-grid {
@@ -230,11 +260,11 @@ def inject_app_styles() -> None:
             display: inline-flex;
             align-items: center;
             min-height: 30px;
-            border: 1px solid #bbf7d0;
+            border: 1px solid #c7d2fe;
             border-radius: 999px;
             padding: .25rem .65rem;
-            background: #f0fdf4;
-            color: #166534 !important;
+            background: var(--mc-accent-soft);
+            color: var(--mc-accent-strong) !important;
             font-size: .78rem;
             font-weight: 800;
           }
@@ -314,6 +344,11 @@ def inject_app_styles() -> None:
             transition: border-color .18s ease, background .18s ease, color .18s ease;
           }
 
+          div.stButton > button *,
+          div.stDownloadButton > button * {
+            color: inherit !important;
+          }
+
           div.stButton > button:hover,
           div.stDownloadButton > button:hover {
             border-color: var(--mc-accent);
@@ -322,14 +357,30 @@ def inject_app_styles() -> None:
 
           div.stButton > button[kind="primary"] {
             background: var(--mc-accent);
-            color: #ffffff;
+            color: #ffffff !important;
             border-color: var(--mc-accent);
+          }
+
+          div.stButton > button[kind="primary"] *,
+          div.stButton > button[kind="primary"] p {
+            color: #ffffff !important;
           }
 
           div.stButton > button[kind="primary"]:hover {
             background: var(--mc-accent-strong);
-            color: #ffffff;
+            color: #ffffff !important;
             border-color: var(--mc-accent-strong);
+          }
+
+          [data-testid="stSegmentedControl"] button {
+            border-color: var(--mc-line) !important;
+            color: var(--mc-ink) !important;
+          }
+
+          [data-testid="stSegmentedControl"] button[aria-pressed="true"] {
+            border-color: var(--mc-accent) !important;
+            background: var(--mc-accent-soft) !important;
+            color: var(--mc-accent-strong) !important;
           }
 
           [data-testid="stChatMessage"] {
@@ -420,12 +471,29 @@ def inject_app_styles() -> None:
     )
 
 
+def reset_workspace_state() -> None:
+    for key in (
+        "conversation_id",
+        "messages",
+        "last_tool_results",
+        "last_citations",
+        "memory_items",
+    ):
+        if key in st.session_state:
+            del st.session_state[key]
+
+
 def save_auth(data: dict) -> None:
+    previous_user = st.session_state.get("current_user") or {}
+    next_user = data["user"]
+    if previous_user.get("id") != next_user.get("id"):
+        reset_workspace_state()
     st.session_state.access_token = data["access_token"]
-    st.session_state.current_user = data["user"]
+    st.session_state.current_user = next_user
 
 
 def clear_auth() -> None:
+    reset_workspace_state()
     st.session_state.access_token = ""
     st.session_state.current_user = None
 

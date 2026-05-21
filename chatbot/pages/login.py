@@ -24,16 +24,16 @@ st.markdown(
       </p>
       <div class="mc-surface-grid">
         <div class="mc-surface">
-          <strong>8501</strong>
-          <span>Private workspace. Login is required.</span>
+          <strong>Internal chat</strong>
+          <span>Authenticated chat with tool evidence, citations, and memory controls.</span>
         </div>
         <div class="mc-surface">
-          <strong>4173</strong>
-          <span>Public React widget bundle used inside host apps.</span>
+          <strong>Public widget</strong>
+          <span>React surface that host apps embed; no admin tools or memory writes.</span>
         </div>
         <div class="mc-surface">
-          <strong>8080</strong>
-          <span>Demo host page that embeds the widget.</span>
+          <strong>Shared backend</strong>
+          <span>Both surfaces call the same FastAPI chat and retrieval services.</span>
         </div>
       </div>
     </section>
@@ -51,28 +51,64 @@ with st.container(border=True):
         st.stop()
 
     st.subheader("Account")
-    st.caption("Local admin: admin@maintainers.local / admin-password")
-    mode = st.segmented_control("Action", ["Login", "Register"], default="Login")
-    email = st.text_input("Email", value="admin@maintainers.local" if mode == "Login" else "")
-    password = st.text_input(
-        "Password",
-        value="admin-password" if mode == "Login" else "",
-        type="password",
+    st.markdown(
+        """
+        <div class="mc-auth-helper">
+          Local admin account: <strong>admin@maintainers.local</strong> /
+          <strong>admin-password</strong>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
+    st.write("")
 
-    if st.button(mode, type="primary", use_container_width=True):
-        endpoint = "/auth/login" if mode == "Login" else "/auth/register"
-        try:
-            response = httpx.post(
-                f"{API_BASE_URL}{endpoint}",
-                json={"email": email, "password": password},
-                timeout=20.0,
-            )
-            response.raise_for_status()
-            save_auth(response.json())
-            st.rerun()
-        except httpx.HTTPStatusError as exc:
-            detail = exc.response.json().get("detail", exc.response.text)
-            st.error(f"Auth failed: {detail}")
-        except httpx.HTTPError as exc:
-            st.error(f"Auth request failed: {exc}")
+    login_tab, register_tab = st.tabs(["Login", "Register"])
+
+    with login_tab:
+        email = st.text_input("Email", value="admin@maintainers.local", key="login_email")
+        password = st.text_input(
+            "Password",
+            value="admin-password",
+            type="password",
+            key="login_password",
+        )
+
+        if st.button("Login", type="primary", use_container_width=True):
+            try:
+                response = httpx.post(
+                    f"{API_BASE_URL}/auth/login",
+                    json={"email": email, "password": password},
+                    timeout=20.0,
+                )
+                response.raise_for_status()
+                save_auth(response.json())
+                st.rerun()
+            except httpx.HTTPStatusError as exc:
+                detail = exc.response.json().get("detail", exc.response.text)
+                st.error(f"Auth failed: {detail}")
+            except httpx.HTTPError as exc:
+                st.error(f"Auth request failed: {exc}")
+
+    with register_tab:
+        register_email = st.text_input("Email", key="register_email")
+        register_password = st.text_input(
+            "Password",
+            type="password",
+            key="register_password",
+        )
+
+        if st.button("Create account", type="primary", use_container_width=True):
+            try:
+                response = httpx.post(
+                    f"{API_BASE_URL}/auth/register",
+                    json={"email": register_email, "password": register_password},
+                    timeout=20.0,
+                )
+                response.raise_for_status()
+                save_auth(response.json())
+                st.rerun()
+            except httpx.HTTPStatusError as exc:
+                detail = exc.response.json().get("detail", exc.response.text)
+                st.error(f"Registration failed: {detail}")
+            except httpx.HTTPError as exc:
+                st.error(f"Registration request failed: {exc}")

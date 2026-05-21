@@ -29,9 +29,9 @@ class ConversationStateService:
         self.max_messages = max_messages
         self.namespace = namespace
 
-    async def load_messages(self, conversation_id: str) -> list[Message]:
+    async def load_messages(self, conversation_id: str, *, owner_key: str) -> list[Message]:
         try:
-            raw = await self.redis.get(self._key(conversation_id))
+            raw = await self.redis.get(self._key(owner_key, conversation_id))
         except RedisError as exc:
             raise ToolFailure("Short-term conversation memory is unavailable.") from exc
         if not raw:
@@ -44,27 +44,34 @@ class ConversationStateService:
         except (TypeError, ValueError) as exc:
             raise ToolFailure("Short-term conversation memory payload is invalid.") from exc
 
-    async def save_messages(self, conversation_id: str, messages: list[Message]) -> None:
+    async def save_messages(
+        self,
+        conversation_id: str,
+        messages: list[Message],
+        *,
+        owner_key: str,
+    ) -> None:
         trimmed = messages[-self.max_messages :]
         payload = {
             "conversation_id": conversation_id,
+            "owner_key": owner_key,
             "messages": [message.model_dump(mode="json") for message in trimmed],
             "ttl_seconds": self.ttl_seconds,
         }
         try:
             await self.redis.set(
-                self._key(conversation_id),
+                self._key(owner_key, conversation_id),
                 json.dumps(payload),
                 ex=self.ttl_seconds,
             )
         except RedisError as exc:
             raise ToolFailure("Short-term conversation memory could not be saved.") from exc
 
-    async def delete_conversation(self, conversation_id: str) -> None:
+    async def delete_conversation(self, conversation_id: str, *, owner_key: str) -> None:
         try:
-            await self.redis.delete(self._key(conversation_id))
+            await self.redis.delete(self._key(owner_key, conversation_id))
         except RedisError as exc:
             raise ToolFailure("Short-term conversation memory could not be deleted.") from exc
 
-    def _key(self, conversation_id: str) -> str:
-        return f"{self.namespace}:{conversation_id}"
+    def _key(self, owner_key: str, conversation_id: str) -> str:
+        return f"{self.namespace}:{owner_key}:{conversation_id}"
