@@ -23,7 +23,7 @@ jobs:
         run: uv sync --extra dev
 
       - name: Compile Python packages
-        run: python -m compileall -q backend chatbot migrations scripts evals
+        run: python -m compileall -q backend model_server chatbot migrations scripts evals
 
       - name: Run backend unit tests
         working-directory: backend
@@ -31,6 +31,27 @@ jobs:
 
       - name: Check committed eval evidence
         run: python evals/check_eval_results.py
+
+  model-server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.11.11"
+
+      - name: Install model-server dependencies
+        working-directory: model_server
+        run: uv sync --extra dev
+
+      - name: Run model-server unit tests
+        working-directory: model_server
+        run: PYTHONPATH=.. uv run pytest -q tests
 
   widget:
     runs-on: ubuntu-latest

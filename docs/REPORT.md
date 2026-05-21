@@ -26,6 +26,32 @@ This is the running build journal. Every meaningful change should add a dated en
 - The bootstrap script uploads classifier model evidence, eval reports, and RAG corpus/chunk files into MinIO so blob storage is part of the reproducible run, not just an unused container.
 - Vault now carries Langfuse public/secret keys separately, and the API configures the Langfuse SDK environment from Vault at startup.
 
+## 2026-05-21 — Review corrections after Week 7 brief check
+
+### Updated
+- `backend/app/api/widget.py`
+- `backend/app/services/widget_service.py`
+- `backend/app/services/memory_service.py`
+- `backend/app/main.py`
+- `backend/app/core/config.py`
+- `backend/tests/infra/test_exception_handlers.py`
+- `backend/tests/services/test_widget_service.py`
+- `backend/tests/services/test_memory_service.py`
+- `model_server/pyproject.toml`
+- `.github/workflows/ci.yml`
+- `docker-compose.yml`
+- `demo/host/index.html`
+- `widget/nginx.conf`
+- `scripts/artifacts/fingerprint_model.py`
+
+### Design notes
+- The assignment-facing loader is now available at `/widget.js`, while the old `/widget/widget.js` remains as a compatibility path.
+- The loader points at a backend widget frame so `frame-ancestors` can be generated from each widget config's `allowed_origins` instead of relying only on static Nginx headers.
+- Explicit long-term memory writes now redact secret-like strings before embedding and storage.
+- `LANGFUSE_BASE_URL` is accepted as an alias for the tracing host, matching Langfuse SDK environment naming.
+- The model-server package now declares its Hatch wheel package, so `uv run --project model_server ...` can install the project for tests.
+- Domain exceptions now have a central API-boundary handler that returns structured errors with request IDs.
+
 ## 2026-05-21 — Startup guardrails tightened
 
 ### Added
@@ -148,7 +174,7 @@ This is the running build journal. Every meaningful change should add a dated en
 - `docs/BUILD_PLAN.md`
 
 ### Design notes
-- Backend `/widget/widget.js` now returns a JavaScript loader that injects a fixed bubble and iframe.
+- Backend `/widget.js` now returns a JavaScript loader that injects a fixed bubble and iframe.
 - The widget app fetches public widget config, applies runtime theme color, and calls backend `/chat` with non-streaming messages.
 - The widget posts resize messages to the host page so the iframe can adjust height.
 - The demo host now embeds the loader script. Streaming and origin enforcement are still later hardening steps.

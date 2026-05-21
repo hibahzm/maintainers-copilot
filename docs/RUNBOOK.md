@@ -104,6 +104,21 @@ export TRACING_API_KEY="$LANGFUSE_SECRET_KEY"
 
 The API copies those Vault-backed values into the Langfuse SDK environment at startup. Docker logs remain joinable by `trace_id`; Langfuse gives the UI trace tree.
 
+
+## Local demo map
+
+Use these surfaces for the Friday walkthrough:
+
+| URL | What it is | What to click |
+| --- | --- | --- |
+| `http://localhost:8080` | Public product-like host page | Click **Open copilot** or the bottom-right bubble. This proves the embeddable widget works on an allowed origin. |
+| `http://localhost:8501` | Admin/chat workspace | Log in with `admin@maintainers.local` / `admin-password`, then use Copilot chat, Memory, and Widget config. |
+| `http://localhost:8000/docs` | Backend API docs | Use only for API inspection/smoke tests. |
+| `http://localhost:8001/docs` | Model server docs | Use for classifier/NER/summarizer smoke tests. |
+| `http://localhost:9001` | MinIO console | Inspect artifact/eval/RAG/conversation snapshot buckets. |
+
+If `localhost:8080` shows “site is not allowed,” the security layer is working but the demo widget config is missing or stale. Restart the API so the dev bootstrap can merge local origins, or open `http://localhost:8501` → **Widget config** → save the default `maintainers-copilot` config once, then refresh `localhost:8080`.
+
 ## Future sections
 
 - local startup

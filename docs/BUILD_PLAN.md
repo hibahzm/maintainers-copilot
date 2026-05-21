@@ -352,10 +352,10 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 
 **Add / complete**
 - Vite React widget bundle ✅ basic chat panel added
-- collapsed bubble → expanded chat panel ✅ backend `/widget/widget.js` injects fixed bubble + iframe
-- streamed messages ⏳ widget currently uses non-streaming `/chat`
+- collapsed bubble → expanded chat panel ✅ backend `/widget.js` injects fixed bubble + iframe
+- streamed messages ✅ widget uses `/widget/{widget_id}/chat/stream`
 - runtime theme from widget config ✅ widget fetches public config and applies accent color
-- `/widget.js` loader ✅ returns JavaScript loader from backend
+- `/widget.js` loader ✅ returns JavaScript loader from backend with a public `window.MaintainersCopilot.open()` demo hook
 - host page under `demo/host/` ✅ demo script tag added
 - iframe `postMessage` resize channel ✅ widget posts height to parent
 
@@ -365,7 +365,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 - widget table fields: `widget_id`, `allowed_origins`, `theme`, `greeting`, `enabled_tools` ✅
 - public widget config origin check ✅ `/widget/config/{widget_id}` rejects origins not listed in the saved widget config
 - API CORS allowlist ✅ dev-safe origins are centralized in settings for the widget, demo host, and Streamlit shell
-- `Content-Security-Policy` with `frame-ancestors` ✅ widget and demo host Nginx configs include local-dev security headers
+- `Content-Security-Policy` with `frame-ancestors` ✅ backend widget frame now derives frame ancestors from the widget's saved `allowed_origins`
 
 ### 4.7 Put both eval suites in CI
 
