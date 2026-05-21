@@ -50,7 +50,9 @@ def inject_app_styles() -> None:
           }
 
           .block-container {
-            max-width: 1280px;
+            max-width: 1120px;
+            padding-left: clamp(.8rem, 2vw, 1.5rem);
+            padding-right: clamp(.8rem, 2vw, 1.5rem);
             padding-top: 1.25rem;
             padding-bottom: 2rem;
           }
@@ -86,6 +88,7 @@ def inject_app_styles() -> None:
 
           .mc-page-header {
             display: flex;
+            flex-wrap: wrap;
             align-items: flex-start;
             justify-content: space-between;
             gap: 1rem;
@@ -96,10 +99,15 @@ def inject_app_styles() -> None:
             box-shadow: 0 12px 34px rgba(15, 23, 42, 0.06);
           }
 
+          .mc-page-header > div {
+            min-width: 0;
+          }
+
           .mc-page-header h1 {
             margin: 0 0 .35rem;
             font-size: 2rem !important;
             line-height: 1.1 !important;
+            overflow-wrap: anywhere;
           }
 
           .mc-page-header p,
@@ -128,6 +136,13 @@ def inject_app_styles() -> None:
           .mc-card h3 {
             margin: 0 0 .4rem;
             font-size: 1rem;
+          }
+
+          .mc-card,
+          .mc-card p,
+          .mc-caption,
+          .mc-source {
+            overflow-wrap: anywhere;
           }
 
           .mc-auth-shell {
@@ -179,7 +194,7 @@ def inject_app_styles() -> None:
 
           .mc-surface-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: .75rem;
             margin-top: 1.2rem;
           }
@@ -270,7 +285,7 @@ def inject_app_styles() -> None:
 
           .mc-port-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: .75rem;
           }
 
@@ -371,12 +386,6 @@ def inject_app_styles() -> None:
           }
 
           @media (max-width: 900px) {
-            .mc-auth-shell,
-            .mc-surface-grid,
-            .mc-port-grid {
-              grid-template-columns: 1fr;
-            }
-
             .mc-page-header {
               display: block;
             }
@@ -384,6 +393,25 @@ def inject_app_styles() -> None:
             .mc-header-actions {
               justify-content: flex-start;
               margin-top: .75rem;
+            }
+          }
+
+          @media (max-width: 640px) {
+            .block-container {
+              padding-left: .75rem;
+              padding-right: .75rem;
+            }
+
+            .mc-auth-panel,
+            .mc-page-header,
+            .mc-card {
+              padding: .9rem;
+            }
+
+            .mc-auth-title,
+            .mc-page-header h1,
+            h1 {
+              font-size: 1.55rem !important;
             }
           }
         </style>
@@ -415,7 +443,8 @@ def require_login() -> dict:
     init_auth_state()
     user = current_user()
     if not st.session_state.access_token or user is None:
-        st.warning("Log in first to use Maintainers Copilot.")
+        st.info("Log in first to use Maintainers Copilot.")
+        st.switch_page("pages/login.py")
         st.stop()
     return user
 

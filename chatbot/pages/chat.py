@@ -133,36 +133,33 @@ with st.sidebar:
         st.session_state.last_citations = []
         st.rerun()
 
-chat_col, detail_col = st.columns([0.68, 0.32], gap="large")
+quick_prompt = None
+quick_cols = st.columns(3)
+examples = [
+    (
+        "RAG context",
+        "Use RAG to explain what context we have for pandas read_csv empty-file crashes.",
+    ),
+    (
+        "Classify issue",
+        "Classify this issue: read_csv crashes on empty CSV with ValueError on Python 3.12.",
+    ),
+    (
+        "Extract entities",
+        "Extract entities from: pandas 2.2 raises ValueError in pandas/io/parsers.py on Windows.",
+    ),
+]
+for col, (label, example) in zip(quick_cols, examples, strict=True):
+    if col.button(label, use_container_width=True):
+        quick_prompt = example
 
-with chat_col:
-    quick_prompt = None
-    quick_cols = st.columns(3)
-    examples = [
-        (
-            "RAG context",
-            "Use RAG to explain what context we have for pandas read_csv empty-file crashes.",
-        ),
-        (
-            "Classify issue",
-            "Classify this issue: read_csv crashes on empty CSV with ValueError on Python 3.12.",
-        ),
-        (
-            "Extract entities",
-            "Extract entities from: pandas 2.2 raises ValueError in pandas/io/parsers.py on Windows.",
-        ),
-    ]
-    for col, (label, example) in zip(quick_cols, examples, strict=True):
-        if col.button(label, use_container_width=True):
-            quick_prompt = example
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+        if message.get("citations"):
+            st.caption("Sources: " + ", ".join(message["citations"]))
 
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-            if message.get("citations"):
-                st.caption("Sources: " + ", ".join(message["citations"]))
-
-with detail_col:
+with st.expander("Latest run detail", expanded=bool(st.session_state.last_tool_results)):
     _render_run_detail(st.session_state.last_tool_results, st.session_state.last_citations)
 
 typed_prompt = st.chat_input("Ask about an issue, release, docs gap, or maintainer decision")
@@ -171,9 +168,8 @@ prompt = typed_prompt or quick_prompt
 if prompt:
     user_message = {"role": "user", "content": prompt}
     st.session_state.messages.append(user_message)
-    with chat_col:
-        with st.chat_message("user"):
-            st.markdown(prompt)
+    with st.chat_message("user"):
+        st.markdown(prompt)
 
     payload = {
         "conversation_id": st.session_state.conversation_id,
@@ -188,62 +184,61 @@ if prompt:
         "tools": ["auto"],
     }
 
-    with chat_col:
-        with st.chat_message("assistant"):
-            response_placeholder = st.empty()
-            status_placeholder = st.empty()
+    with st.chat_message("assistant"):
+        response_placeholder = st.empty()
+        status_placeholder = st.empty()
 
-            assistant_text = ""
-            citations: list[str] = []
-            tool_results: list[dict] = []
-            try:
-                status_placeholder.info("Processing request...")
+        assistant_text = ""
+        citations: list[str] = []
+        tool_results: list[dict] = []
+        try:
+            status_placeholder.info("Processing request...")
 
-                with httpx.stream(
-                    "POST",
-                    f"{API_BASE_URL}/chat/stream",
-                    json=payload,
-                    headers=auth_headers(),
-                    timeout=60.0,
-                ) as response:
-                    response.raise_for_status()
+            with httpx.stream(
+                "POST",
+                f"{API_BASE_URL}/chat/stream",
+                json=payload,
+                headers=auth_headers(),
+                timeout=60.0,
+            ) as response:
+                response.raise_for_status()
 
-                    for event, data in parse_sse_lines(response.iter_lines()):
-                        if event == "metadata":
-                            st.session_state.conversation_id = data.get("conversation_id")
-                            citations = data.get("citations", [])
-                        elif event == "tool_result":
-                            tool_results.append(data)
-                            status_placeholder.info(f"Using {_tool_label(data.get('name', 'tool'))}...")
-                        elif event == "delta":
-                            status_placeholder.empty()
-                            assistant_text += data.get("content", "")
-                            response_placeholder.markdown(assistant_text + " |")
-                        elif event == "final":
-                            st.session_state.conversation_id = data.get("conversation_id")
-                            assistant_text = data.get("message", {}).get("content", assistant_text)
-                            citations = data.get("citations", citations)
-                            tool_results = data.get("tool_results", tool_results)
-                        elif event == "error":
-                            raise RuntimeError(data.get("message", "Chat request failed."))
+                for event, data in parse_sse_lines(response.iter_lines()):
+                    if event == "metadata":
+                        st.session_state.conversation_id = data.get("conversation_id")
+                        citations = data.get("citations", [])
+                    elif event == "tool_result":
+                        tool_results.append(data)
+                        status_placeholder.info(f"Using {_tool_label(data.get('name', 'tool'))}...")
+                    elif event == "delta":
+                        status_placeholder.empty()
+                        assistant_text += data.get("content", "")
+                        response_placeholder.markdown(assistant_text + " |")
+                    elif event == "final":
+                        st.session_state.conversation_id = data.get("conversation_id")
+                        assistant_text = data.get("message", {}).get("content", assistant_text)
+                        citations = data.get("citations", citations)
+                        tool_results = data.get("tool_results", tool_results)
+                    elif event == "error":
+                        raise RuntimeError(data.get("message", "Chat request failed."))
 
-                status_placeholder.empty()
-                response_placeholder.markdown(assistant_text)
+            status_placeholder.empty()
+            response_placeholder.markdown(assistant_text)
 
-                st.session_state.last_tool_results = tool_results
-                st.session_state.last_citations = citations
-                st.session_state.messages.append(
-                    {
-                        "role": "assistant",
-                        "content": assistant_text,
-                        "citations": citations,
-                    }
-                )
-                st.rerun()
-            except (httpx.HTTPError, RuntimeError) as exc:
-                status_placeholder.empty()
-                error = f"Chat request failed: {exc}"
-                st.error(error)
-                st.session_state.last_tool_results = []
-                st.session_state.last_citations = []
-                st.session_state.messages.append({"role": "assistant", "content": error})
+            st.session_state.last_tool_results = tool_results
+            st.session_state.last_citations = citations
+            st.session_state.messages.append(
+                {
+                    "role": "assistant",
+                    "content": assistant_text,
+                    "citations": citations,
+                }
+            )
+            st.rerun()
+        except (httpx.HTTPError, RuntimeError) as exc:
+            status_placeholder.empty()
+            error = f"Chat request failed: {exc}"
+            st.error(error)
+            st.session_state.last_tool_results = []
+            st.session_state.last_citations = []
+            st.session_state.messages.append({"role": "assistant", "content": error})

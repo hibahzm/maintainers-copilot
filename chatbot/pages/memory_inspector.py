@@ -24,10 +24,9 @@ st.markdown(
 )
 st.write("")
 
-left, right = st.columns([0.7, 0.3], gap="large")
-
-with right:
-    st.markdown("### Controls")
+with st.sidebar:
+    st.divider()
+    st.markdown("### Memory controls")
     limit = st.slider("Memories to load", min_value=1, max_value=100, value=50)
     refresh = st.button("Refresh memories", type="primary", use_container_width=True)
 
@@ -51,27 +50,26 @@ if refresh or "memory_items" not in st.session_state:
 
 items = st.session_state.get("memory_items", [])
 
-with left:
-    if not items:
-        st.info("No long-term memories saved yet.")
-        st.stop()
+if not items:
+    st.info("No long-term memories saved yet.")
+    st.stop()
 
-    for item in items:
-        content = escape(str(item["content"]))
-        memory_id = escape(str(item["id"]))
-        memory_type = escape(str(item["memory_type"]))
-        created_at = escape(str(item["created_at"]))
-        st.markdown(
-            f"""
-            <div class="mc-card">
-              <div class="mc-pill-row">
-                <span class="mc-pill">{memory_type}</span>
-                <span class="mc-pill neutral">{created_at}</span>
-              </div>
-              <p style="margin-top:.75rem">{content}</p>
-              <p class="mc-caption">Memory ID: {memory_id}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        st.write("")
+for item in items:
+    content = escape(str(item["content"]))
+    memory_id = escape(str(item["id"]))
+    memory_type = escape(str(item["memory_type"]))
+    created_at = escape(str(item["created_at"]))
+    st.markdown(
+        f"""
+        <div class="mc-card">
+          <div class="mc-pill-row">
+            <span class="mc-pill">{memory_type}</span>
+            <span class="mc-pill neutral">{created_at}</span>
+          </div>
+          <p style="margin-top:.75rem">{content}</p>
+          <p class="mc-caption">Memory ID: {memory_id}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.write("")

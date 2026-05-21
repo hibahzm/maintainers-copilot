@@ -47,72 +47,68 @@ default_origins = "\n".join(
     ]
 )
 
-form_col, preview_col = st.columns([0.62, 0.38], gap="large")
-
-with form_col:
-    with st.form("widget-config-form"):
-        st.markdown("### Public widget")
-        widget_id = st.text_input("Widget ID", value="maintainers-copilot")
-        allowed_origins_text = st.text_area(
-            "Allowed origins",
-            value=default_origins,
-            height=190,
-            help="One origin per line. The demo host is http://localhost:8080.",
-        )
-        greeting = st.text_area(
-            "Greeting",
-            value="Ask about triage, project context, or an issue you are trying to route.",
-            height=100,
-        )
-
-        theme_cols = st.columns(2)
-        with theme_cols[0]:
-            accent_color = st.color_picker("Accent color", value="#16a34a")
-        with theme_cols[1]:
-            mode = st.selectbox("Theme mode", ["light", "dark"], index=0)
-
-        selected_tool_labels = st.multiselect(
-            "Tools widget visitors can use",
-            list(TOOL_OPTIONS.keys()),
-            default=["RAG search", "Issue classifier", "Entity extractor"],
-            help="Disabling a tool prevents the public widget endpoint from requesting it.",
-        )
-
-        submitted = st.form_submit_button("Save widget config", type="primary")
-
-with preview_col:
-    st.markdown("### Surface map")
-    st.markdown(
-        """
-        <div class="mc-port-grid">
-          <div class="mc-port">
-            <code>8501</code>
-            <p class="mc-caption">Authenticated Streamlit workspace.</p>
-          </div>
-          <div class="mc-port">
-            <code>4173</code>
-            <p class="mc-caption">Standalone React widget bundle.</p>
-          </div>
-          <div class="mc-port">
-            <code>8080</code>
-            <p class="mc-caption">Static host app embedding the widget.</p>
-          </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
+with st.form("widget-config-form"):
+    st.markdown("### Public widget")
+    widget_id = st.text_input("Widget ID", value="maintainers-copilot")
+    allowed_origins_text = st.text_area(
+        "Allowed origins",
+        value=default_origins,
+        height=170,
+        help="One origin per line. The demo host is http://localhost:8080.",
     )
-    st.write("")
-    st.markdown("### Install snippet")
-    st.code(
-        f"""<script
+    greeting = st.text_area(
+        "Greeting",
+        value="Ask about triage, project context, or an issue you are trying to route.",
+        height=90,
+    )
+
+    theme_cols = st.columns(2)
+    with theme_cols[0]:
+        accent_color = st.color_picker("Accent color", value="#16a34a")
+    with theme_cols[1]:
+        mode = st.selectbox("Theme mode", ["light", "dark"], index=0)
+
+    selected_tool_labels = st.multiselect(
+        "Tools widget visitors can use",
+        list(TOOL_OPTIONS.keys()),
+        default=["RAG search", "Issue classifier", "Entity extractor"],
+        help="Disabling a tool prevents the public widget endpoint from requesting it.",
+    )
+
+    submitted = st.form_submit_button("Save widget config", type="primary")
+
+st.markdown("### Surface map")
+st.markdown(
+    """
+    <div class="mc-port-grid">
+      <div class="mc-port">
+        <code>8501</code>
+        <p class="mc-caption">Authenticated Streamlit workspace.</p>
+      </div>
+      <div class="mc-port">
+        <code>4173</code>
+        <p class="mc-caption">Standalone React widget bundle.</p>
+      </div>
+      <div class="mc-port">
+        <code>8080</code>
+        <p class="mc-caption">Static host app embedding the widget.</p>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+st.write("")
+st.markdown("### Install snippet")
+st.code(
+    f"""<script
   src="{PUBLIC_API_BASE_URL}/widget.js"
   data-widget-id="maintainers-copilot"
   data-widget-url="http://localhost:4173"
   data-api-base="{PUBLIC_API_BASE_URL}"
   data-label="Ask copilot"
 ></script>""",
-        language="html",
-    )
+    language="html",
+)
 
 if submitted:
     payload = {
