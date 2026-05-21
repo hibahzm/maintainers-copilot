@@ -97,11 +97,15 @@ class WidgetService:
     </style>
   </head>
   <body>
-    <iframe title="Maintainers Copilot" src="{widget_src}" allow="clipboard-write"></iframe>
+    <iframe id="maintainers-copilot-widget-inner" title="Maintainers Copilot" src="{widget_src}" allow="clipboard-write"></iframe>
     <script>
+      const widgetFrame = document.getElementById("maintainers-copilot-widget-inner");
       window.addEventListener("message", (event) => {{
         if (event.data?.type === "widget:resize") {{
           window.parent.postMessage(event.data, "*");
+        }}
+        if (event.data?.type === "widget:prefill") {{
+          widgetFrame.contentWindow?.postMessage(event.data, "*");
         }}
       }});
     </script>
@@ -185,18 +189,32 @@ class WidgetService:
     button.textContent = open ? "Close copilot" : (script?.dataset.label || "Ask Maintainers Copilot");
   }}
 
+  function prefill(prompt) {{
+    setOpen(true);
+    const message = {{ type: "widget:prefill", prompt: String(prompt || "") }};
+    [80, 250, 600].forEach((delay) => {{
+      window.setTimeout(() => iframe.contentWindow?.postMessage(message, "*"), delay);
+    }});
+  }}
+
   window.MaintainersCopilot = Object.assign(window.MaintainersCopilot || {{}}, {{
     open: () => setOpen(true),
     close: () => setOpen(false),
     toggle: () => setOpen(iframe.style.display === "none"),
+    prefill,
+    ask: prefill,
   }});
 
   button.addEventListener("click", window.MaintainersCopilot.toggle);
 
   window.addEventListener("message", (event) => {{
-    if (event.data?.type !== "widget:resize") return;
-    const height = Number(event.data.height);
-    if (Number.isFinite(height)) iframe.style.height = `${{Math.min(Math.max(height, 320), 720)}}px`;
+    if (event.data?.type === "widget:resize") {{
+      const height = Number(event.data.height);
+      if (Number.isFinite(height)) iframe.style.height = `${{Math.min(Math.max(height, 320), 720)}}px`;
+    }}
+    if (event.data?.type === "widget:ready" && script?.dataset.prompt) {{
+      prefill(script.dataset.prompt);
+    }}
   }});
 
   document.body.appendChild(iframe);

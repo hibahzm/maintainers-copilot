@@ -42,7 +42,8 @@
 
       button,
       .issue,
-      nav a {
+      nav a,
+      .metric {
         cursor: pointer;
       }
 
@@ -238,7 +239,18 @@
       }
 
       .metric {
+        appearance: none;
+        display: block;
+        width: 100%;
+        text-align: left;
         padding: 15px;
+        color: inherit;
+      }
+
+      .metric:hover,
+      .metric.active {
+        border-color: var(--accent);
+        background: #fbfefc;
       }
 
       .metric strong,
@@ -358,6 +370,31 @@
         margin-top: 12px;
       }
 
+      .selected-summary {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .selected-summary code {
+        display: block;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 10px;
+        background: #f8fafc;
+        color: #334155;
+        font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      .selected-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
       .detail {
         border-left: 3px solid var(--accent);
         border-radius: 0 var(--radius) var(--radius) 0;
@@ -376,6 +413,10 @@
         color: var(--muted);
         font-size: 13px;
         line-height: 1.45;
+      }
+
+      .hidden {
+        display: none !important;
       }
 
       @media (max-width: 1080px) {
@@ -416,6 +457,10 @@
         .issue {
           grid-template-columns: 1fr;
         }
+
+        .selected-actions {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -431,10 +476,10 @@
         </div>
 
         <nav aria-label="Demo navigation">
-          <a href="#" class="active">Issue queue</a>
-          <a href="#">Triage board</a>
-          <a href="#">Docs signals</a>
-          <a href="#">Release watch</a>
+          <a href="#" class="active" data-view="queue">Issue queue</a>
+          <a href="#" data-view="triage">Triage board</a>
+          <a href="#" data-view="docs">Docs signals</a>
+          <a href="#" data-view="release">Release watch</a>
         </nav>
 
         <div class="sidebar-note">
@@ -449,8 +494,8 @@
       <main>
         <header>
           <div>
-            <h1>Repository support queue</h1>
-            <p>
+            <h1 id="view-title">Repository support queue</h1>
+            <p id="view-copy">
               A realistic host surface for the Maintainers Copilot widget. Select an
               issue, then open the copilot to ask for retrieval context, classification,
               entities, or triage help.
@@ -459,45 +504,49 @@
           <div class="header-actions">
             <span class="pill">Widget allowed</span>
             <button class="button secondary" type="button" id="copy-prompt">Copy selected prompt</button>
-            <button class="button" type="button" onclick="window.MaintainersCopilot?.open?.()">
-              Open copilot
+            <button class="button" type="button" id="ask-selected-top">
+              Ask selected in copilot
             </button>
           </div>
         </header>
 
         <section class="metrics" aria-label="Queue metrics">
-          <div class="metric">
+          <button class="metric active" type="button" data-filter="all">
             <strong>24</strong>
             <span>open issues</span>
-          </div>
-          <div class="metric">
+          </button>
+          <button class="metric" type="button" data-filter="review">
             <strong>8</strong>
             <span>need maintainer review</span>
-          </div>
-          <div class="metric">
+          </button>
+          <button class="metric" type="button" data-filter="docs">
             <strong>5</strong>
             <span>docs signals</span>
-          </div>
-          <div class="metric">
+          </button>
+          <button class="metric" type="button" data-filter="release">
             <strong>3</strong>
             <span>blocked releases</span>
-          </div>
+          </button>
         </section>
 
         <section class="content-grid">
           <div class="panel">
             <div class="panel-head">
               <div>
-                <h2>Recent issues</h2>
+                <h2 id="list-title">Recent issues</h2>
                 <p class="muted">The widget can use this context when you paste or ask about an issue.</p>
               </div>
-              <input class="search" type="search" placeholder="Filter issues" aria-label="Filter issues" />
+              <input id="issue-search" class="search" type="search" placeholder="Filter issues" aria-label="Filter issues" />
             </div>
 
             <div class="issue-list" aria-label="Example issues">
               <article
                 class="issue selected"
+                data-tags="all review release bug"
                 data-prompt="Use RAG to explain context for pandas read_csv empty-file crashes, then classify this issue."
+                data-title="read_csv crashes when the input file is empty"
+                data-label="Bug"
+                data-detail="Reporter included a traceback on Python 3.12 and pandas 2.2. The useful demo action is to ask the copilot for prior context and likely label."
               >
                 <div>
                   <strong>read_csv crashes when the input file is empty</strong>
@@ -508,7 +557,11 @@
 
               <article
                 class="issue"
+                data-tags="all docs review"
                 data-prompt="Classify this issue and extract entities: Document timezone behavior for rolling windows."
+                data-title="Document timezone behavior for rolling windows"
+                data-label="Docs"
+                data-detail="This is a documentation signal: multiple users are confused about UTC handling and rolling windows."
               >
                 <div>
                   <strong>Document timezone behavior for rolling windows</strong>
@@ -519,7 +572,11 @@
 
               <article
                 class="issue"
+                data-tags="all review release feature"
                 data-prompt="Find related context for a faster path for nullable integer joins and summarize the triage risk."
+                data-title="Add a faster path for nullable integer joins"
+                data-label="Feature"
+                data-detail="This is a feature/performance request that may affect release confidence because it mentions a regression."
               >
                 <div>
                   <strong>Add a faster path for nullable integer joins</strong>
@@ -530,7 +587,11 @@
 
               <article
                 class="issue"
+                data-tags="all question"
                 data-prompt="Classify this support question: How do I handle missing values in custom aggregations?"
+                data-title="How do I handle missing values in custom aggregations?"
+                data-label="Question"
+                data-detail="This is a normal support question. The widget can classify it and extract relevant API names from pasted text."
               >
                 <div>
                   <strong>How do I handle missing values in custom aggregations?</strong>
@@ -542,27 +603,34 @@
           </div>
 
           <aside class="panel" aria-label="Selected issue">
-            <h2>Demo flow</h2>
-            <p class="muted">
-              Use this host page during the demo to show the production-shaped widget
-              running outside Streamlit.
+            <h2>Selected issue</h2>
+            <p class="muted" id="selected-detail">
+              Select an issue to see what the public widget should help a normal host-app user do.
             </p>
+            <div class="selected-summary">
+              <span class="tag bug" id="selected-label">Bug</span>
+              <code id="selected-prompt">Use RAG to explain context for pandas read_csv empty-file crashes, then classify this issue.</code>
+            </div>
+            <div class="selected-actions">
+              <button class="button" type="button" id="ask-selected">Ask copilot</button>
+              <button class="button secondary" type="button" id="clear-filter">Show all</button>
+            </div>
             <div class="detail-list">
               <div class="detail">
-                <strong>1. Login</strong>
-                <span>Open localhost:8501 and sign in as the seeded admin.</span>
+                <strong>What this host is</strong>
+                <span>A fake repository console. It is not the admin panel; it shows how a normal website embeds the widget.</span>
               </div>
               <div class="detail">
-                <strong>2. Configure</strong>
-                <span>Save the widget config and confirm localhost:8080 is allowed.</span>
+                <strong>What users can do here</strong>
+                <span>Pick an issue, filter the queue, then ask the embedded copilot about that issue.</span>
               </div>
               <div class="detail">
-                <strong>3. Ask</strong>
-                <span>Open the widget here and ask the selected prompt.</span>
+                <strong>What admins do elsewhere</strong>
+                <span>Admins log in at localhost:8501 to configure this widget, memory, and internal chat.</span>
               </div>
               <div class="detail">
-                <strong>4. Inspect</strong>
-                <span>Return to the chat workspace for tools and citations, then open the tracing backend for spans.</span>
+                <strong>Same backend</strong>
+                <span>The public widget and private chat both call the same backend chat service with different permissions.</span>
               </div>
             </div>
           </aside>
@@ -573,15 +641,128 @@
     <script>
       const issues = document.querySelectorAll(".issue");
       const copyButton = document.querySelector("#copy-prompt");
+      const askButtons = [document.querySelector("#ask-selected"), document.querySelector("#ask-selected-top")];
+      const clearFilterButton = document.querySelector("#clear-filter");
+      const searchInput = document.querySelector("#issue-search");
+      const selectedDetail = document.querySelector("#selected-detail");
+      const selectedLabel = document.querySelector("#selected-label");
+      const selectedPromptBlock = document.querySelector("#selected-prompt");
+      const listTitle = document.querySelector("#list-title");
+      const viewTitle = document.querySelector("#view-title");
+      const viewCopy = document.querySelector("#view-copy");
+      const metrics = document.querySelectorAll(".metric");
+      const navLinks = document.querySelectorAll("nav a[data-view]");
       let selectedPrompt = document.querySelector(".issue.selected")?.dataset.prompt || "";
+      let selectedIssue = document.querySelector(".issue.selected");
+      let activeFilter = "all";
+
+      const views = {
+        queue: {
+          title: "Repository support queue",
+          copy: "Select an issue, filter the queue, then ask the embedded copilot for retrieval context, classification, entities, or triage help.",
+          list: "Recent issues",
+          filter: "all",
+        },
+        triage: {
+          title: "Triage board",
+          copy: "Issues that need a maintainer decision. The widget is useful here because the user can ask for labels and related project context.",
+          list: "Needs maintainer review",
+          filter: "review",
+        },
+        docs: {
+          title: "Docs signals",
+          copy: "Documentation-related reports from the host app. The widget can classify, extract API names, and retrieve related context.",
+          list: "Documentation candidates",
+          filter: "docs",
+        },
+        release: {
+          title: "Release watch",
+          copy: "Release-sensitive reports. The widget helps users ask whether an issue has context, prior fixes, or risky labels.",
+          list: "Release-sensitive issues",
+          filter: "release",
+        },
+      };
+
+      function updateSelected(issue) {
+        selectedIssue = issue;
+        selectedPrompt = issue?.dataset.prompt || "";
+        issues.forEach((item) => item.classList.toggle("selected", item === issue));
+
+        const label = issue?.dataset.label || "Issue";
+        selectedDetail.textContent = issue?.dataset.detail || "Select an issue to see the suggested copilot prompt.";
+        selectedPromptBlock.textContent = selectedPrompt || "Select an issue first.";
+        selectedLabel.textContent = label;
+        selectedLabel.className = "tag " + label.toLowerCase();
+      }
+
+      function issueMatches(issue) {
+        const tags = (issue.dataset.tags || "").split(/\s+/);
+        const query = searchInput.value.trim().toLowerCase();
+        const text = issue.textContent.toLowerCase();
+        return tags.includes(activeFilter) && (!query || text.includes(query));
+      }
+
+      function applyFilter(filter) {
+        activeFilter = filter;
+        metrics.forEach((metric) => metric.classList.toggle("active", metric.dataset.filter === filter));
+
+        let firstVisible = null;
+        issues.forEach((issue) => {
+          const visible = issueMatches(issue);
+          issue.classList.toggle("hidden", !visible);
+          if (visible && !firstVisible) firstVisible = issue;
+        });
+
+        if (!firstVisible) {
+          updateSelected(null);
+          return;
+        }
+        if (!selectedIssue || selectedIssue.classList.contains("hidden")) {
+          updateSelected(firstVisible);
+        }
+      }
+
+      function switchView(viewName) {
+        const view = views[viewName] || views.queue;
+        navLinks.forEach((link) => link.classList.toggle("active", link.dataset.view === viewName));
+        viewTitle.textContent = view.title;
+        viewCopy.textContent = view.copy;
+        listTitle.textContent = view.list;
+        searchInput.value = "";
+        applyFilter(view.filter);
+      }
+
+      function askSelected() {
+        if (!selectedPrompt) return;
+        window.MaintainersCopilot?.prefill?.(selectedPrompt);
+      }
 
       issues.forEach((issue) => {
         issue.addEventListener("click", () => {
-          issues.forEach((item) => item.classList.remove("selected"));
-          issue.classList.add("selected");
-          selectedPrompt = issue.dataset.prompt || "";
+          updateSelected(issue);
         });
       });
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          switchView(link.dataset.view);
+        });
+      });
+
+      metrics.forEach((metric) => {
+        metric.addEventListener("click", () => {
+          listTitle.textContent = metric.querySelector("span").textContent;
+          applyFilter(metric.dataset.filter);
+        });
+      });
+
+      searchInput.addEventListener("input", () => applyFilter(activeFilter));
+      clearFilterButton.addEventListener("click", () => {
+        searchInput.value = "";
+        applyFilter("all");
+      });
+      askButtons.forEach((button) => button?.addEventListener("click", askSelected));
 
       copyButton.addEventListener("click", async () => {
         if (!selectedPrompt) return;
@@ -595,6 +776,8 @@
           window.prompt("Copy this prompt", selectedPrompt);
         }
       });
+
+      updateSelected(selectedIssue);
     </script>
 
     <script

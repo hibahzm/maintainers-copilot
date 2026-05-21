@@ -125,6 +125,7 @@ function App() {
   const [toolResults, setToolResults] = useState([]);
   const rootRef = useRef(null);
   const endRef = useRef(null);
+  const composerRef = useRef(null);
 
   useEffect(() => {
     fetchWidgetConfig({ apiBase, widgetId, hostOrigin })
@@ -139,6 +140,19 @@ function App() {
   useEffect(() => {
     endRef.current?.scrollIntoView({ block: "end" });
   }, [messages, toolResults, isSending]);
+
+  useEffect(() => {
+    function handleHostMessage(event) {
+      const data = event.data || {};
+      if (data.type !== "widget:prefill" || typeof data.prompt !== "string") return;
+      setInput(data.prompt);
+      window.setTimeout(() => composerRef.current?.focus(), 0);
+    }
+
+    window.addEventListener("message", handleHostMessage);
+    window.parent.postMessage({ type: "widget:ready" }, "*");
+    return () => window.removeEventListener("message", handleHostMessage);
+  }, []);
 
   async function sendMessage(event) {
     event.preventDefault();
@@ -247,6 +261,9 @@ function App() {
           <span>No tools enabled</span>
         )}
       </section>
+      <section className="mode-note">
+        Public widget mode. Admin controls and memory inspection live in the logged-in workspace.
+      </section>
 
       <section className="widget-messages" aria-live="polite">
         {messages.length === 0 && (
@@ -321,6 +338,7 @@ function App() {
 
       <form className="widget-form" onSubmit={sendMessage}>
         <textarea
+          ref={composerRef}
           aria-label="Message"
           value={input}
           onChange={(event) => setInput(event.target.value)}
