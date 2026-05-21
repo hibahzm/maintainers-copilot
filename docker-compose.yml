@@ -109,13 +109,14 @@ services:
       CLASSIFIER_EXPECTED_SHA256: "45790f41e45d707aada1b76e87e4b6919e51ea357c40bc1f30a444fe34a6f67a"
       OPENAI_SUMMARIZER_MODEL: "${OPENAI_SUMMARIZER_MODEL:-gpt-4o-mini}"
       OPENAI_RAG_ANSWER_MODEL: "${OPENAI_RAG_ANSWER_MODEL:-gpt-4o-mini}"
-      RAG_EMBEDDING_MODEL: "${RAG_EMBEDDING_MODEL:-intfloat/e5-small-v2}"
+      RAG_EMBEDDING_MODEL: "${RAG_EMBEDDING_MODEL:-/app/models/e5-small-v2}"
       VAULT_ADDR: "http://vault:8200"
       VAULT_TOKEN: "${VAULT_TOKEN:-dev-only-root-token}"
       VAULT_MOUNT_POINT: "${VAULT_MOUNT_POINT:-secret}"
       VAULT_SECRET_PATH: "${VAULT_SECRET_PATH:-maintainers-copilot}"
     volumes:
       - ./artifacts:/app/artifacts:ro
+      - ./models/e5-small-v2:/app/models/e5-small-v2:ro
     ports:
       - "${MODEL_SERVER_PORT:-8001}:8001"
     depends_on:
@@ -146,12 +147,15 @@ services:
       CHAT_AGENT_MODEL: "${CHAT_AGENT_MODEL:-gpt-4o-mini}"
       CHAT_AGENT_MAX_TOOL_ROUNDS: "${CHAT_AGENT_MAX_TOOL_ROUNDS:-3}"
       WIDGET_PUBLIC_URL: "${WIDGET_PUBLIC_URL:-http://localhost:4173}"
+      LANGFUSE_BASE_URL: "${LANGFUSE_BASE_URL:-https://cloud.langfuse.com}"
       VAULT_ADDR: "http://vault:8200"
       VAULT_TOKEN: "${VAULT_TOKEN:-dev-only-root-token}"
       VAULT_MOUNT_POINT: "${VAULT_MOUNT_POINT:-secret}"
       VAULT_SECRET_PATH: "${VAULT_SECRET_PATH:-maintainers-copilot}"
     ports:
       - "${API_PORT:-8000}:8000"
+    volumes:
+      - ./data/rag/chunks:/app/data/rag/chunks:ro
     depends_on:
       db:
         condition: service_healthy
@@ -184,6 +188,7 @@ services:
     container_name: maintainers-copilot-chatbot
     environment:
       API_BASE_URL: "http://api:8000"
+      PUBLIC_API_BASE_URL: "${PUBLIC_API_BASE_URL:-http://localhost:8000}"
     ports:
       - "${CHATBOT_PORT:-8501}:8501"
     depends_on:

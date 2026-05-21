@@ -9,6 +9,7 @@
 .venv/
 node_modules/
 /artifacts/
+/models/
 data/
 notebooks/
 docs/*.pdf

@@ -29,12 +29,17 @@ data/*.parquet
 data/*.csv
 data/*.db
 /artifacts/
+/models/
 *.log
 
 # OS / editor
 .DS_Store
 .idea/
 .vscode/
+
+.agents
+.claude
+.codex
 
 # Generated evaluation outputs
 evals/*_results.json

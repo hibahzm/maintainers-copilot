@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Ingest generated RAG chunks into PostgreSQL/pgvector using the selected local
-# embedding model. Defaults are safe for local development and pin CPU Torch.
-
 CHUNKS_PATH="${CHUNKS_PATH:-data/rag/chunks/parent_child_chunks.jsonl}"
 DATABASE_URL="${DATABASE_URL:-postgresql://copilot:copilot-dev-only@localhost:5432/copilot}"
-EMBEDDING_MODEL="${EMBEDDING_MODEL:-intfloat/e5-small-v2}"
+EMBEDDING_MODEL="${EMBEDDING_MODEL:-./models/e5-small-v2}"
 DEVICE="${DEVICE:-cpu}"
 BATCH_SIZE="${BATCH_SIZE:-32}"
 REPLACE_FLAG="${REPLACE_FLAG:---replace}"
