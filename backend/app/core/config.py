@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     vault_addr: str = "http://localhost:8200"
     vault_token: SecretStr = Field(
         default=SecretStr("dev-only-root-token"),
-        validation_alias="VAULT_DEV_ROOT_TOKEN_ID",
+        validation_alias=AliasChoices("VAULT_TOKEN", "VAULT_DEV_ROOT_TOKEN_ID"),
     )
     vault_mount_point: str = "secret"
     vault_secret_path: str = "maintainers-copilot"

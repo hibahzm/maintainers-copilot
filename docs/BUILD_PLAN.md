@@ -69,12 +69,13 @@ This is the dependency order for the project. It follows the Week 7 brief, but i
 - `backend/app/infra/vault.py`
 - `backend/app/main.py`
 - `backend/app/core/config.py`
+- `docker/vault-init.sh`
 - `docs/SECURITY.md`
 - `docs/RUNBOOK.md`
 
 **Done when**
-- every real secret is expected from Vault
-- `.env` is only for the Vault root token and ports
+- every real secret is expected from Vault ✅ `vault-init` seeds the required KV bundle before API/model-server startup
+- `.env` is only for the Vault bootstrap token, non-secret ports, and non-secret model names ✅
 - the API refuses to boot if Vault is unreachable
 
 ### 1.3 Wire tracing from the beginning
@@ -306,7 +307,7 @@ This is for RAG/retrieval, not for the issue classifier. The classifier decision
 
 **Add / complete**
 - auth endpoints ✅ `/auth/register`, `/auth/login`, `/auth/me`
-- JWT signing key from Vault/env ✅ `JWT_SIGNING_KEY`
+- JWT signing key from Vault ✅ backend auth reads `jwt_signing_key` from the validated Vault runtime bundle
 - `user` and `admin` roles ✅ user records carry role; admin dependency exists for protected admin routes
 - memory ownership ✅ memory endpoints use the bearer-token user instead of caller-supplied `user_id`
 - admin invite flow

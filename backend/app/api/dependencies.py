@@ -1,7 +1,8 @@
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from pydantic import SecretStr
 
 from app.api.schemas.auth import UserResponse
 from app.core.config import Settings, settings
@@ -27,9 +28,29 @@ def get_settings() -> Settings:
     return settings
 
 
-def get_auth_service() -> AuthService:
+def _runtime_secret(
+    request: Request,
+    name: str,
+    *,
+    fallback: SecretStr | None = None,
+) -> SecretStr | None:
+    runtime_secrets = getattr(request.app.state, "runtime_secrets", None)
+    value = getattr(runtime_secrets, name, None) if runtime_secrets else None
+    if isinstance(value, SecretStr) and value.get_secret_value():
+        return value
+    if fallback and fallback.get_secret_value():
+        return fallback
+    return None
+
+
+def get_auth_service(request: Request) -> AuthService:
     return AuthService(
-        jwt_signing_key=settings.jwt_signing_key,
+        jwt_signing_key=_runtime_secret(
+            request,
+            "jwt_signing_key",
+            fallback=settings.jwt_signing_key,
+        )
+        or SecretStr("dev-only-jwt-signing-key"),
         repository=get_user_repository(),
         access_token_ttl_minutes=settings.access_token_ttl_minutes,
     )
@@ -76,11 +97,11 @@ async def require_admin(
     return current_user
 
 
-def get_chat_service() -> ChatService:
+def get_chat_service(request: Request) -> ChatService:
     return ChatService(
         rag_service=get_rag_service(),
         tool_runner=get_chat_tool_runner(),
-        agent_service=get_openai_chat_agent_service(),
+        agent_service=get_openai_chat_agent_service(request),
         conversation_state_service=get_conversation_state_service(),
     )
 
@@ -103,9 +124,9 @@ def get_chat_tool_runner() -> ChatToolRunner:
     )
 
 
-def get_openai_chat_agent_service() -> OpenAIChatAgentService:
+def get_openai_chat_agent_service(request: Request) -> OpenAIChatAgentService:
     return OpenAIChatAgentService(
-        api_key=settings.openai_api_key,
+        api_key=_runtime_secret(request, "llm_api_key", fallback=settings.openai_api_key),
         model=settings.chat_agent_model,
         rag_service=get_rag_service(),
         tool_runner=get_chat_tool_runner(),

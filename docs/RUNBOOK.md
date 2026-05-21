@@ -2,11 +2,11 @@
 
 ## Current stage
 
-Foundation work has started. Docker Compose now names the full required stack, Alembic has a baseline migration, the API treats Vault as a startup dependency, every request now gets a request ID plus trace ID, and the first fine-tuning path has a written Colab notebook workflow. The next execution pass can happen entirely in Colab: fetch, split, inspect, then train.
+Foundation work has started. Docker Compose now names the full required stack, Alembic has a baseline migration, Vault is initialized by a one-shot `vault-init` container, the API treats Vault as a startup dependency, and every request now gets a request ID plus trace ID.
 
 ## Vault startup contract
 
-The API expects a KV v2 secret bundle at:
+The local Compose stack starts Vault in dev mode, then runs `vault-init` once to create a KV v2 secret bundle at:
 
 ```text
 secret/data/maintainers-copilot
@@ -23,12 +23,27 @@ llm_api_key
 tracing_api_key
 ```
 
+`vault-init` seeds the bundle from runtime environment variables. Keep `.env` limited to the Vault bootstrap token, non-secret ports, and non-secret model names. For real LLM smoke tests, export the key only for the command that starts/updates Vault:
+
+```bash
+export OPENAI_API_KEY="..."
+docker compose up vault vault-init
+```
+
 At startup the API:
 
 1. checks Vault health,
 2. loads the bundle,
 3. validates that every required key exists,
 4. refuses to boot if any of those steps fail.
+
+The backend uses `jwt_signing_key` and `llm_api_key` from this validated runtime bundle. The model-server still accepts direct `OPENAI_API_KEY` / `LLM_API_KEY` for notebooks and one-off smoke tests, but in Compose it can read `llm_api_key` from the same Vault bundle.
+
+Inspect the seeded bundle:
+
+```bash
+docker compose exec vault vault kv get secret/maintainers-copilot
+```
 
 ## Request tracing contract
 

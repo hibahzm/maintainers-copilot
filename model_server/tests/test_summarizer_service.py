@@ -50,3 +50,11 @@ def test_summarizer_requires_api_key(monkeypatch):
 def test_summarizer_accepts_openai_api_key(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     assert summarizer.summarizer_api_key() == "test-key"
+
+
+def test_summarizer_accepts_vault_llm_key(monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("LLM_API_KEY", raising=False)
+    monkeypatch.setattr(summarizer, "runtime_secret_value", lambda key: "vault-key")
+
+    assert summarizer.summarizer_api_key() == "vault-key"

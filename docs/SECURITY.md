@@ -4,7 +4,7 @@
 
 - secrets should come from Vault, not application env files
 - logs and traces should pass through redaction first
-- only the Vault development root token is allowed in `.env.example`
+- only the Vault development bootstrap token, ports, and non-secret model names are allowed in `.env.example`
 
 ## Startup secret contract
 
@@ -22,7 +22,7 @@ That bundle must contain:
 - `llm_api_key`
 - `tracing_api_key`
 
-If Vault is unreachable, the bundle is missing, or the payload is malformed, the API refuses to boot.
+The local Compose stack initializes this bundle through the one-shot `vault-init` container. If Vault is unreachable, the bundle is missing, or the payload is malformed, the API refuses to boot.
 
 ## Notebook secret hygiene
 
@@ -35,7 +35,7 @@ If Vault is unreachable, the bundle is missing, or the payload is malformed, the
 
 - Production app/runtime keys belong in Vault under `llm_api_key`.
 - Notebook experiment keys do not go into Git or `.env`; use Colab Secrets or a temporary runtime prompt.
-- When the model server or backend later calls OpenAI in the shipped stack, it should receive the key from the Vault-backed settings path, not from a hardcoded notebook value.
+- The backend and model-server can receive the shipped-stack LLM key from the Vault-backed `llm_api_key` path, not from a hardcoded notebook value.
 
 ## Redaction patterns
 
@@ -49,4 +49,4 @@ This list is deliberately small for now; each new pattern should be justified by
 
 ## Model-server summarizer secret
 
-The `/summarize` tool is OpenAI-backed. The model-server may read `OPENAI_API_KEY` or `LLM_API_KEY` from its runtime environment for local smoke tests, but the key must come from Vault or another secret manager in production. Never commit API keys to `.env`, notebooks, run manifests, request logs, or eval outputs.
+The `/summarize` and `/rag-answer` tools are OpenAI-backed. The model-server may read `OPENAI_API_KEY` or `LLM_API_KEY` from its runtime environment for notebooks and one-off local smoke tests, but Compose runtime should read `llm_api_key` from Vault. Never commit API keys to `.env`, notebooks, run manifests, request logs, or eval outputs.

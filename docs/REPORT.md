@@ -2,6 +2,30 @@
 
 This is the running build journal. Every meaningful change should add a dated entry so future us can reconstruct not only what changed, but why.
 
+## 2026-05-21 — Vault init container adopted
+
+### Added
+- `docker/vault-init.sh`
+- `model_server/services/runtime_secrets.py`
+
+### Updated
+- `.env.example`
+- `backend/app/api/dependencies.py`
+- `backend/app/core/config.py`
+- `docker-compose.yml`
+- `model_server/services/rag_answer.py`
+- `model_server/services/summarizer.py`
+- `model_server/tests/test_summarizer_service.py`
+- `docs/BUILD_PLAN.md`
+- `docs/RUNBOOK.md`
+- `docs/SECURITY.md`
+
+### Design notes
+- Adopted a one-shot `vault-init` container so local Compose always seeds the required KV v2 bundle before API/model-server startup.
+- Backend auth now uses `jwt_signing_key` from the validated Vault runtime bundle, and the OpenAI chat agent uses Vault `llm_api_key` when available.
+- Model-server summarization and RAG-answer endpoints now fall back to Vault `llm_api_key` while still allowing direct env keys for notebooks and one-off smoke tests.
+- `.env.example` stays limited to Vault bootstrap settings, ports, artifact paths, and non-secret model names.
+
 ## 2026-05-20 — Lightweight CI gate added
 
 ### Added

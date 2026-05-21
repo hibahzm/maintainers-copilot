@@ -9,6 +9,7 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 from model_server.schemas.rag_answer import RagAnswerRequest, RagAnswerResponse
+from model_server.services.runtime_secrets import runtime_secret_value
 from model_server.services.summarizer import OpenAIKeyMissingError
 
 DEFAULT_RAG_ANSWER_MODEL = "gpt-4o-mini"
@@ -87,7 +88,11 @@ def rag_answer_model() -> str:
 
 
 def rag_answer_api_key() -> str:
-    api_key = os.getenv("OPENAI_API_KEY") or os.getenv("LLM_API_KEY")
+    api_key = (
+        os.getenv("OPENAI_API_KEY")
+        or os.getenv("LLM_API_KEY")
+        or runtime_secret_value("llm_api_key")
+    )
     if not api_key:
         raise OpenAIKeyMissingError(
             "Missing OpenAI API key. Inject OPENAI_API_KEY or LLM_API_KEY from Vault/secrets before calling /rag-answer."

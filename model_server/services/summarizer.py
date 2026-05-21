@@ -9,6 +9,7 @@ from typing import Any, Literal
 from pydantic import BaseModel
 
 from model_server.schemas.summarizer import SummarizeRequest, SummarizeResponse
+from model_server.services.runtime_secrets import runtime_secret_value
 
 DEFAULT_SUMMARIZER_MODEL = "gpt-4o-mini"
 SYSTEM_PROMPT = """You are a concise maintainer assistant for GitHub issues.
@@ -89,9 +90,11 @@ def summarizer_model() -> str:
 
 
 def summarizer_api_key() -> str:
-    # Production should inject this from Vault/secret manager into the model-server runtime.
-    # Colab/local experiments may use OPENAI_API_KEY directly.
-    api_key = os.getenv("OPENAI_API_KEY") or os.getenv("LLM_API_KEY")
+    api_key = (
+        os.getenv("OPENAI_API_KEY")
+        or os.getenv("LLM_API_KEY")
+        or runtime_secret_value("llm_api_key")
+    )
     if not api_key:
         raise OpenAIKeyMissingError(
             "Missing OpenAI API key. Inject OPENAI_API_KEY or LLM_API_KEY from Vault/secrets before calling /summarize."
